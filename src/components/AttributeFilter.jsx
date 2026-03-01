@@ -13,6 +13,10 @@ const AttributeFilter = () => {
   // 排序状态: { field: string, order: 'asc' | 'desc' | null }
   const [sortConfig, setSortConfig] = useState({ field: null, order: null })
 
+  const [searchQuery, setSearchQuery] = useState('')
+  const [searchSuggestions, setSearchSuggestions] = useState([])
+  const [showSuggestions, setShowSuggestions] = useState(false)
+
   // 武器类型
   const weaponTypes = ['单手剑', '双手剑', '长柄武器', '手铳', '施术单元']
   
@@ -250,8 +254,66 @@ const AttributeFilter = () => {
   // 应用排序
   const sortedWeapons = sortWeapons(filteredWeapons)
 
+   const handleSearchInput = (value) => {
+    setSearchQuery(value)
+    
+    if (value.trim() === '') {
+      setSearchSuggestions([])
+      setShowSuggestions(false)
+      return
+    }
+
+    // 查找匹配的武器
+    const matches = weapons.filter(weapon => 
+      weapon.name.toLowerCase().includes(value.toLowerCase())
+    )
+
+    // 按相似度排序：完全匹配 > 开头匹配 > 包含匹配
+    const sorted = matches.sort((a, b) => {
+      const aName = a.name.toLowerCase()
+      const bName = b.name.toLowerCase()
+      const query = value.toLowerCase()
+
+      // 完全匹配优先
+      if (aName === query) return -1
+      if (bName === query) return 1
+
+      // 开头匹配次之
+      if (aName.startsWith(query) && !bName.startsWith(query)) return -1
+      if (bName.startsWith(query) && !aName.startsWith(query)) return 1
+
+      // 其他按字母顺序
+      return aName.localeCompare(bName, 'zh-CN')
+    })
+
+    // 只取前3个
+    setSearchSuggestions(sorted.slice(0, 3))
+    setShowSuggestions(true)
+  }
+
+  // 新增：选择建议的武器
+  const selectSuggestion = (weapon) => {
+    setSearchQuery(weapon.name)
+    setShowSuggestions(false)
+  }
+
+  // 新增：处理搜索按钮点击（暂时不做操作）
+  const handleSearch = () => {
+    // 暂时不做任何操作
+    console.log('搜索:', searchQuery)
+  }
+
+  // 新增：清除搜索
+  const clearSearch = () => {
+    setSearchQuery('')
+    setSearchSuggestions([])
+    setShowSuggestions(false)
+  }
+
   return (
     <div className="space-y-6">
+      <div className="bg-gradient-to-r from-purple-50 to-blue-50 border border-purple-200 rounded-lg p-6">
+      </div>
       {/* 筛选区域 */}
       <div className="space-y-4">
         {/* 查看全部 */}
