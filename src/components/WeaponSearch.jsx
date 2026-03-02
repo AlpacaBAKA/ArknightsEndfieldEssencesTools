@@ -397,7 +397,7 @@ const WeaponSearch = () => {
                 value={searchQuery}
                 onChange={(e) => handleSearchInput(e.target.value)}
                 onFocus={() => searchQuery && setShowSuggestions(true)}
-                placeholder="输入武器名称..."
+                placeholder="输入主刷取武器..."
                 style={{
                   width: '100%',
                   padding: '12px 16px',
@@ -454,7 +454,7 @@ const WeaponSearch = () => {
                 value={extraWeapon1}
                 onChange={(e) => handleExtraSearchInput(e.target.value, 1)}
                 onFocus={() => extraWeapon1 && setShowExtraSuggestions1(true)}
-                placeholder="无额外条件"
+                placeholder="无额外刷取武器"
                 style={{
                   width: '100%',
                   padding: '10px 14px',
@@ -541,7 +541,7 @@ const WeaponSearch = () => {
                 value={extraWeapon2}
                 onChange={(e) => handleExtraSearchInput(e.target.value, 2)}
                 onFocus={() => extraWeapon2 && setShowExtraSuggestions2(true)}
-                placeholder="无额外条件"
+                placeholder="无额外刷取武器"
                 style={{
                   width: '100%',
                   padding: '10px 14px',
