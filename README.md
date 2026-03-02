@@ -13,7 +13,7 @@ github地址：https://github.com/AlpacaBAKA/ArknightsEndfieldEssencesTools
 
 进入网页后页面如图，默认停留在刷取策略查询界面。
 
-![main](C:\Users\AlpacaPAKA\Desktop\files\work\ArknightsEndfieldEssencesTools\frontend\public\main.png)
+![](./public/main.png)
 
 ### 1. 刷取策略计算
 
