@@ -4,7 +4,7 @@ import AttributeFilter from './components/AttributeFilter.jsx'
 import WeaponSearch from './components/WeaponSearch.jsx'
 
 function App() {
-  const [activeTab, setActiveTab] = useState('filter') // 'filter' 或 'search'
+  const [activeTab, setActiveTab] = useState('search') // 'filter' 或 'search'
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -24,16 +24,6 @@ function App() {
             {/* 标签页切换 */}
             <div className="flex border-b border-gray-200">
               <button
-                onClick={() => setActiveTab('filter')}
-                className={`flex-1 px-6 py-4 font-semibold transition-colors ${
-                  activeTab === 'filter'
-                    ? 'bg-blue-50 text-blue-600 border-b-2 border-blue-600'
-                    : 'text-gray-600 hover:bg-gray-50'
-                }`}
-              >
-                📋 武器属性筛选
-              </button>
-              <button
                 onClick={() => setActiveTab('search')}
                 className={`flex-1 px-6 py-4 font-semibold transition-colors ${
                   activeTab === 'search'
@@ -42,6 +32,16 @@ function App() {
                 }`}
               >
                 🔍 刷取策略查询
+              </button>
+              <button
+                onClick={() => setActiveTab('filter')}
+                className={`flex-1 px-6 py-4 font-semibold transition-colors ${
+                  activeTab === 'filter'
+                    ? 'bg-blue-50 text-blue-600 border-b-2 border-blue-600'
+                    : 'text-gray-600 hover:bg-gray-50'
+                }`}
+              >
+                📋 武器属性筛选
               </button>
             </div>
 
