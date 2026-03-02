@@ -38,6 +38,28 @@ const AttributeFilter = () => {
   const findCommonLocations = (weaponsList) => {
     if (weaponsList.length === 0) return []
     
+    // 检查是否所有武器有相同的 secondary
+    const secondaryIds = weaponsList.map(w => w.secondary.id)
+    const hasSameSecondary = new Set(secondaryIds).size === 1
+    
+    // 检查是否所有武器有相同的 skills
+    const skillsIds = weaponsList.map(w => w.skills.id)
+    const hasSameSkills = new Set(skillsIds).size === 1
+    
+    // 检查 attribute 种类数量
+    const attributeIds = [...new Set(weaponsList.map(w => w.attribute.id))]
+    const attributeCount = attributeIds.length
+    
+    // 如果不满足基本条件，返回空数组
+    if (!hasSameSecondary && !hasSameSkills) {
+      return []
+    }
+    
+    if (attributeCount > 3) {
+      return []
+    }
+    
+    // 筛选符合条件的地点
     const commonLocations = locations.filter(location => {
       return weaponsList.every(weapon => {
         const hasSecondary = location.secondary.some(sec => sec.id === weapon.secondary.id)
@@ -487,88 +509,89 @@ const AttributeFilter = () => {
             <p className="text-lg">未找到符合条件的武器</p>
           </div>
         ) : (
-          <div className="w-full overflow-x-auto flex justify-center">
-            <table className="border-collapse border border-gray-200 rounded-lg">
-              {/* 表头 */}
-              <thead className="bg-gray-50 border-b border-gray-200">
-                <tr>
-                  <th className="w-16 px-4 py-3 text-center text-sm font-semibold text-gray-700 border-r border-gray-200">选择</th>
-                  <SortableHeader field="name" className="px-4 py-3 border-r border-gray-200">武器名称</SortableHeader>
-                  <SortableHeader field="rank" className="w-24 px-4 py-3 text-center border-r border-gray-200">稀有度</SortableHeader>
-                  <SortableHeader field="type" className="px-4 py-3 border-r border-gray-200">武器种类</SortableHeader>
-                  <SortableHeader field="attribute" className="px-4 py-3 border-r border-gray-200">基础属性</SortableHeader>
-                  <SortableHeader field="secondary" className="px-4 py-3 border-r border-gray-200">附加属性</SortableHeader>
-                  <SortableHeader field="skills" className="px-4 py-3">技能属性</SortableHeader>
-                </tr>
-              </thead>
-
-              {/* 表体 */}
-              <tbody className="divide-y divide-gray-200">
-                {sortedWeapons.map(weapon => (
-                  <tr
-                    key={weapon.id}
-                    className={`hover:bg-gray-50 transition-colors ${
-                      checkedWeapons.includes(weapon.id) ? 'bg-blue-50' : ''
-                    }`}
-                  >
-                    {/* 复选框 */}
-                    <td className="px-4 py-3 text-center border-r border-gray-200">
-                      <input
-                        type="checkbox"
-                        checked={checkedWeapons.includes(weapon.id)}
-                        onChange={() => toggleWeaponCheck(weapon.id)}
-                        className="w-4 h-4 text-blue-600 rounded focus:ring-blue-500 cursor-pointer"
-                      />
-                    </td>
-
-                    {/* 武器名称 */}
-                    <td className="px-4 py-3 font-medium text-gray-800 whitespace-nowrap border-r border-gray-200">
-                      {weapon.name}
-                    </td>
-
-                    {/* 稀有度 */}
-                    <td className="px-4 py-3 text-center border-r border-gray-200">
-                      <span
-                        className="inline-block px-3 py-1 rounded-full text-white text-sm font-medium whitespace-nowrap"
-                        style={{ backgroundColor: getRankColor(weapon.rank) }}
-                      >
-                        {weapon.rank}星
-                      </span>
-                    </td>
-
-                    {/* 武器种类 */}
-                    <td className="px-4 py-3 text-gray-600 whitespace-nowrap border-r border-gray-200">
-                      {weapon.type}
-                    </td>
-
-                    {/* 基础属性 */}
-                    <td className="px-4 py-3 border-r border-gray-200">
-                      <span className="inline-block px-2 py-1 bg-purple-100 text-purple-700 rounded text-sm whitespace-nowrap">
-                        {weapon.attribute.name}
-                      </span>
-                    </td>
-
-                    {/* 附加属性 */}
-                    <td className="px-4 py-3 border-r border-gray-200">
-                      <span className="inline-block px-2 py-1 bg-green-100 text-green-700 rounded text-sm whitespace-nowrap">
-                        {weapon.secondary.name}
-                      </span>
-                    </td>
-
-                    {/* 技能属性 */}
-                    <td className="px-4 py-3">
-                      <span className="inline-block px-2 py-1 bg-blue-100 text-blue-700 rounded text-sm whitespace-nowrap">
-                        {weapon.skills.name}
-                      </span>
-                    </td>
+          <div className="w-full overflow-x-auto">
+            <div className="flex justify-center">
+              <table className="border-collapse border border-gray-200 rounded-lg">
+                {/* 表头 */}
+                <thead className="bg-gray-50 border-b border-gray-200">
+                  <tr>
+                    <th className="w-16 px-4 py-3 text-center text-sm font-semibold text-gray-700 border-r border-gray-200">选择</th>
+                    <SortableHeader field="name" className="px-4 py-3 border-r border-gray-200">武器名称</SortableHeader>
+                    <SortableHeader field="rank" className="w-24 px-4 py-3 text-center border-r border-gray-200">稀有度</SortableHeader>
+                    <SortableHeader field="type" className="px-4 py-3 border-r border-gray-200">武器种类</SortableHeader>
+                    <SortableHeader field="attribute" className="px-4 py-3 border-r border-gray-200">基础属性</SortableHeader>
+                    <SortableHeader field="secondary" className="px-4 py-3 border-r border-gray-200">附加属性</SortableHeader>
+                    <SortableHeader field="skills" className="px-4 py-3">技能属性</SortableHeader>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+
+                {/* 表体 */}
+                <tbody className="divide-y divide-gray-200">
+                  {sortedWeapons.map(weapon => (
+                    <tr
+                      key={weapon.id}
+                      className={`hover:bg-gray-50 transition-colors ${
+                        checkedWeapons.includes(weapon.id) ? 'bg-blue-50' : ''
+                      }`}
+                    >
+                      {/* 复选框 */}
+                      <td className="px-4 py-3 text-center border-r border-gray-200">
+                        <input
+                          type="checkbox"
+                          checked={checkedWeapons.includes(weapon.id)}
+                          onChange={() => toggleWeaponCheck(weapon.id)}
+                          className="w-4 h-4 text-blue-600 rounded focus:ring-blue-500 cursor-pointer"
+                        />
+                      </td>
+
+                      {/* 武器名称 */}
+                      <td className="px-4 py-3 font-medium text-gray-800 whitespace-nowrap border-r border-gray-200">
+                        {weapon.name}
+                      </td>
+
+                      {/* 稀有度 */}
+                      <td className="px-4 py-3 text-center border-r border-gray-200">
+                        <span
+                          className="inline-block px-3 py-1 rounded-full text-white text-sm font-medium whitespace-nowrap"
+                          style={{ backgroundColor: getRankColor(weapon.rank) }}
+                        >
+                          {weapon.rank}星
+                        </span>
+                      </td>
+
+                      {/* 武器种类 */}
+                      <td className="px-4 py-3 text-gray-600 whitespace-nowrap border-r border-gray-200">
+                        {weapon.type}
+                      </td>
+
+                      {/* 基础属性 */}
+                      <td className="px-4 py-3 border-r border-gray-200">
+                        <span className="inline-block px-2 py-1 bg-purple-100 text-purple-700 rounded text-sm whitespace-nowrap">
+                          {weapon.attribute.name}
+                        </span>
+                      </td>
+
+                      {/* 附加属性 */}
+                      <td className="px-4 py-3 border-r border-gray-200">
+                        <span className="inline-block px-2 py-1 bg-green-100 text-green-700 rounded text-sm whitespace-nowrap">
+                          {weapon.secondary.name}
+                        </span>
+                      </td>
+
+                      {/* 技能属性 */}
+                      <td className="px-4 py-3">
+                        <span className="inline-block px-2 py-1 bg-blue-100 text-blue-700 rounded text-sm whitespace-nowrap">
+                          {weapon.skills.name}
+                        </span>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         )}
       </div>
-
       {/* 可刷取地点显示 */}
       {checkedWeapons.length > 0 && (
         <div className="mt-6 border-t border-gray-200 pt-6">
@@ -583,49 +606,102 @@ const AttributeFilter = () => {
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {commonLocations.map(location => (
-                <div
-                  key={location.id}
-                  className="border border-green-200 bg-green-50 rounded-lg p-4 hover:border-green-300 hover:shadow-md transition-all"
-                >
-                  <div className="flex items-start justify-between mb-3">
-                    <h4 className="font-semibold text-gray-800 text-lg">{location.name}</h4>
-                    <span className="inline-block px-3 py-1 bg-green-500 text-white text-xs font-medium rounded-full">
-                      可刷取
-                    </span>
-                  </div>
-                  
-                  <div className="space-y-2 text-sm">
-                    <div>
-                      <span className="font-medium text-gray-700">附加属性：</span>
-                      <div className="mt-1 flex flex-wrap gap-1">
-                        {location.secondary.map(sec => (
-                          <span
-                            key={sec.id}
-                            className="px-2 py-1 bg-green-100 text-green-700 rounded text-xs"
-                          >
-                            {sec.name}
-                          </span>
-                        ))}
-                      </div>
+              {commonLocations.map(location => {
+                // 计算需要筛选的词条
+                const requiredAttribute = [...new Set(selectedWeaponsData.map(w => w.attribute.id))]
+                const attributeToSelect = AttributeTag.filter(attr => 
+                  requiredAttribute.includes(attr.id)
+                )
+                
+                // 检查是否所有武器有相同的 secondary
+                const secondaryIds = selectedWeaponsData.map(w => w.secondary.id)
+                const hasSameSecondary = new Set(secondaryIds).size === 1
+                
+                // 检查是否所有武器有相同的 skills
+                const skillsIds = selectedWeaponsData.map(w => w.skills.id)
+                const hasSameSkills = new Set(skillsIds).size === 1
+                
+                // 只有当所有武器有相同的 secondary 时才显示
+                const secondaryToSelect = hasSameSecondary 
+                  ? location.secondary.filter(sec => sec.id === secondaryIds[0])
+                  : []
+                
+                // 只有当所有武器有相同的 skills 时才显示
+                const skillsToSelect = hasSameSkills 
+                  ? location.skills.filter(skill => skill.id === skillsIds[0])
+                  : []
+
+                return (
+                  <div
+                    key={location.id}
+                    className="border border-green-200 bg-green-50 rounded-lg p-4 hover:border-green-300 hover:shadow-md transition-all"
+                  >
+                    <div className="flex items-start justify-between mb-3">
+                      <h4 className="font-semibold text-gray-800 text-lg">{location.name}</h4>
+                      <span className="inline-block px-3 py-1 bg-green-500 text-white text-xs font-medium rounded-full">
+                        可刷取
+                      </span>
                     </div>
                     
-                    <div>
-                      <span className="font-medium text-gray-700">技能属性：</span>
-                      <div className="mt-1 flex flex-wrap gap-1">
-                        {location.skills.map(skill => (
-                          <span
-                            key={skill.id}
-                            className="px-2 py-1 bg-blue-100 text-blue-700 rounded text-xs"
-                          >
-                            {skill.name}
-                          </span>
-                        ))}
+                    <div className="space-y-2 text-sm">
+                      {/* 需要筛选的词条 */}
+                      <div style={{ paddingTop: '0.5rem', borderTop: '1px solid #bbf7d0' }}>
+                        <span className="font-medium text-gray-700">需要筛选的词条：</span>
+                        <div className="mt-1 flex flex-wrap gap-1">
+                          {attributeToSelect.map(attr => (
+                            <span
+                              key={`select-attr-${attr.id}`}
+                              style={{
+                                display: 'inline-block',
+                                padding: '0.25rem 0.5rem',
+                                backgroundColor: '#e9d5ff',
+                                color: '#6b21a8',
+                                borderRadius: '0.25rem',
+                                fontSize: '0.75rem',
+                                fontWeight: '500'
+                              }}
+                            >
+                              {attr.name}
+                            </span>
+                          ))}
+                          {secondaryToSelect.map(sec => (
+                            <span
+                              key={`select-sec-${sec.id}`}
+                              style={{
+                                display: 'inline-block',
+                                padding: '0.25rem 0.5rem',
+                                backgroundColor: '#fed7aa',
+                                color: '#c2410c',
+                                borderRadius: '0.25rem',
+                                fontSize: '0.75rem',
+                                fontWeight: '500'
+                              }}
+                            >
+                              {sec.name}
+                            </span>
+                          ))}
+                          {skillsToSelect.map(skill => (
+                            <span
+                              key={`select-skill-${skill.id}`}
+                              style={{
+                                display: 'inline-block',
+                                padding: '0.25rem 0.5rem',
+                                backgroundColor: '#fed7aa',
+                                color: '#c2410c',
+                                borderRadius: '0.25rem',
+                                fontSize: '0.75rem',
+                                fontWeight: '500'
+                              }}
+                            >
+                              {skill.name}
+                            </span>
+                          ))}
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                )
+              })}
             </div>
           )}
         </div>
