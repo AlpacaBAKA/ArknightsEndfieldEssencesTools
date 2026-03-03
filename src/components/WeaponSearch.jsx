@@ -9,6 +9,8 @@ const WeaponSearch = () => {
   const [matchingLocations, setMatchingLocations] = useState([])
   const [showOnlyBest, setShowOnlyBest] = useState(false)
   
+  const [sortStrategy, setSortStrategy] = useState('total') // 'total', 'high', 'six'
+
   // 额外条件武器
   const [extraWeapon1, setExtraWeapon1] = useState('')
   const [extraWeapon2, setExtraWeapon2] = useState('')
@@ -189,7 +191,7 @@ const WeaponSearch = () => {
   }
 
   // 计算策略得分（用于排序）
-  const calculateStrategyScore = (matchedWeapons) => {
+  const calculateStrategyScore = (matchedWeapons, strategy = 'total') => {
     const totalCount = matchedWeapons.length
     
     // 计算高星级武器数量
@@ -197,8 +199,16 @@ const WeaponSearch = () => {
     const rank5Count = matchedWeapons.filter(w => w.rank === 5).length
     const rank4Count = matchedWeapons.filter(w => w.rank === 4).length
     
-    // 得分公式：总数量 * 1000 + 6星*100 + 5星*10 + 4星*1
-    return totalCount * 1000 + rank6Count * 100 + rank5Count * 10 + rank4Count * 1
+    if (strategy === 'six') {
+      // 优先六星：6星*1000000 + 总数*1000 + 5星*10 + 4星*1
+      return rank6Count * 1000000 + totalCount * 1000 + rank5Count * 10 + rank4Count * 1
+    } else if (strategy === 'high') {
+      // 优先五星和六星：(6星+5星)*100000 + 总数*1000 + 4星*1
+      return (rank6Count + rank5Count) * 100000 + totalCount * 1000 + rank4Count * 1
+    } else {
+      // 默认：总数量优先
+      return totalCount * 1000 + rank6Count * 100 + rank5Count * 10 + rank4Count * 1
+    }
   }
 
   // 点击搜索按钮
@@ -246,6 +256,9 @@ const WeaponSearch = () => {
       const strategies = []
       const allAttrCombos = generateAttributeCombinations()
       
+      // 用于去重的 Map: key = 武器ID集合的字符串，value = 策略
+      const strategyMap = new Map()
+      
       // 策略1：固定 skills（技能属性）
       allAttrCombos.forEach(attrCombo => {
         const attrIds = attrCombo.map(a => a.id)
@@ -276,15 +289,22 @@ const WeaponSearch = () => {
           w.id !== weapon.id && !extraWeapons.some(extra => extra.id === w.id)
         )
         
-        strategies.push({
-          type: 'skills',
-          fixedType: 'skills',
-          attributeCombo: attrCombo,
-          fixedSecondaryAttr: weapon.skills,
-          randomSecondaryAttr: 'secondary',
-          matchedWeapons: filteredWeapons,
-          score: calculateStrategyScore(filteredWeapons)
-        })
+        // 生成武器ID集合作为唯一标识
+        const weaponIdsKey = filteredWeapons.map(w => w.id).sort().join(',')
+        const strategyKey = `skills-${weapon.skills.id}-${weaponIdsKey}`
+        
+        // 如果已存在相同产物的策略，比较并保留更优的（属性组合更少的）
+        if (!strategyMap.has(strategyKey) || attrCombo.length < strategyMap.get(strategyKey).attributeCombo.length) {
+          strategyMap.set(strategyKey, {
+            type: 'skills',
+            fixedType: 'skills',
+            attributeCombo: attrCombo,
+            fixedSecondaryAttr: weapon.skills,
+            randomSecondaryAttr: 'secondary',
+            matchedWeapons: filteredWeapons,
+            score: calculateStrategyScore(filteredWeapons, sortStrategy)          
+          })
+        }
       })
       
       // 策略2：固定 secondary（附加属性）
@@ -317,25 +337,35 @@ const WeaponSearch = () => {
           w.id !== weapon.id && !extraWeapons.some(extra => extra.id === w.id)
         )
         
-        strategies.push({
-          type: 'secondary',
-          fixedType: 'secondary',
-          attributeCombo: attrCombo,
-          fixedSecondaryAttr: weapon.secondary,
-          randomSecondaryAttr: 'skills',
-          matchedWeapons: filteredWeapons,
-          score: calculateStrategyScore(filteredWeapons)
-        })
+        // 生成武器ID集合作为唯一标识
+        const weaponIdsKey = filteredWeapons.map(w => w.id).sort().join(',')
+        const strategyKey = `secondary-${weapon.secondary.id}-${weaponIdsKey}`
+        
+        // 如果已存在相同产物的策略，比较并保留更优的（属性组合更少的）
+        if (!strategyMap.has(strategyKey) || attrCombo.length < strategyMap.get(strategyKey).attributeCombo.length) {
+          strategyMap.set(strategyKey, {
+            type: 'secondary',
+            fixedType: 'secondary',
+            attributeCombo: attrCombo,
+            fixedSecondaryAttr: weapon.secondary,
+            randomSecondaryAttr: 'skills',
+            matchedWeapons: filteredWeapons,
+            score: calculateStrategyScore(filteredWeapons, sortStrategy)
+          })
+        }
       })
       
-      // 按得分排序策略
-      strategies.sort((a, b) => b.score - a.score)
+      // 将 Map 转换为数组
+      const uniqueStrategies = Array.from(strategyMap.values())
       
-      if (strategies.length > 0) {
+      // 按得分排序策略
+      uniqueStrategies.sort((a, b) => b.score - a.score)
+      
+      if (uniqueStrategies.length > 0) {
         foundLocations.push({
           ...location,
-          strategies: strategies,
-          bestScore: strategies[0].score // 最高分
+          strategies: uniqueStrategies,
+          bestScore: uniqueStrategies[0].score // 最高分
         })
       }
     })
@@ -372,6 +402,34 @@ const WeaponSearch = () => {
       setSelectedExtraWeapon2(null)
       setExtraSuggestions2([])
       setShowExtraSuggestions2(false)
+    }
+  }
+
+  const handleSortStrategyChange = (newStrategy) => {
+    setSortStrategy(newStrategy)
+    
+    // 如果已经有搜索结果，重新排序
+    if (matchingLocations.length > 0) {
+      const updatedLocations = matchingLocations.map(location => {
+        // 重新计算每个策略的得分
+        const updatedStrategies = location.strategies.map(strategy => ({
+          ...strategy,
+          score: calculateStrategyScore(strategy.matchedWeapons, newStrategy)
+        }))
+        
+        // 重新排序
+        updatedStrategies.sort((a, b) => b.score - a.score)
+        
+        return {
+          ...location,
+          strategies: updatedStrategies,
+          bestScore: updatedStrategies[0].score
+        }
+      })
+      
+      // 重新排序地点
+      updatedLocations.sort((a, b) => b.bestScore - a.bestScore)
+      setMatchingLocations(updatedLocations)
     }
   }
 
@@ -848,6 +906,77 @@ const WeaponSearch = () => {
               {showOnlyBest ? '✓ 仅显示最优策略' : '显示所有策略'}
             </button>
           </div>
+
+           <div style={{ 
+            display: 'flex', 
+            gap: '12px', 
+            marginBottom: '16px',
+            padding: '16px',
+            backgroundColor: '#f9fafb',
+            borderRadius: '8px',
+            border: '1px solid #e5e7eb'
+          }}>
+            <span style={{ 
+              color: '#6b7280', 
+              fontSize: '14px', 
+              fontWeight: '500',
+              display: 'flex',
+              alignItems: 'center'
+            }}>
+              最优策略判定：
+            </span>
+            
+            <button
+              onClick={() => handleSortStrategyChange('total')}
+              style={{
+                padding: '6px 16px',
+                backgroundColor: sortStrategy === 'total' ? '#2563eb' : 'white',
+                color: sortStrategy === 'total' ? 'white' : '#374151',
+                border: sortStrategy === 'total' ? 'none' : '1px solid #d1d5db',
+                borderRadius: '6px',
+                fontSize: '13px',
+                fontWeight: '500',
+                cursor: 'pointer',
+                transition: 'all 0.2s'
+              }}
+            >
+              {sortStrategy === 'total' && '✓ '}能刷取最多武器
+            </button>
+            
+            <button
+              onClick={() => handleSortStrategyChange('high')}
+              style={{
+                padding: '6px 16px',
+                backgroundColor: sortStrategy === 'high' ? '#2563eb' : 'white',
+                color: sortStrategy === 'high' ? 'white' : '#374151',
+                border: sortStrategy === 'high' ? 'none' : '1px solid #d1d5db',
+                borderRadius: '6px',
+                fontSize: '13px',
+                fontWeight: '500',
+                cursor: 'pointer',
+                transition: 'all 0.2s'
+              }}
+            >
+              {sortStrategy === 'high' && '✓ '}能刷取最多五星+六星武器
+            </button>
+            
+            <button
+              onClick={() => handleSortStrategyChange('six')}
+              style={{
+                padding: '6px 16px',
+                backgroundColor: sortStrategy === 'six' ? '#2563eb' : 'white',
+                color: sortStrategy === 'six' ? 'white' : '#374151',
+                border: sortStrategy === 'six' ? 'none' : '1px solid #d1d5db',
+                borderRadius: '6px',
+                fontSize: '13px',
+                fontWeight: '500',
+                cursor: 'pointer',
+                transition: 'all 0.2s'
+              }}
+            >
+              {sortStrategy === 'six' && '✓ '}能刷取最多六星武器
+            </button>
+          </div>
           
           <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
             {matchingLocations.map((location) => (
@@ -968,50 +1097,84 @@ const WeaponSearch = () => {
                           </span>
                         </div>
                         
-                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
                           {strategy.matchedWeapons.map((otherWeapon) => (
                             <div
                               key={otherWeapon.id}
                               style={{
-                                padding: '8px 12px',
+                                padding: '12px 16px',
                                 backgroundColor: '#f9fafb',
                                 border: '1px solid #e5e7eb',
                                 borderRadius: '6px',
                                 display: 'flex',
                                 alignItems: 'center',
-                                gap: '8px'
+                                gap: '10px',
+                                flexWrap: 'wrap'
                               }}
                             >
-                              <span style={{ fontWeight: '500', color: '#1f2937', fontSize: '14px' }}>
+                              {/* 武器名称 */}
+                              <span style={{ fontWeight: '600', color: '#1f2937', fontSize: '15px', minWidth: '120px' }}>
                                 {otherWeapon.name}
                               </span>
+                              
+                              {/* 稀有度 */}
                               <span style={{
-                                padding: '2px 6px',
+                                padding: '3px 8px',
                                 borderRadius: '4px',
                                 color: 'white',
-                                fontSize: '11px',
+                                fontSize: '12px',
                                 fontWeight: '500',
                                 backgroundColor: getRankColor(otherWeapon.rank)
                               }}>
                                 {otherWeapon.rank}星
                               </span>
+                              
+                              {/* 武器种类 */}
                               <span style={{
-                                padding: '2px 6px',
+                                padding: '3px 8px',
                                 backgroundColor: '#e0e7ff',
                                 color: '#4338ca',
-                                borderRadius: '3px',
-                                fontSize: '11px'
+                                borderRadius: '4px',
+                                fontSize: '12px',
+                                fontWeight: '500'
                               }}>
                                 {otherWeapon.type}
                               </span>
+                              
+                              {/* 基础属性 */}
                               <span style={{
-                                padding: '2px 6px',
+                                padding: '3px 8px',
                                 backgroundColor: '#f3e8ff',
                                 color: '#7c3aed',
-                                borderRadius: '3px',
-                                fontSize: '11px'
+                                borderRadius: '4px',
+                                fontSize: '12px',
+                                fontWeight: '500'
                               }}>
                                 {otherWeapon.attribute.name}
+                              </span>
+                              
+                              {/* 附加属性 */}
+                              <span style={{
+                                padding: '3px 8px',
+                                backgroundColor: '#dcfce7',
+                                color: '#16a34a',
+                                borderRadius: '4px',
+                                fontSize: '12px',
+                                fontWeight: '500'
+                              }}>
+                                {otherWeapon.secondary.name}
+                              </span>
+                              
+                              {/* 技能属性 */}
+                              <span style={{
+                                padding: '3px 8px',
+                                backgroundColor: '#dbeafe',
+                                color: '#2563eb',
+                                borderRadius: '4px',
+                                fontSize: '12px',
+                                fontWeight: '500'
+                              }}>
+                                {otherWeapon.skills.name}
                               </span>
                             </div>
                           ))}
