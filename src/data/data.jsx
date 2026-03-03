@@ -116,8 +116,6 @@ export const weapons=[
     {id:5014, name:'骑士精神',type:'施术单元',rank:6,attribute:AttributeTag[3],secondary:SecondaryTag[2],skills:SkillsTag[10]},
 ]
 
-export const recommendedWeaponIds = [1012,5009,4007]//填写武器id
-
 export const locations=[
 
     //四号谷地
@@ -158,6 +156,9 @@ export const locations=[
 export const getProductsByCategory = (category) => {
   return products.filter(p => p.category === category)
 }
+
+
+export const recommendedWeaponIds = [1012,5009,4007]//填写武器id
 
 export const getRecommendedWeapons = () => {
   return weapons.filter(w => recommendedWeaponIds.includes(w.id))
