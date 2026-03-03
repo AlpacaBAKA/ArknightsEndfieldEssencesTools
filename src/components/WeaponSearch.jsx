@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { weapons, locations, AttributeTag } from '../data/data.jsx'
+import { weapons, locations, AttributeTag, getRecommendedWeapons } from '../data/data.jsx'
 
 const WeaponSearch = () => {
   const [searchQuery, setSearchQuery] = useState('')
@@ -21,6 +21,11 @@ const WeaponSearch = () => {
   const [selectedExtraWeapon1, setSelectedExtraWeapon1] = useState(null)
   const [selectedExtraWeapon2, setSelectedExtraWeapon2] = useState(null)
 
+  const [showRecommended, setShowRecommended] = useState(false)
+  const [showExtraRecommended1, setShowExtraRecommended1] = useState(false)
+  const [showExtraRecommended2, setShowExtraRecommended2] = useState(false)
+  const recommendedWeapons = getRecommendedWeapons()
+
   // 根据稀有度返回颜色
   const getRankColor = (rank) => {
     switch(rank) {
@@ -32,15 +37,30 @@ const WeaponSearch = () => {
     }
   }
 
+  const handleMainSearchFocus = () => {
+    if (searchQuery.trim() === '') {
+      // 如果搜索框为空，显示推荐列表
+      setShowRecommended(true)
+      setShowSuggestions(false)
+    } else {
+      // 如果有输入内容，显示搜索建议
+      setShowRecommended(false)
+      setShowSuggestions(true)
+    }
+  }
+
   // 处理搜索输入
   const handleSearchInput = (value) => {
     setSearchQuery(value)
     
     if (value.trim() === '') {
       setSearchSuggestions([])
-      setShowSuggestions(false)
+      setShowSuggestions(false)       
+      setShowRecommended(true)
       return
     }
+
+    setShowRecommended(false)
 
     const matches = weapons.filter(weapon => 
       weapon.name.toLowerCase().includes(value.toLowerCase())
@@ -62,6 +82,26 @@ const WeaponSearch = () => {
     setShowSuggestions(true)
   }
 
+  const handleExtra1Focus = () => {
+    if (extraWeapon1.trim() === '') {
+      setShowExtraRecommended1(true)
+      setShowExtraSuggestions1(false)
+    } else {
+      setShowExtraRecommended1(false)
+      setShowExtraSuggestions1(true)
+    }
+  }
+
+   const handleExtra2Focus = () => {
+    if (extraWeapon2.trim() === '') {
+      setShowExtraRecommended2(true)
+      setShowExtraSuggestions2(false)
+    } else {
+      setShowExtraRecommended2(false)
+      setShowExtraSuggestions2(true)
+    }
+  }
+
   // 处理额外条件搜索输入
   const handleExtraSearchInput = (value, extraNum) => {
     if (extraNum === 1) {
@@ -74,12 +114,21 @@ const WeaponSearch = () => {
       if (extraNum === 1) {
         setExtraSuggestions1([])
         setShowExtraSuggestions1(false)
+        setShowExtraRecommended1(true)
       } else {
         setExtraSuggestions2([])
         setShowExtraSuggestions2(false)
+        setShowExtraRecommended2(true)
       }
       return
     }
+
+    if (extraNum === 1) {
+      setShowExtraRecommended1(false)
+    } else {
+      setShowExtraRecommended2(false)
+    }
+
 
     const matches = weapons.filter(weapon => 
       weapon.name.toLowerCase().includes(value.toLowerCase())
@@ -106,10 +155,10 @@ const WeaponSearch = () => {
     }
   }
 
-  // 选择建议的武器
   const selectSuggestion = (weapon) => {
     setSearchQuery(weapon.name)
     setShowSuggestions(false)
+    setShowRecommended(false) // 选择后隐藏推荐
   }
 
   // 选择额外条件武器
@@ -118,10 +167,12 @@ const WeaponSearch = () => {
       setExtraWeapon1(weapon.name)
       setSelectedExtraWeapon1(weapon)
       setShowExtraSuggestions1(false)
+      setShowExtraRecommended1(false) // 选择后隐藏推荐
     } else {
       setExtraWeapon2(weapon.name)
       setSelectedExtraWeapon2(weapon)
       setShowExtraSuggestions2(false)
+      setShowExtraRecommended2(false) // 选择后隐藏推荐
     }
   }
 
@@ -454,7 +505,8 @@ const WeaponSearch = () => {
                 type="text"
                 value={searchQuery}
                 onChange={(e) => handleSearchInput(e.target.value)}
-                onFocus={() => searchQuery && setShowSuggestions(true)}
+                onFocus={handleMainSearchFocus}
+                onBlur={() => setTimeout(() => setShowRecommended(false), 200)}
                 placeholder="输入主刷取武器..."
                 style={{
                   width: '100%',
@@ -481,11 +533,11 @@ const WeaponSearch = () => {
                     cursor: 'pointer'
                   }}
                 >
-                  ✕
+                  ×
                 </button>
               )}
             </div>
-            
+
             <button
               onClick={handleSearch}
               style={{
@@ -511,7 +563,8 @@ const WeaponSearch = () => {
                 type="text"
                 value={extraWeapon1}
                 onChange={(e) => handleExtraSearchInput(e.target.value, 1)}
-                onFocus={() => extraWeapon1 && setShowExtraSuggestions1(true)}
+                onFocus={handleExtra1Focus}
+                onBlur={() => setTimeout(() => setShowExtraRecommended1(false), 200)}
                 placeholder="无额外刷取武器"
                 style={{
                   width: '100%',
@@ -541,6 +594,63 @@ const WeaponSearch = () => {
                 >
                   ✕
                 </button>
+              )}
+
+              {showExtraRecommended1 && recommendedWeapons.length > 0 && (
+                <div style={{
+                  position: 'absolute',
+                  zIndex: 10,
+                  width: '100%',
+                  marginTop: '4px',
+                  backgroundColor: 'white',
+                  border: '1px solid #e5e7eb',
+                  borderRadius: '8px',
+                  boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)',
+                  maxHeight: '300px',
+                  overflowY: 'auto'
+                }}>
+                  <div style={{
+                    padding: '8px 14px',
+                    backgroundColor: '#f9fafb',
+                    borderBottom: '1px solid #e5e7eb',
+                    fontSize: '12px',
+                    color: '#6b7280',
+                    fontWeight: '500'
+                  }}>
+                    ⭐ 推荐武器
+                  </div>
+                  {recommendedWeapons.map((weapon) => (
+                    <button
+                      key={weapon.id}
+                      onClick={() => selectExtraSuggestion(weapon, 1)}
+                      style={{
+                        width: '100%',
+                        padding: '10px 14px',
+                        textAlign: 'left',
+                        backgroundColor: 'white',
+                        border: 'none',
+                        borderBottom: '1px solid #f3f4f6',
+                        cursor: 'pointer',
+                        fontSize: '14px'
+                      }}
+                      onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#f9fafb'}
+                      onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'white'}
+                    >
+                      <span style={{ fontWeight: '500', color: '#1f2937' }}>{weapon.name}</span>
+                      <span style={{
+                        marginLeft: '8px',
+                        padding: '2px 6px',
+                        borderRadius: '4px',
+                        color: 'white',
+                        fontSize: '11px',
+                        fontWeight: '500',
+                        backgroundColor: getRankColor(weapon.rank)
+                      }}>
+                        {weapon.rank}星
+                      </span>
+                    </button>
+                  ))}
+                </div>
               )}
               
               {/* 额外条件1建议下拉框 */}
@@ -598,7 +708,8 @@ const WeaponSearch = () => {
                 type="text"
                 value={extraWeapon2}
                 onChange={(e) => handleExtraSearchInput(e.target.value, 2)}
-                onFocus={() => extraWeapon2 && setShowExtraSuggestions2(true)}
+                onFocus={handleExtra2Focus}
+                onBlur={() => setTimeout(() => setShowExtraRecommended2(false), 200)} 
                 placeholder="无额外刷取武器"
                 style={{
                   width: '100%',
@@ -626,8 +737,65 @@ const WeaponSearch = () => {
                     cursor: 'pointer'
                   }}
                 >
-                  ✕
+                  ×
                 </button>
+              )}
+
+              {showExtraRecommended2 && recommendedWeapons.length > 0 && (
+                <div style={{
+                  position: 'absolute',
+                  zIndex: 10,
+                  width: '100%',
+                  marginTop: '4px',
+                  backgroundColor: 'white',
+                  border: '1px solid #e5e7eb',
+                  borderRadius: '8px',
+                  boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)',
+                  maxHeight: '300px',
+                  overflowY: 'auto'
+                }}>
+                  <div style={{
+                    padding: '8px 14px',
+                    backgroundColor: '#f9fafb',
+                    borderBottom: '1px solid #e5e7eb',
+                    fontSize: '12px',
+                    color: '#6b7280',
+                    fontWeight: '500'
+                  }}>
+                    ⭐ 推荐武器
+                  </div>
+                  {recommendedWeapons.map((weapon) => (
+                    <button
+                      key={weapon.id}
+                      onClick={() => selectExtraSuggestion(weapon, 2)}
+                      style={{
+                        width: '100%',
+                        padding: '10px 14px',
+                        textAlign: 'left',
+                        backgroundColor: 'white',
+                        border: 'none',
+                        borderBottom: '1px solid #f3f4f6',
+                        cursor: 'pointer',
+                        fontSize: '14px'
+                      }}
+                      onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#f9fafb'}
+                      onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'white'}
+                    >
+                      <span style={{ fontWeight: '500', color: '#1f2937' }}>{weapon.name}</span>
+                      <span style={{
+                        marginLeft: '8px',
+                        padding: '2px 6px',
+                        borderRadius: '4px',
+                        color: 'white',
+                        fontSize: '11px',
+                        fontWeight: '500',
+                        backgroundColor: getRankColor(weapon.rank)
+                      }}>
+                        {weapon.rank}星
+                      </span>
+                    </button>
+                  ))}
+                </div>
               )}
               
               {/* 额外条件2建议下拉框 */}
@@ -679,6 +847,78 @@ const WeaponSearch = () => {
               )}
             </div>
           </div>
+
+           {showRecommended && recommendedWeapons.length > 0 && (
+            <div style={{
+              position: 'absolute',
+              zIndex: 10,
+              width: 'calc(100% - 120px)',
+              marginTop: '-12px',
+              backgroundColor: 'white',
+              border: '1px solid #e5e7eb',
+              borderRadius: '8px',
+              boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)',
+              maxHeight: '400px',
+              overflowY: 'auto'
+            }}>
+              <div style={{
+                padding: '12px 16px',
+                backgroundColor: '#f9fafb',
+                borderBottom: '1px solid #e5e7eb',
+                fontSize: '13px',
+                color: '#6b7280',
+                fontWeight: '600'
+              }}>
+                ⭐ 推荐武器
+              </div>
+              {recommendedWeapons.map((weapon) => (
+                <button
+                  key={weapon.id}
+                  onClick={() => selectSuggestion(weapon)}
+                  style={{
+                    width: '100%',
+                    padding: '12px 16px',
+                    textAlign: 'left',
+                    backgroundColor: 'white',
+                    border: 'none',
+                    borderBottom: '1px solid #f3f4f6',
+                    cursor: 'pointer'
+                  }}
+                  onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#f9fafb'}
+                  onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'white'}
+                >
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                    <span style={{ fontWeight: '500', color: '#1f2937' }}>{weapon.name}</span>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <span style={{
+                        padding: '4px 8px',
+                        borderRadius: '4px',
+                        color: 'white',
+                        fontSize: '12px',
+                        fontWeight: '500',
+                        backgroundColor: getRankColor(weapon.rank)
+                      }}>
+                        {weapon.rank}星
+                      </span>
+                      <span style={{ fontSize: '12px', color: '#6b7280' }}>{weapon.type}</span>
+                    </div>
+                  </div>
+                  
+                  <div style={{ display: 'flex', gap: '8px', marginTop: '8px', fontSize: '12px' }}>
+                    <span style={{ padding: '4px 8px', backgroundColor: '#f3e8ff', color: '#7c3aed', borderRadius: '4px' }}>
+                      {weapon.attribute.name}
+                    </span>
+                    <span style={{ padding: '4px 8px', backgroundColor: '#dcfce7', color: '#16a34a', borderRadius: '4px' }}>
+                      {weapon.secondary.name}
+                    </span>
+                    <span style={{ padding: '4px 8px', backgroundColor: '#dbeafe', color: '#2563eb', borderRadius: '4px' }}>
+                      {weapon.skills.name}
+                    </span>
+                  </div>
+                </button>
+              ))}
+            </div>
+          )}
 
           {/* 主搜索建议下拉框 */}
           {showSuggestions && searchSuggestions.length > 0 && (
