@@ -7,6 +7,7 @@
 本网站基于react框架开发，使用claude辅助开发。
 
 网站地址：https://alpacabaka.github.io/ArknightsEndfieldEssencesTools/
+
 github地址：https://github.com/AlpacaBAKA/ArknightsEndfieldEssencesTools
 
 ## 使用方法
