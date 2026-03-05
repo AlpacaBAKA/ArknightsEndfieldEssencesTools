@@ -40,3 +40,5 @@ github地址：https://github.com/AlpacaBAKA/ArknightsEndfieldEssencesTools
 2. 在github项目页上留言
 
 这个项目还不成熟，如有错漏，请多包容。
+
+![访问统计](https://hits.sh/github.com/AlpacaBAKA/ArknightsEndfieldEssencesTools.svg)
