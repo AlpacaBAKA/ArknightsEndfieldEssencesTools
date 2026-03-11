@@ -61,6 +61,7 @@ export const weapons=[
     {id:1015, name:'热熔切割器',type:'单手剑',rank:6,attribute:AttributeTag[3],secondary:SecondaryTag[1],skills:SkillsTag[7]},
     {id:1016, name:'显赫声名',type:'单手剑',rank:6,attribute:AttributeTag[5],secondary:SecondaryTag[3],skills:SkillsTag[11]},
     {id:1017, name:'白夜新星',type:'单手剑',rank:6,attribute:AttributeTag[5],secondary:SecondaryTag[10],skills:SkillsTag[9]},
+    {id:1018, name:'光荣记忆',type:'单手剑',rank:6,attribute:AttributeTag[1],secondary:SecondaryTag[9],skills:SkillsTag[6]},
 
     //双手剑
     {id:2001, name:'达尔霍夫',type:'双手剑',rank:3,attribute:AttributeTag[5],secondary:SecondaryTag[0],skills:SkillsTag[1]},
@@ -98,6 +99,8 @@ export const weapons=[
     {id:4008, name:'领航者',type:'手铳',rank:6,attribute:AttributeTag[4],secondary:SecondaryTag[7],skills:SkillsTag[8]},
     {id:4009, name:'楔子',type:'手铳',rank:6,attribute:AttributeTag[5],secondary:SecondaryTag[9],skills:SkillsTag[8]},
     {id:4010, name:'同类相食',type:'手铳',rank:6,attribute:AttributeTag[5],secondary:SecondaryTag[4],skills:SkillsTag[8]},
+    {id:4011, name:'望乡',type:'手铳',rank:6,attribute:AttributeTag[1],secondary:SecondaryTag[7],skills:SkillsTag[2]},
+    {id:4012, name:'落草',type:'手铳',rank:6,attribute:AttributeTag[1],secondary:SecondaryTag[1],skills:SkillsTag[13]},
 
     //施术单元
     {id:5001, name:'吉米尼12',type:'施术单元',rank:3,attribute:AttributeTag[5],secondary:SecondaryTag[0],skills:SkillsTag[1]},
@@ -158,7 +161,7 @@ export const getProductsByCategory = (category) => {
 }
 
 
-export const recommendedWeaponIds = [1012,5009,4007]//填写武器id
+export const recommendedWeaponIds = [4012,4007,5009]//填写武器id
 
 export const getRecommendedWeapons = () => {
   return weapons.filter(w => recommendedWeaponIds.includes(w.id))
