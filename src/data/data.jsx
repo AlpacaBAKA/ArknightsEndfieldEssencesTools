@@ -134,7 +134,7 @@ export const locations=[
         skills:[SkillsTag[2],SkillsTag[3],SkillsTag[5],SkillsTag[4],
                     SkillsTag[8],SkillsTag[10],SkillsTag[12],SkillsTag[9],]
     },
-    {id:103, name:'矿脉通道',map:'四号谷地',
+    {id:103, name:'矿脉源区',map:'四号谷地',
         secondary:[SecondaryTag[2],SecondaryTag[3],SecondaryTag[5],SecondaryTag[7],
                     SecondaryTag[8],SecondaryTag[9],SecondaryTag[11],SecondaryTag[12],],
         skills:[SkillsTag[1],SkillsTag[2],SkillsTag[4],SkillsTag[11],
