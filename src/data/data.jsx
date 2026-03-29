@@ -62,6 +62,7 @@ export const weapons=[
     {id:1016, name:'显赫声名',type:'单手剑',rank:6,attribute:AttributeTag[5],secondary:SecondaryTag[3],skills:SkillsTag[11]},
     {id:1017, name:'白夜新星',type:'单手剑',rank:6,attribute:AttributeTag[5],secondary:SecondaryTag[10],skills:SkillsTag[9]},
     {id:1018, name:'光荣记忆',type:'单手剑',rank:6,attribute:AttributeTag[1],secondary:SecondaryTag[9],skills:SkillsTag[6]},
+    {id:1019, name:'狼之绯',type:'单手剑',rank:6,attribute:AttributeTag[1],secondary:SecondaryTag[9],skills:SkillsTag[12]},
 
     //双手剑
     {id:2001, name:'达尔霍夫',type:'双手剑',rank:3,attribute:AttributeTag[5],secondary:SecondaryTag[0],skills:SkillsTag[1]},
@@ -167,7 +168,7 @@ export const getProductsByCategory = (category) => {
 }
 
 
-export const recommendedWeaponIds = [4012,4007,5009]//填写武器id
+export const recommendedWeaponIds = [4012,4007,1019]//填写武器id
 
 export const getRecommendedWeapons = () => {
   return weapons.filter(w => recommendedWeaponIds.includes(w.id))
