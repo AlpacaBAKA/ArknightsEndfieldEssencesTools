@@ -46,20 +46,24 @@ function App() {
             </div>
 
             {/* 内容区域 */}
-            <div className="p-6">
+            <div className="p-6 text-left">
               {activeTab === 'filter' ? (
                 <>
                   <h2 className="text-xl font-semibold text-gray-700 mb-6 text-center">
                     武器属性筛选
                   </h2>
-                  <AttributeFilter />
+                  <div className="w-full text-left mx-0">
+                    <AttributeFilter />
+                  </div>
                 </>
               ) : (
                 <>
                   <h2 className="text-xl font-semibold text-gray-700 mb-6 text-center">
                     刷取策略查询
                   </h2>
-                  <WeaponSearch />
+                  <div className="w-full text-left mx-0">
+                    <WeaponSearch />
+                  </div>
                 </>
               )}
             </div>

@@ -333,7 +333,7 @@ const AttributeFilter = () => {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 w-full text-left mx-0 self-start">
       <div className="bg-gradient-to-r from-purple-50 to-blue-50 border border-purple-200 rounded-lg p-6">
       </div>
       {/* 筛选区域 */}
@@ -510,7 +510,7 @@ const AttributeFilter = () => {
           </div>
         ) : (
           <div className="w-full overflow-x-auto">
-            <div className="flex justify-center">
+            <div className="flex justify-start">
               <table className="border-collapse border border-gray-200 rounded-lg">
                 {/* 表头 */}
                 <thead className="bg-gray-50 border-b border-gray-200">
