@@ -118,6 +118,8 @@ export const weapons=[
     {id:5012, name:'爆破单元',type:'施术单元',rank:6,attribute:AttributeTag[5],secondary:SecondaryTag[10],skills:SkillsTag[13]},
     {id:5013, name:'遗忘',type:'施术单元',rank:6,attribute:AttributeTag[4],secondary:SecondaryTag[4],skills:SkillsTag[6]},
     {id:5014, name:'骑士精神',type:'施术单元',rank:6,attribute:AttributeTag[3],secondary:SecondaryTag[2],skills:SkillsTag[10]},
+    {id:5015, name:'孤舟',type:'施术单元',rank:6,attribute:AttributeTag[3],secondary:SecondaryTag[1],skills:SkillsTag[2]},
+    {id:5016, name:'雾中微光',type:'施术单元',rank:6,attribute:AttributeTag[3],secondary:SecondaryTag[6],skills:SkillsTag[9]},
 ]
 
 export const locations=[
@@ -168,7 +170,7 @@ export const getProductsByCategory = (category) => {
 }
 
 
-export const recommendedWeaponIds = [4012,4007,1019]//填写武器id
+export const recommendedWeaponIds = [4012,1019,5015,5016]//填写武器id
 
 export const getRecommendedWeapons = () => {
   return weapons.filter(w => recommendedWeaponIds.includes(w.id))
