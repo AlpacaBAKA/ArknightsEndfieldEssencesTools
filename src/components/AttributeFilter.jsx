@@ -2,9 +2,9 @@ import { useState, useEffect } from 'react'
 import { AttributeTag, SecondaryTag, SkillsTag, weapons, locations } from '../data/data.jsx'
 
 const AttributeFilter = () => {
-  const [selectedAttribute, setSelectedAttribute] = useState(null)
-  const [selectedSecondary, setSelectedSecondary] = useState(null)
-  const [selectedSkill, setSelectedSkill] = useState(null)
+  const [selectedAttributes, setSelectedAttributes] = useState([])
+  const [selectedSecondaries, setSelectedSecondaries] = useState([])
+  const [selectedSkills, setSelectedSkills] = useState([])
   const [selectedType, setSelectedType] = useState(null)
   const [selectedRank, setSelectedRank] = useState(null)
   const [filteredWeapons, setFilteredWeapons] = useState(weapons)
@@ -173,54 +173,69 @@ const AttributeFilter = () => {
       results = results.filter(weapon => weapon.rank === selectedRank)
     }
 
-    if (selectedAttribute) {
-      results = results.filter(weapon => weapon.attribute.id === selectedAttribute)
+    if (selectedAttributes.length > 0) {
+      results = results.filter(weapon => selectedAttributes.includes(weapon.attribute.id))
     }
 
-    if (selectedSecondary) {
-      results = results.filter(weapon => weapon.secondary.id === selectedSecondary)
+    if (selectedSecondaries.length > 0) {
+      results = results.filter(weapon => selectedSecondaries.includes(weapon.secondary.id))
     }
 
-    if (selectedSkill) {
-      results = results.filter(weapon => weapon.skills.id === selectedSkill)
+    if (selectedSkills.length > 0) {
+      results = results.filter(weapon => selectedSkills.includes(weapon.skills.id))
     }
 
     setFilteredWeapons(results)
     
-    // 清除不在筛选结果中的选中武器
     setCheckedWeapons(prev => prev.filter(id => 
       results.some(weapon => weapon.id === id)
     ))
-  }, [selectedType, selectedRank, selectedAttribute, selectedSecondary, selectedSkill])
+  }, [selectedType, selectedRank, selectedAttributes, selectedSecondaries, selectedSkills])
 
   // 获取选择的属性名称
-  const getSelectedAttributeName = () => {
-    const attr = AttributeTag.find(a => a.id === selectedAttribute)
-    return attr ? attr.name : null
+  const getSelectedAttributeNames = () => {
+    return AttributeTag.filter(a => selectedAttributes.includes(a.id))
   }
 
-  const getSelectedSecondaryName = () => {
-    const sec = SecondaryTag.find(s => s.id === selectedSecondary)
-    return sec ? sec.name : null
+  const getSelectedSecondaryNames = () => {
+    return SecondaryTag.filter(s => selectedSecondaries.includes(s.id))
   }
 
-  const getSelectedSkillName = () => {
-    const skill = SkillsTag.find(s => s.id === selectedSkill)
-    return skill ? skill.name : null
+  const getSelectedSkillNames = () => {
+    return SkillsTag.filter(s => selectedSkills.includes(s.id))
   }
 
   // 检查是否有任何筛选条件
-  const hasAnyFilter = selectedType || selectedRank || selectedAttribute || selectedSecondary || selectedSkill
-
+  const hasAnyFilter = selectedType || selectedRank || selectedAttributes.length > 0 || selectedSecondaries.length > 0 || selectedSkills.length > 0
   // 标签按钮组件
   const TagButton = ({ isSelected, onClick, children }) => (
     <button
       onClick={onClick}
-      className={`px-4 py-2 border rounded-md transition-all ${
-        isSelected
-          ? 'bg-blue-600 text-white border-blue-600 shadow-md scale-105'
-          : 'bg-white text-gray-700 border-gray-300 hover:border-blue-400 hover:bg-blue-50'
-      }`}
+      style={{
+        padding: '8px 16px',
+        border: isSelected ? '2px solid #3b82f6' : '1px solid #4b5563',
+        borderRadius: '6px',
+        transition: 'all 0.2s',
+        backgroundColor: isSelected ? '#2563eb' : '#374151',
+        color: isSelected ? '#ffffff' : '#d1d5db',
+        fontWeight: isSelected ? '600' : '400',
+        cursor: 'pointer',
+        transform: isSelected ? 'scale(1.05)' : 'scale(1)',
+        boxShadow: isSelected ? '0 4px 6px -1px rgba(37, 99, 235, 0.4)' : 'none',
+        fontSize: '14px'
+      }}
+      onMouseEnter={(e) => {
+        if (!isSelected) {
+          e.currentTarget.style.borderColor = '#60a5fa'
+          e.currentTarget.style.backgroundColor = '#3f4d63'
+        }
+      }}
+      onMouseLeave={(e) => {
+        if (!isSelected) {
+          e.currentTarget.style.borderColor = '#4b5563'
+          e.currentTarget.style.backgroundColor = '#374151'
+        }
+      }}
     >
       {children}
     </button>
@@ -342,13 +357,13 @@ const AttributeFilter = () => {
         <div className="flex items-center gap-3 pb-3 border-b border-gray-200">
           <span className="font-medium text-gray-700 w-20">查看全部</span>
           <TagButton
-            isSelected={!selectedType && !selectedRank && !selectedAttribute && !selectedSecondary && !selectedSkill}
+            isSelected={!selectedType && !selectedRank && selectedAttributes.length === 0 && selectedSecondaries.length === 0 && selectedSkills.length === 0}
             onClick={() => {
               setSelectedType(null)
               setSelectedRank(null)
-              setSelectedAttribute(null)
-              setSelectedSecondary(null)
-              setSelectedSkill(null)
+              setSelectedAttributes([])
+              setSelectedSecondaries([])
+              setSelectedSkills([])
             }}
           >
             查看全部
@@ -404,16 +419,20 @@ const AttributeFilter = () => {
           <div className="flex items-center">
             <span className="font-medium text-gray-700 w-20 pt-2">基础属性</span>
             <ClearButton 
-              show={selectedAttribute !== null} 
-              onClick={() => setSelectedAttribute(null)}
+              show={selectedAttributes.length > 0} 
+              onClick={() => setSelectedAttributes([])}
             />
           </div>
           <div className="flex flex-wrap gap-2">
             {AttributeTag.filter(attr => attr.id !== 0).map(attr => (
               <TagButton
                 key={attr.id}
-                isSelected={selectedAttribute === attr.id}
-                onClick={() => setSelectedAttribute(selectedAttribute === attr.id ? null : attr.id)}
+                isSelected={selectedAttributes.includes(attr.id)}
+                onClick={() => setSelectedAttributes(prev => 
+                  prev.includes(attr.id) 
+                    ? prev.filter(id => id !== attr.id) 
+                    : [...prev, attr.id]
+                )}
               >
                 {attr.name}
               </TagButton>
@@ -426,16 +445,20 @@ const AttributeFilter = () => {
           <div className="flex items-center">
             <span className="font-medium text-gray-700 w-20 pt-2">附加属性</span>
             <ClearButton 
-              show={selectedSecondary !== null} 
-              onClick={() => setSelectedSecondary(null)}
+              show={selectedSecondaries.length > 0} 
+              onClick={() => setSelectedSecondaries([])}
             />
           </div>
           <div className="flex flex-wrap gap-2">
             {SecondaryTag.filter(sec => sec.id !== 0).map(sec => (
               <TagButton
                 key={sec.id}
-                isSelected={selectedSecondary === sec.id}
-                onClick={() => setSelectedSecondary(selectedSecondary === sec.id ? null : sec.id)}
+                isSelected={selectedSecondaries.includes(sec.id)}
+                onClick={() => setSelectedSecondaries(prev => 
+                  prev.includes(sec.id) 
+                    ? prev.filter(id => id !== sec.id) 
+                    : [...prev, sec.id]
+                )}
               >
                 {sec.name}
               </TagButton>
@@ -448,16 +471,20 @@ const AttributeFilter = () => {
           <div className="flex items-center">
             <span className="font-medium text-gray-700 w-20 pt-2">技能属性</span>
             <ClearButton 
-              show={selectedSkill !== null} 
-              onClick={() => setSelectedSkill(null)}
+              show={selectedSkills.length > 0} 
+              onClick={() => setSelectedSkills([])}
             />
           </div>
           <div className="flex flex-wrap gap-2">
             {SkillsTag.filter(skill => skill.id !== 0).map(skill => (
               <TagButton
                 key={skill.id}
-                isSelected={selectedSkill === skill.id}
-                onClick={() => setSelectedSkill(selectedSkill === skill.id ? null : skill.id)}
+                isSelected={selectedSkills.includes(skill.id)}
+                onClick={() => setSelectedSkills(prev => 
+                  prev.includes(skill.id) 
+                    ? prev.filter(id => id !== skill.id) 
+                    : [...prev, skill.id]
+                )}
               >
                 {skill.name}
               </TagButton>
@@ -466,27 +493,142 @@ const AttributeFilter = () => {
         </div>
       </div>
 
-      {/* 当前筛选条件显示 */}
+      {/* 当前筛选条件显示 - 可点击取消 */}
       {hasAnyFilter && (
-        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-          <div className="flex items-start gap-2">
-            <span className="font-semibold text-blue-800 whitespace-nowrap">当前筛选：</span>
-            <div className="flex-1">
-              <p className="text-blue-700 leading-relaxed">
-                {selectedRank && <span className="font-medium">{selectedRank}星</span>}
-                {selectedRank && selectedType && <span> · </span>}
-                {selectedType && <span className="font-medium">{selectedType}</span>}
-                {(selectedRank || selectedType) && (selectedAttribute || selectedSecondary || selectedSkill) && <span> · </span>}
-                {selectedAttribute && <span className="font-medium">基础属性: {getSelectedAttributeName()}</span>}
-                {selectedAttribute && selectedSecondary && <span> · </span>}
-                {selectedSecondary && <span className="font-medium">附加属性: {getSelectedSecondaryName()}</span>}
-                {(selectedAttribute || selectedSecondary) && selectedSkill && <span> · </span>}
-                {selectedSkill && <span className="font-medium">技能属性: {getSelectedSkillName()}</span>}
-              </p>
-            </div>
+        <div style={{
+          backgroundColor: '#1e293b',
+          border: '1px solid #334155',
+          borderRadius: '8px',
+          padding: '16px 20px'
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
+            <span style={{
+              fontWeight: '600',
+              color: '#94a3b8',
+              fontSize: '14px',
+              whiteSpace: 'nowrap'
+            }}>
+              当前筛选：
+            </span>
+
+            {selectedRank && (
+              <button
+                onClick={() => setSelectedRank(null)}
+                style={{
+                  display: 'inline-flex', alignItems: 'center', gap: '6px',
+                  padding: '5px 12px', backgroundColor: '#f97316', color: 'white',
+                  border: 'none', borderRadius: '16px', fontSize: '13px',
+                  fontWeight: '500', cursor: 'pointer', transition: 'all 0.15s'
+                }}
+                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#ea580c'}
+                onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#f97316'}
+              >
+                {selectedRank}星
+                <span style={{ fontSize: '15px', lineHeight: 1 }}>×</span>
+              </button>
+            )}
+
+            {selectedType && (
+              <button
+                onClick={() => setSelectedType(null)}
+                style={{
+                  display: 'inline-flex', alignItems: 'center', gap: '6px',
+                  padding: '5px 12px', backgroundColor: '#6366f1', color: 'white',
+                  border: 'none', borderRadius: '16px', fontSize: '13px',
+                  fontWeight: '500', cursor: 'pointer', transition: 'all 0.15s'
+                }}
+                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#4f46e5'}
+                onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#6366f1'}
+              >
+                {selectedType}
+                <span style={{ fontSize: '15px', lineHeight: 1 }}>×</span>
+              </button>
+            )}
+
+            {getSelectedAttributeNames().map(attr => (
+              <button
+                key={`filter-attr-${attr.id}`}
+                onClick={() => setSelectedAttributes(prev => prev.filter(id => id !== attr.id))}
+                style={{
+                  display: 'inline-flex', alignItems: 'center', gap: '6px',
+                  padding: '5px 12px', backgroundColor: '#8b5cf6', color: 'white',
+                  border: 'none', borderRadius: '16px', fontSize: '13px',
+                  fontWeight: '500', cursor: 'pointer', transition: 'all 0.15s'
+                }}
+                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#7c3aed'}
+                onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#8b5cf6'}
+              >
+                基础: {attr.name}
+                <span style={{ fontSize: '15px', lineHeight: 1 }}>×</span>
+              </button>
+            ))}
+
+            {getSelectedSecondaryNames().map(sec => (
+              <button
+                key={`filter-sec-${sec.id}`}
+                onClick={() => setSelectedSecondaries(prev => prev.filter(id => id !== sec.id))}
+                style={{
+                  display: 'inline-flex', alignItems: 'center', gap: '6px',
+                  padding: '5px 12px', backgroundColor: '#22c55e', color: 'white',
+                  border: 'none', borderRadius: '16px', fontSize: '13px',
+                  fontWeight: '500', cursor: 'pointer', transition: 'all 0.15s'
+                }}
+                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#16a34a'}
+                onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#22c55e'}
+              >
+                附加: {sec.name}
+                <span style={{ fontSize: '15px', lineHeight: 1 }}>×</span>
+              </button>
+            ))}
+
+            {getSelectedSkillNames().map(skill => (
+              <button
+                key={`filter-skill-${skill.id}`}
+                onClick={() => setSelectedSkills(prev => prev.filter(id => id !== skill.id))}
+                style={{
+                  display: 'inline-flex', alignItems: 'center', gap: '6px',
+                  padding: '5px 12px', backgroundColor: '#3b82f6', color: 'white',
+                  border: 'none', borderRadius: '16px', fontSize: '13px',
+                  fontWeight: '500', cursor: 'pointer', transition: 'all 0.15s'
+                }}
+                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#2563eb'}
+                onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#3b82f6'}
+              >
+                技能: {skill.name}
+                <span style={{ fontSize: '15px', lineHeight: 1 }}>×</span>
+              </button>
+            ))}
+
+            {/* 清除全部按钮 */}
+            <button
+              onClick={() => {
+                setSelectedType(null)
+                setSelectedRank(null)
+                setSelectedAttributes([])
+                setSelectedSecondaries([])
+                setSelectedSkills([])
+              }}
+              style={{
+                display: 'inline-flex', alignItems: 'center', gap: '4px',
+                padding: '5px 12px', backgroundColor: 'transparent',
+                color: '#ef4444', border: '1px solid #ef4444',
+                borderRadius: '16px', fontSize: '13px', fontWeight: '500',
+                cursor: 'pointer', transition: 'all 0.15s', marginLeft: '4px'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = '#ef4444'
+                e.currentTarget.style.color = 'white'
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = 'transparent'
+                e.currentTarget.style.color = '#ef4444'
+              }}
+            >
+              清除全部
+            </button>
           </div>
         </div>
-      )}
+      )}        
 
       {/* 武器列表区域 */}
       <div className="mt-8 pt-6 border-t border-gray-200">

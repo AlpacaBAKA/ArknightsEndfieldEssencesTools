@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { weapons, locations, AttributeTag, getRecommendedWeapons } from '../data/data.jsx'
 
 const WeaponSearch = () => {
@@ -24,7 +24,48 @@ const WeaponSearch = () => {
   const [showRecommended, setShowRecommended] = useState(false)
   const [showExtraRecommended1, setShowExtraRecommended1] = useState(false)
   const [showExtraRecommended2, setShowExtraRecommended2] = useState(false)
+
+  const floatRef = useRef(null)
+  const [floatPos, setFloatPos] = useState({ x: null, y: null })
+  const [isDragging, setIsDragging] = useState(false)
+  const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 })
+
   const recommendedWeapons = getRecommendedWeapons()
+
+  const handleFloatMouseDown = (e) => {
+    setIsDragging(true)
+    const rect = floatRef.current.getBoundingClientRect()
+    setDragOffset({
+      x: e.clientX - rect.left,
+      y: e.clientY - rect.top
+    })
+    if (floatPos.x === null) {
+      setFloatPos({ x: rect.left, y: rect.top })
+    }
+    e.preventDefault()
+  }
+
+  useEffect(() => {
+    if (!isDragging) return
+
+    const handleMouseMove = (e) => {
+      const newX = Math.max(0, Math.min(e.clientX - dragOffset.x, window.innerWidth - 300))
+      const newY = Math.max(0, Math.min(e.clientY - dragOffset.y, window.innerHeight - 100))
+      setFloatPos({ x: newX, y: newY })
+    }
+
+    const handleMouseUp = () => {
+      setIsDragging(false)
+    }
+
+    window.addEventListener('mousemove', handleMouseMove)
+    window.addEventListener('mouseup', handleMouseUp)
+
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove)
+      window.removeEventListener('mouseup', handleMouseUp)
+    }
+  }, [isDragging, dragOffset])
 
   // 根据稀有度返回颜色
   const getRankColor = (rank) => {
@@ -251,14 +292,11 @@ const WeaponSearch = () => {
     const rank4Count = matchedWeapons.filter(w => w.rank === 4).length
     
     if (strategy === 'six') {
-      // 优先六星：6星*1000000 + 总数*1000 + 5星*10 + 4星*1
-      return rank6Count * 1000000 + totalCount * 1000 + rank5Count * 10 + rank4Count * 1
-    } else if (strategy === 'high') {
-      // 优先五星和六星：(6星+5星)*100000 + 总数*1000 + 4星*1
-      return (rank6Count + rank5Count) * 100000 + totalCount * 1000 + rank4Count * 1
+      // 优先六星：6星*1000000 + 总数*1000 + 5星*1
+      return rank6Count * 1000000 + totalCount * 1000 + rank5Count * 1
     } else {
       // 默认：总数量优先
-      return totalCount * 1000 + rank6Count * 100 + rank5Count * 10 + rank4Count * 1
+      return totalCount * 1000 + rank6Count * 100 + rank5Count * 1
     }
   }
 
@@ -337,7 +375,7 @@ const WeaponSearch = () => {
         
         // 从匹配武器中移除目标武器和额外条件武器
         const filteredWeapons = matchedWeapons.filter(w => 
-          w.id !== weapon.id && !extraWeapons.some(extra => extra.id === w.id)
+          w.id !== weapon.id && !extraWeapons.some(extra => extra.id === w.id) && w.rank >= 5
         )
         
         // 生成武器ID集合作为唯一标识
@@ -385,7 +423,7 @@ const WeaponSearch = () => {
         
         // 从匹配武器中移除目标武器和额外条件武器
         const filteredWeapons = matchedWeapons.filter(w => 
-          w.id !== weapon.id && !extraWeapons.some(extra => extra.id === w.id)
+          w.id !== weapon.id && !extraWeapons.some(extra => extra.id === w.id) && w.rank >= 5
         )
         
         // 生成武器ID集合作为唯一标识
@@ -407,8 +445,8 @@ const WeaponSearch = () => {
       })
       
       // 将 Map 转换为数组
-      const uniqueStrategies = Array.from(strategyMap.values())
-      
+      const uniqueStrategies = Array.from(strategyMap.values()).filter(s => s.matchedWeapons.length > 0)
+
       // 按得分排序策略
       uniqueStrategies.sort((a, b) => b.score - a.score)
       
@@ -485,6 +523,8 @@ const WeaponSearch = () => {
   }
 
   return (
+
+
     <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
       {/* 搜索区域 */}
       <div style={{
@@ -501,6 +541,7 @@ const WeaponSearch = () => {
           {/* 主搜索框 */}
           <div style={{ display: 'flex', gap: '12px', marginBottom: '16px' }}>
             <div style={{ flex: 1, position: 'relative' }}>
+
               <input
                 type="text"
                 value={searchQuery}
@@ -1145,17 +1186,17 @@ const WeaponSearch = () => {
             >
               {showOnlyBest ? '✓ 仅显示最优策略' : '显示所有策略'}
             </button>
-          </div>
 
-           <div style={{ 
-            display: 'flex', 
-            gap: '12px', 
-            marginBottom: '16px',
-            padding: '16px',
-            backgroundColor: '#f9fafb',
-            borderRadius: '8px',
-            border: '1px solid #e5e7eb'
-          }}>
+          </div>
+            <div style={{ 
+              display: 'flex', 
+              gap: '12px', 
+              marginBottom: '16px',
+              padding: '16px',
+              backgroundColor: '#f9fafb',
+              borderRadius: '8px',
+              border: '1px solid #e5e7eb'
+            }}>
             <span style={{ 
               color: '#6b7280', 
               fontSize: '14px', 
@@ -1181,24 +1222,7 @@ const WeaponSearch = () => {
               }}
             >
               {sortStrategy === 'total' && '✓ '}能刷取最多武器
-            </button>
-            
-            <button
-              onClick={() => handleSortStrategyChange('high')}
-              style={{
-                padding: '6px 16px',
-                backgroundColor: sortStrategy === 'high' ? '#2563eb' : 'white',
-                color: sortStrategy === 'high' ? 'white' : '#374151',
-                border: sortStrategy === 'high' ? 'none' : '1px solid #d1d5db',
-                borderRadius: '6px',
-                fontSize: '13px',
-                fontWeight: '500',
-                cursor: 'pointer',
-                transition: 'all 0.2s'
-              }}
-            >
-              {sortStrategy === 'high' && '✓ '}能刷取最多五星+六星武器
-            </button>
+              </button>
             
             <button
               onClick={() => handleSortStrategyChange('six')}
@@ -1216,6 +1240,7 @@ const WeaponSearch = () => {
             >
               {sortStrategy === 'six' && '✓ '}能刷取最多六星武器
             </button>
+            
           </div>
           
           <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
@@ -1449,6 +1474,161 @@ const WeaponSearch = () => {
           </p>
         </div>
       )}
+
+      {/* 悬浮武器信息窗口 */}
+      {selectedWeapon && matchingLocations.length > 0 && (
+        <div
+          ref={floatRef}
+          style={{
+            position: 'fixed',
+            zIndex: 50,
+            ...(floatPos.x !== null
+              ? { left: `${floatPos.x}px`, top: `${floatPos.y}px` }
+              : { top: '24px', right: '24px' }
+            ),
+            backgroundColor: 'white',
+            border: '1px solid #e5e7eb',
+            borderRadius: '12px',
+            boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1)',
+            padding: '0',
+            minWidth: '280px',
+            maxWidth: '360px',
+            userSelect: isDragging ? 'none' : 'auto'
+          }}
+        >
+          {/* 拖拽标题栏 */}
+          <div
+            onMouseDown={handleFloatMouseDown}
+            style={{
+              padding: '10px 20px',
+              cursor: isDragging ? 'grabbing' : 'grab',
+              borderBottom: '1px solid #f3f4f6',
+              borderRadius: '12px 12px 0 0',
+              backgroundColor: '#f9fafb',
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center'
+            }}
+          >
+            <span style={{
+              fontSize: '12px',
+              color: '#9ca3af',
+              fontWeight: '500',
+              textTransform: 'uppercase',
+              letterSpacing: '0.5px'
+            }}>
+              🎯 主刷取目标
+            </span>
+            <span style={{ fontSize: '11px', color: '#d1d5db' }}>
+              ⠿ 拖拽移动
+            </span>
+          </div>
+
+          {/* 内容区域 */}
+          <div style={{ padding: '14px 20px 16px' }}>
+            {/* 武器名称行 */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
+              <span style={{ fontSize: '17px', fontWeight: '700', color: '#1f2937' }}>
+                {selectedWeapon.name}
+              </span>
+              <span style={{
+                padding: '2px 8px',
+                borderRadius: '4px',
+                color: 'white',
+                fontSize: '12px',
+                fontWeight: '600',
+                backgroundColor: getRankColor(selectedWeapon.rank)
+              }}>
+                {selectedWeapon.rank}★
+              </span>
+              <span style={{ fontSize: '13px', color: '#6b7280' }}>
+                {selectedWeapon.type}
+              </span>
+            </div>
+
+            {/* 属性列表 */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <span style={{ color: '#9ca3af', fontSize: '12px', minWidth: '60px' }}>基础属性</span>
+                <span style={{
+                  padding: '2px 8px',
+                  backgroundColor: '#f3e8ff',
+                  color: '#7c3aed',
+                  borderRadius: '4px',
+                  fontSize: '12px',
+                  fontWeight: '500'
+                }}>
+                  {selectedWeapon.attribute.name}
+                </span>
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <span style={{ color: '#9ca3af', fontSize: '12px', minWidth: '60px' }}>附加属性</span>
+                <span style={{
+                  padding: '2px 8px',
+                  backgroundColor: '#dcfce7',
+                  color: '#16a34a',
+                  borderRadius: '4px',
+                  fontSize: '12px',
+                  fontWeight: '500'
+                }}>
+                  {selectedWeapon.secondary.name}
+                </span>
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <span style={{ color: '#9ca3af', fontSize: '12px', minWidth: '60px' }}>技能属性</span>
+                <span style={{
+                  padding: '2px 8px',
+                  backgroundColor: '#dbeafe',
+                  color: '#2563eb',
+                  borderRadius: '4px',
+                  fontSize: '12px',
+                  fontWeight: '500'
+                }}>
+                  {selectedWeapon.skills.name}
+                </span>
+              </div>
+            </div>
+
+            {/* 额外条件武器 */}
+            {(selectedExtraWeapon1 || selectedExtraWeapon2) && (
+              <div style={{
+                marginTop: '12px',
+                paddingTop: '10px',
+                borderTop: '1px solid #f3f4f6'
+              }}>
+                <div style={{ fontSize: '12px', color: '#9ca3af', marginBottom: '6px' }}>额外刷取</div>
+                <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
+                  {selectedExtraWeapon1 && (
+                    <span style={{
+                      padding: '2px 8px',
+                      backgroundColor: '#fef3c7',
+                      color: '#92400e',
+                      borderRadius: '4px',
+                      fontSize: '12px',
+                      fontWeight: '500'
+                    }}>
+                      {selectedExtraWeapon1.name}
+                    </span>
+                  )}
+                  {selectedExtraWeapon2 && (
+                    <span style={{
+                      padding: '2px 8px',
+                      backgroundColor: '#fef3c7',
+                      color: '#92400e',
+                      borderRadius: '4px',
+                      fontSize: '12px',
+                      fontWeight: '500'
+                    }}>
+                      {selectedExtraWeapon2.name}
+                    </span>
+                  )}
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
     </div>
   )
 }
