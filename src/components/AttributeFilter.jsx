@@ -5,8 +5,8 @@ const AttributeFilter = () => {
   const [selectedAttributes, setSelectedAttributes] = useState([])
   const [selectedSecondaries, setSelectedSecondaries] = useState([])
   const [selectedSkills, setSelectedSkills] = useState([])
-  const [selectedType, setSelectedType] = useState(null)
-  const [selectedRank, setSelectedRank] = useState(null)
+  const [selectedTypes, setSelectedTypes] = useState([])
+  const [selectedRanks, setSelectedRanks] = useState([])
   const [filteredWeapons, setFilteredWeapons] = useState(weapons)
   const [checkedWeapons, setCheckedWeapons] = useState([]) // 选中的武器列表
   
@@ -165,12 +165,12 @@ const AttributeFilter = () => {
   useEffect(() => {
     let results = weapons
 
-    if (selectedType) {
-      results = results.filter(weapon => weapon.type === selectedType)
+    if (selectedTypes.length > 0) {
+      results = results.filter(weapon => selectedTypes.includes(weapon.type))
     }
 
-    if (selectedRank) {
-      results = results.filter(weapon => weapon.rank === selectedRank)
+    if (selectedRanks.length > 0) {
+      results = results.filter(weapon => selectedRanks.includes(weapon.rank))
     }
 
     if (selectedAttributes.length > 0) {
@@ -190,7 +190,7 @@ const AttributeFilter = () => {
     setCheckedWeapons(prev => prev.filter(id => 
       results.some(weapon => weapon.id === id)
     ))
-  }, [selectedType, selectedRank, selectedAttributes, selectedSecondaries, selectedSkills])
+  }, [selectedTypes, selectedRanks, selectedAttributes, selectedSecondaries, selectedSkills])
 
   // 获取选择的属性名称
   const getSelectedAttributeNames = () => {
@@ -206,7 +206,7 @@ const AttributeFilter = () => {
   }
 
   // 检查是否有任何筛选条件
-  const hasAnyFilter = selectedType || selectedRank || selectedAttributes.length > 0 || selectedSecondaries.length > 0 || selectedSkills.length > 0
+  const hasAnyFilter = selectedTypes.length > 0 || selectedRanks.length > 0 || selectedAttributes.length > 0 || selectedSecondaries.length > 0 || selectedSkills.length > 0
   // 标签按钮组件
   const TagButton = ({ isSelected, onClick, children }) => (
     <button
@@ -357,10 +357,10 @@ const AttributeFilter = () => {
         <div className="flex items-center gap-3 pb-3 border-b border-gray-200">
           <span className="font-medium text-gray-700 w-20">查看全部</span>
           <TagButton
-            isSelected={!selectedType && !selectedRank && selectedAttributes.length === 0 && selectedSecondaries.length === 0 && selectedSkills.length === 0}
+            isSelected={selectedTypes.length === 0 && selectedRanks.length === 0 && selectedAttributes.length === 0 && selectedSecondaries.length === 0 && selectedSkills.length === 0}
             onClick={() => {
-              setSelectedType(null)
-              setSelectedRank(null)
+              setSelectedTypes([])
+              setSelectedRanks([])
               setSelectedAttributes([])
               setSelectedSecondaries([])
               setSelectedSkills([])
@@ -375,16 +375,20 @@ const AttributeFilter = () => {
           <div className="flex items-center">
             <span className="font-medium text-gray-700 w-20 pt-2">稀有度</span>
             <ClearButton 
-              show={selectedRank !== null} 
-              onClick={() => setSelectedRank(null)}
+              show={selectedRanks.length > 0} 
+              onClick={() => setSelectedRanks([])}
             />
           </div>
           <div className="flex flex-wrap gap-2">
             {ranks.map(rank => (
               <TagButton
                 key={rank}
-                isSelected={selectedRank === rank}
-                onClick={() => setSelectedRank(selectedRank === rank ? null : rank)}
+                isSelected={selectedRanks.includes(rank)}
+                onClick={() => setSelectedRanks(prev => 
+                  prev.includes(rank)
+                    ? prev.filter(r => r !== rank)
+                    : [...prev, rank]
+                )}
               >
                 {rank}星
               </TagButton>
@@ -397,16 +401,20 @@ const AttributeFilter = () => {
           <div className="flex items-center">
             <span className="font-medium text-gray-700 w-20 pt-2">武器种类</span>
             <ClearButton 
-              show={selectedType !== null} 
-              onClick={() => setSelectedType(null)}
+              show={selectedTypes.length > 0} 
+              onClick={() => setSelectedTypes([])}
             />
           </div>
           <div className="flex flex-wrap gap-2">
             {weaponTypes.map(type => (
               <TagButton
                 key={type}
-                isSelected={selectedType === type}
-                onClick={() => setSelectedType(selectedType === type ? null : type)}
+                isSelected={selectedTypes.includes(type)}
+                onClick={() => setSelectedTypes(prev => 
+                  prev.includes(type)
+                    ? prev.filter(t => t !== type)
+                    : [...prev, type]
+                )}
               >
                 {type}
               </TagButton>
@@ -511,9 +519,10 @@ const AttributeFilter = () => {
               当前筛选：
             </span>
 
-            {selectedRank && (
+            {selectedRanks.map(rank => (
               <button
-                onClick={() => setSelectedRank(null)}
+                key={`filter-rank-${rank}`}
+                onClick={() => setSelectedRanks(prev => prev.filter(r => r !== rank))}
                 style={{
                   display: 'inline-flex', alignItems: 'center', gap: '6px',
                   padding: '5px 12px', backgroundColor: '#f97316', color: 'white',
@@ -523,14 +532,15 @@ const AttributeFilter = () => {
                 onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#ea580c'}
                 onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#f97316'}
               >
-                {selectedRank}星
+                {rank}星
                 <span style={{ fontSize: '15px', lineHeight: 1 }}>×</span>
               </button>
-            )}
-
-            {selectedType && (
+            ))}
+            
+            {selectedTypes.map(type => (
               <button
-                onClick={() => setSelectedType(null)}
+                key={`filter-type-${type}`}
+                onClick={() => setSelectedTypes(prev => prev.filter(t => t !== type))}
                 style={{
                   display: 'inline-flex', alignItems: 'center', gap: '6px',
                   padding: '5px 12px', backgroundColor: '#6366f1', color: 'white',
@@ -540,10 +550,10 @@ const AttributeFilter = () => {
                 onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#4f46e5'}
                 onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#6366f1'}
               >
-                {selectedType}
+                {type}
                 <span style={{ fontSize: '15px', lineHeight: 1 }}>×</span>
               </button>
-            )}
+            ))}
 
             {getSelectedAttributeNames().map(attr => (
               <button
@@ -602,8 +612,8 @@ const AttributeFilter = () => {
             {/* 清除全部按钮 */}
             <button
               onClick={() => {
-                setSelectedType(null)
-                setSelectedRank(null)
+                setSelectedTypes([])
+                setSelectedRanks([])
                 setSelectedAttributes([])
                 setSelectedSecondaries([])
                 setSelectedSkills([])
