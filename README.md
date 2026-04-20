@@ -12,28 +12,28 @@ github地址：https://github.com/AlpacaBAKA/ArknightsEndfieldEssencesTools
 
 ## 使用方法
 
-进入网页后页面如图，默认停留在刷取策略查询界面。![main](C:\Users\AlpacaPAKA\Desktop\files\work\ArknightsEndfieldEssencesTools\frontend\assets\main.png)
+进入网页后页面如图，默认停留在刷取策略查询界面。![main](./assets/main.png)
 
 可以通过上方的按钮选择**刷取策略**面板或者**武器属性筛选**面板。
-![filter](C:\Users\AlpacaPAKA\Desktop\files\work\ArknightsEndfieldEssencesTools\frontend\assets\filter.png)
+![filter](.\assets\filter.png)
 
 ### 1. 刷取策略计算
 
 本功能用于计算刷取基质最优解。
 
 在最中央的输入框中输入需要刷取的武器，如果有其他需要同时刷取的武器，可以填写在下方的任意一个输入框中。最多支持计算同时刷取3个武器的情况。
-![weapon_seraching](C:\Users\AlpacaPAKA\Desktop\files\work\ArknightsEndfieldEssencesTools\frontend\assets\weapon_seraching.gif)
+![weapon_seraching](.\assets\weapon_seraching.gif)
 
 搜索完成后，可以通过上方的“最优策略判定”按钮切换判定策略。目前有两个策略：①搜索结果包括**5星武器和6星武器**；②搜索结果**仅包括6星武器**
-![setting_searching_condition](C:\Users\AlpacaPAKA\Desktop\files\work\ArknightsEndfieldEssencesTools\frontend\assets\setting_searching_condition.gif)
+![setting_searching_condition](.\assets\setting_searching_condition.gif)
 
 同时，在网页中添加了一个显示主要刷取武器的信息窗，可以随意拖动，方便管理员们使用浏览器小窗。
-![float_window](C:\Users\AlpacaPAKA\Desktop\files\work\ArknightsEndfieldEssencesTools\frontend\assets\float_window.gif)
+![float_window](.\assets\float_window.gif)
 
 ### 2. 武器属性筛选
 
 本功能用于计算哪些副本可以同时刷取多个武器的基质。同时，也可以在刷取基质后通过属性筛选快速查询有无满足的基质。
-![filter](C:\Users\AlpacaPAKA\Desktop\files\work\ArknightsEndfieldEssencesTools\frontend\assets\filter.png)
+![filter](.\assets\filter.png)
 
 在主页面点击“武器属性筛选”页面后，即可进入本功能页面。本页面主体为一个表格和筛选条件。
 
@@ -42,7 +42,7 @@ github地址：https://github.com/AlpacaBAKA/ArknightsEndfieldEssencesTools
 在表格最左侧的复选框可以选择希望刷取的武器。随后拉到页面最下方，会显示计算结果———能够刷取的地点和能够固定的词条。
 
 在这个版本中，允许玩家同时查询多个属性，如多个武器类型、多个基础属性、多个附加属性等。
-![multiple_selection](C:\Users\AlpacaPAKA\Desktop\files\work\ArknightsEndfieldEssencesTools\frontend\assets\multiple_selection.gif)
+![multiple_selection](.\assets\multiple_selection.gif)
 
 ## 功能反馈
 
