@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { AttributeTag, SecondaryTag, SkillsTag, weapons, locations } from '../data/data.jsx'
 
-const AttributeFilter = () => {
+const AttributeFilter = ({ filterPreset }) => {
   const [selectedAttributes, setSelectedAttributes] = useState([])
   const [selectedSecondaries, setSelectedSecondaries] = useState([])
   const [selectedSkills, setSelectedSkills] = useState([])
@@ -160,6 +160,14 @@ const AttributeFilter = () => {
       }
     })
   }
+
+  // 应用来自策略面板的预设属性
+  useEffect(() => {
+    if (!filterPreset) return
+    setSelectedAttributes(filterPreset.attributes || [])
+    setSelectedSecondaries(filterPreset.secondaries || [])
+    setSelectedSkills(filterPreset.skills || [])
+  }, [filterPreset])
 
   // 实时筛选
   useEffect(() => {

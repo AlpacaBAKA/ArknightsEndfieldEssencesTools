@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { weapons, locations, AttributeTag, getRecommendedWeapons } from '../data/data.jsx'
 
-const WeaponSearch = () => {
+const WeaponSearch = ({ onNavigateToFilter }) => {
   const [searchQuery, setSearchQuery] = useState('')
   const [searchSuggestions, setSearchSuggestions] = useState([])
   const [showSuggestions, setShowSuggestions] = useState(false)
@@ -1293,10 +1293,39 @@ const WeaponSearch = () => {
                       }}>
                         {index === 0 ? '⭐ 最优策略' : `策略 ${index + 1}`}
                       </span>
-                      
-                      <span style={{ fontSize: '13px', color: '#6b7280' }}>
-                        可获得 {strategy.matchedWeapons.length} 个武器
-                      </span>
+
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                        <span style={{ fontSize: '13px', color: '#6b7280' }}>
+                          可获得 {strategy.matchedWeapons.length} 个武器
+                        </span>
+                        {onNavigateToFilter && (
+                          <button
+                            onClick={() => onNavigateToFilter({
+                              attributes: strategy.attributeCombo.map(a => a.id),
+                              secondaries: strategy.fixedType === 'secondary' ? [strategy.fixedSecondaryAttr.id] : [],
+                              skills: strategy.fixedType === 'skills' ? [strategy.fixedSecondaryAttr.id] : []
+                            })}
+                            style={{
+                              padding: '4px 12px',
+                              backgroundColor: '#eff6ff',
+                              color: '#2563eb',
+                              border: '1px solid #bfdbfe',
+                              borderRadius: '4px',
+                              fontSize: '13px',
+                              fontWeight: '500',
+                              cursor: 'pointer'
+                            }}
+                            onMouseEnter={(e) => {
+                              e.currentTarget.style.backgroundColor = '#dbeafe'
+                            }}
+                            onMouseLeave={(e) => {
+                              e.currentTarget.style.backgroundColor = '#eff6ff'
+                            }}
+                          >
+                            📋 前往属性筛选
+                          </button>
+                        )}
+                      </div>
                     </div>
                     
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginBottom: '16px' }}>

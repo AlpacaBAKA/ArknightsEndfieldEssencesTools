@@ -5,6 +5,12 @@ import WeaponSearch from './components/WeaponSearch.jsx'
 
 function App() {
   const [activeTab, setActiveTab] = useState('search') // 'filter' 或 'search'
+  const [filterPreset, setFilterPreset] = useState(null)
+
+  const navigateToFilter = (preset) => {
+    setFilterPreset({ id: Date.now(), ...preset })
+    setActiveTab('filter')
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -53,7 +59,7 @@ function App() {
                     武器属性筛选
                   </h2>
                   <div className="w-full text-left mx-0">
-                    <AttributeFilter />
+                    <AttributeFilter filterPreset={filterPreset} />
                   </div>
                 </>
               ) : (
@@ -62,7 +68,7 @@ function App() {
                     刷取策略查询
                   </h2>
                   <div className="w-full text-left mx-0">
-                    <WeaponSearch />
+                    <WeaponSearch onNavigateToFilter={navigateToFilter} />
                   </div>
                 </>
               )}
