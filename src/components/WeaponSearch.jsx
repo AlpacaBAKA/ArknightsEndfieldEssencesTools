@@ -528,13 +528,13 @@ const WeaponSearch = ({ onNavigateToFilter }) => {
     <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
       {/* 搜索区域 */}
       <div style={{
-        background: 'linear-gradient(to right, #faf5ff, #eff6ff)',
-        border: '1px solid #e9d5ff',
-        borderRadius: '8px',
-        padding: '24px'
+        backgroundColor: 'var(--canvas)',
+        border: '1px solid var(--hairline)',
+        borderRadius: 'var(--r-lg)',
+        padding: 'var(--sp-xxl)'
       }}>
-        <h3 style={{ fontSize: '18px', fontWeight: '600', color: '#1f2937', marginBottom: '16px' }}>
-          🔍 武器刷取策略查询
+        <h3 style={{ fontSize: '18px', fontWeight: '600', color: 'var(--ink)', marginBottom: '16px' }}>
+          武器刷取策略查询
         </h3>
         
         <div style={{ position: 'relative' }}>
@@ -552,10 +552,13 @@ const WeaponSearch = ({ onNavigateToFilter }) => {
                 style={{
                   width: '100%',
                   padding: '12px 16px',
-                  border: '1px solid #d1d5db',
-                  borderRadius: '6px',
+                  border: '1px solid var(--hairline-strong)',
+                  borderRadius: 'var(--r-md)',
                   fontSize: '16px',
-                  outline: 'none'
+                  height: '44px',
+                  outline: 'none',
+                  backgroundColor: 'var(--canvas)',
+                  color: 'var(--ink)'
                 }}
               />
               
@@ -569,7 +572,7 @@ const WeaponSearch = ({ onNavigateToFilter }) => {
                     transform: 'translateY(-50%)',
                     background: 'none',
                     border: 'none',
-                    color: '#9ca3af',
+                    color: 'var(--stone)',
                     fontSize: '20px',
                     cursor: 'pointer'
                   }}
@@ -582,14 +585,16 @@ const WeaponSearch = ({ onNavigateToFilter }) => {
             <button
               onClick={handleSearch}
               style={{
-                padding: '12px 32px',
-                backgroundColor: '#2563eb',
-                color: 'white',
+                padding: '10px 24px',
+                backgroundColor: 'var(--primary)',
+                color: 'var(--on-primary)',
                 border: 'none',
-                borderRadius: '6px',
-                fontSize: '16px',
+                borderRadius: 'var(--r-md)',
+                fontSize: '14px',
                 fontWeight: '500',
-                cursor: 'pointer'
+                cursor: 'pointer',
+                height: '44px',
+                whiteSpace: 'nowrap'
               }}
             >
               查询
@@ -610,11 +615,13 @@ const WeaponSearch = ({ onNavigateToFilter }) => {
                 style={{
                   width: '100%',
                   padding: '10px 14px',
-                  border: '1px solid #e5e7eb',
-                  borderRadius: '6px',
+                  border: '1px solid var(--hairline-strong)',
+                  borderRadius: 'var(--r-md)',
                   fontSize: '14px',
+                  height: '44px',
                   outline: 'none',
-                  color: extraWeapon1 ? '#1f2937' : '#9ca3af'
+                  backgroundColor: 'var(--canvas)',
+                  color: extraWeapon1 ? 'var(--ink)' : 'var(--muted)'
                 }}
               />
               
@@ -628,7 +635,7 @@ const WeaponSearch = ({ onNavigateToFilter }) => {
                     transform: 'translateY(-50%)',
                     background: 'none',
                     border: 'none',
-                    color: '#9ca3af',
+                    color: 'var(--stone)',
                     fontSize: '18px',
                     cursor: 'pointer'
                   }}
@@ -644,18 +651,18 @@ const WeaponSearch = ({ onNavigateToFilter }) => {
                   width: '100%',
                   marginTop: '4px',
                   backgroundColor: 'white',
-                  border: '1px solid #e5e7eb',
-                  borderRadius: '8px',
-                  boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)',
+                  border: '1px solid var(--hairline)',
+                  borderRadius: 'var(--r-lg)',
+                  boxShadow: 'rgba(15, 15, 15, 0.08) 0px 4px 12px 0px',
                   maxHeight: '300px',
                   overflowY: 'auto'
                 }}>
                   <div style={{
                     padding: '8px 14px',
-                    backgroundColor: '#f9fafb',
-                    borderBottom: '1px solid #e5e7eb',
+                    backgroundColor: 'var(--surface)',
+                    borderBottom: '1px solid var(--hairline)',
                     fontSize: '12px',
-                    color: '#6b7280',
+                    color: 'var(--steel)',
                     fontWeight: '500'
                   }}>
                     ⭐ 推荐武器
@@ -670,14 +677,14 @@ const WeaponSearch = ({ onNavigateToFilter }) => {
                         textAlign: 'left',
                         backgroundColor: 'white',
                         border: 'none',
-                        borderBottom: '1px solid #f3f4f6',
+                        borderBottom: '1px solid var(--hairline-soft)',
                         cursor: 'pointer',
                         fontSize: '14px'
                       }}
-                      onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#f9fafb'}
+                      onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--surface)'}
                       onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'white'}
                     >
-                      <span style={{ fontWeight: '500', color: '#1f2937' }}>{weapon.name}</span>
+                      <span style={{ fontWeight: '500', color: 'var(--ink)' }}>{weapon.name}</span>
                       <span style={{
                         marginLeft: '8px',
                         padding: '2px 6px',
@@ -702,9 +709,9 @@ const WeaponSearch = ({ onNavigateToFilter }) => {
                   width: '100%',
                   marginTop: '4px',
                   backgroundColor: 'white',
-                  border: '1px solid #e5e7eb',
-                  borderRadius: '8px',
-                  boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)',
+                  border: '1px solid var(--hairline)',
+                  borderRadius: 'var(--r-lg)',
+                  boxShadow: 'rgba(15, 15, 15, 0.08) 0px 4px 12px 0px',
                   maxHeight: '200px',
                   overflowY: 'auto'
                 }}>
@@ -718,14 +725,14 @@ const WeaponSearch = ({ onNavigateToFilter }) => {
                         textAlign: 'left',
                         backgroundColor: 'white',
                         border: 'none',
-                        borderBottom: '1px solid #f3f4f6',
+                        borderBottom: '1px solid var(--hairline-soft)',
                         cursor: 'pointer',
                         fontSize: '14px'
                       }}
-                      onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#f9fafb'}
+                      onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--surface)'}
                       onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'white'}
                     >
-                      <span style={{ fontWeight: '500', color: '#1f2937' }}>{weapon.name}</span>
+                      <span style={{ fontWeight: '500', color: 'var(--ink)' }}>{weapon.name}</span>
                       <span style={{
                         marginLeft: '8px',
                         padding: '2px 6px',
@@ -750,16 +757,18 @@ const WeaponSearch = ({ onNavigateToFilter }) => {
                 value={extraWeapon2}
                 onChange={(e) => handleExtraSearchInput(e.target.value, 2)}
                 onFocus={handleExtra2Focus}
-                onBlur={() => setTimeout(() => setShowExtraRecommended2(false), 200)} 
+                onBlur={() => setTimeout(() => setShowExtraRecommended2(false), 200)}
                 placeholder="无额外刷取武器"
                 style={{
                   width: '100%',
                   padding: '10px 14px',
-                  border: '1px solid #e5e7eb',
-                  borderRadius: '6px',
+                  border: '1px solid var(--hairline-strong)',
+                  borderRadius: 'var(--r-md)',
                   fontSize: '14px',
+                  height: '44px',
                   outline: 'none',
-                  color: extraWeapon2 ? '#1f2937' : '#9ca3af'
+                  backgroundColor: 'var(--canvas)',
+                  color: extraWeapon2 ? 'var(--ink)' : 'var(--muted)'
                 }}
               />
               
@@ -773,7 +782,7 @@ const WeaponSearch = ({ onNavigateToFilter }) => {
                     transform: 'translateY(-50%)',
                     background: 'none',
                     border: 'none',
-                    color: '#9ca3af',
+                    color: 'var(--stone)',
                     fontSize: '18px',
                     cursor: 'pointer'
                   }}
@@ -789,18 +798,18 @@ const WeaponSearch = ({ onNavigateToFilter }) => {
                   width: '100%',
                   marginTop: '4px',
                   backgroundColor: 'white',
-                  border: '1px solid #e5e7eb',
-                  borderRadius: '8px',
-                  boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)',
+                  border: '1px solid var(--hairline)',
+                  borderRadius: 'var(--r-lg)',
+                  boxShadow: 'rgba(15, 15, 15, 0.08) 0px 4px 12px 0px',
                   maxHeight: '300px',
                   overflowY: 'auto'
                 }}>
                   <div style={{
                     padding: '8px 14px',
-                    backgroundColor: '#f9fafb',
-                    borderBottom: '1px solid #e5e7eb',
+                    backgroundColor: 'var(--surface)',
+                    borderBottom: '1px solid var(--hairline)',
                     fontSize: '12px',
-                    color: '#6b7280',
+                    color: 'var(--steel)',
                     fontWeight: '500'
                   }}>
                     ⭐ 推荐武器
@@ -815,14 +824,14 @@ const WeaponSearch = ({ onNavigateToFilter }) => {
                         textAlign: 'left',
                         backgroundColor: 'white',
                         border: 'none',
-                        borderBottom: '1px solid #f3f4f6',
+                        borderBottom: '1px solid var(--hairline-soft)',
                         cursor: 'pointer',
                         fontSize: '14px'
                       }}
-                      onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#f9fafb'}
+                      onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--surface)'}
                       onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'white'}
                     >
-                      <span style={{ fontWeight: '500', color: '#1f2937' }}>{weapon.name}</span>
+                      <span style={{ fontWeight: '500', color: 'var(--ink)' }}>{weapon.name}</span>
                       <span style={{
                         marginLeft: '8px',
                         padding: '2px 6px',
@@ -847,9 +856,9 @@ const WeaponSearch = ({ onNavigateToFilter }) => {
                   width: '100%',
                   marginTop: '4px',
                   backgroundColor: 'white',
-                  border: '1px solid #e5e7eb',
-                  borderRadius: '8px',
-                  boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)',
+                  border: '1px solid var(--hairline)',
+                  borderRadius: 'var(--r-lg)',
+                  boxShadow: 'rgba(15, 15, 15, 0.08) 0px 4px 12px 0px',
                   maxHeight: '200px',
                   overflowY: 'auto'
                 }}>
@@ -863,14 +872,14 @@ const WeaponSearch = ({ onNavigateToFilter }) => {
                         textAlign: 'left',
                         backgroundColor: 'white',
                         border: 'none',
-                        borderBottom: '1px solid #f3f4f6',
+                        borderBottom: '1px solid var(--hairline-soft)',
                         cursor: 'pointer',
                         fontSize: '14px'
                       }}
-                      onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#f9fafb'}
+                      onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--surface)'}
                       onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'white'}
                     >
-                      <span style={{ fontWeight: '500', color: '#1f2937' }}>{weapon.name}</span>
+                      <span style={{ fontWeight: '500', color: 'var(--ink)' }}>{weapon.name}</span>
                       <span style={{
                         marginLeft: '8px',
                         padding: '2px 6px',
@@ -898,16 +907,16 @@ const WeaponSearch = ({ onNavigateToFilter }) => {
               backgroundColor: 'white',
               border: '1px solid #e5e7eb',
               borderRadius: '8px',
-              boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)',
+              boxShadow: 'rgba(15, 15, 15, 0.08) 0px 4px 12px 0px',
               maxHeight: '400px',
               overflowY: 'auto'
             }}>
               <div style={{
                 padding: '12px 16px',
-                backgroundColor: '#f9fafb',
-                borderBottom: '1px solid #e5e7eb',
+                backgroundColor: 'var(--surface)',
+                borderBottom: '1px solid var(--hairline)',
                 fontSize: '13px',
-                color: '#6b7280',
+                color: 'var(--steel)',
                 fontWeight: '600'
               }}>
                 ⭐ 推荐武器
@@ -922,14 +931,14 @@ const WeaponSearch = ({ onNavigateToFilter }) => {
                     textAlign: 'left',
                     backgroundColor: 'white',
                     border: 'none',
-                    borderBottom: '1px solid #f3f4f6',
+                    borderBottom: '1px solid var(--hairline-soft)',
                     cursor: 'pointer'
                   }}
-                  onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#f9fafb'}
+                  onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--surface)'}
                   onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'white'}
                 >
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                    <span style={{ fontWeight: '500', color: '#1f2937' }}>{weapon.name}</span>
+                    <span style={{ fontWeight: '500', color: 'var(--ink)' }}>{weapon.name}</span>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                       <span style={{
                         padding: '4px 8px',
@@ -941,18 +950,18 @@ const WeaponSearch = ({ onNavigateToFilter }) => {
                       }}>
                         {weapon.rank}星
                       </span>
-                      <span style={{ fontSize: '12px', color: '#6b7280' }}>{weapon.type}</span>
+                      <span style={{ fontSize: '12px', color: 'var(--steel)' }}>{weapon.type}</span>
                     </div>
                   </div>
                   
                   <div style={{ display: 'flex', gap: '8px', marginTop: '8px', fontSize: '12px' }}>
-                    <span style={{ padding: '4px 8px', backgroundColor: '#f3e8ff', color: '#7c3aed', borderRadius: '4px' }}>
+                    <span style={{ padding: '4px 8px', backgroundColor: 'var(--tint-lavender)', color: 'var(--brand-purple-800)', borderRadius: '4px' }}>
                       {weapon.attribute.name}
                     </span>
-                    <span style={{ padding: '4px 8px', backgroundColor: '#dcfce7', color: '#16a34a', borderRadius: '4px' }}>
+                    <span style={{ padding: '4px 8px', backgroundColor: 'var(--tint-mint)', color: 'var(--brand-green)', borderRadius: '4px' }}>
                       {weapon.secondary.name}
                     </span>
-                    <span style={{ padding: '4px 8px', backgroundColor: '#dbeafe', color: '#2563eb', borderRadius: '4px' }}>
+                    <span style={{ padding: '4px 8px', backgroundColor: 'var(--tint-sky)', color: 'var(--link-blue)', borderRadius: '4px' }}>
                       {weapon.skills.name}
                     </span>
                   </div>
@@ -983,14 +992,14 @@ const WeaponSearch = ({ onNavigateToFilter }) => {
                     textAlign: 'left',
                     backgroundColor: 'white',
                     border: 'none',
-                    borderBottom: '1px solid #f3f4f6',
+                    borderBottom: '1px solid var(--hairline-soft)',
                     cursor: 'pointer'
                   }}
-                  onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#f9fafb'}
+                  onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--surface)'}
                   onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'white'}
                 >
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                    <span style={{ fontWeight: '500', color: '#1f2937' }}>{weapon.name}</span>
+                    <span style={{ fontWeight: '500', color: 'var(--ink)' }}>{weapon.name}</span>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                       <span style={{
                         padding: '4px 8px',
@@ -1002,18 +1011,18 @@ const WeaponSearch = ({ onNavigateToFilter }) => {
                       }}>
                         {weapon.rank}星
                       </span>
-                      <span style={{ fontSize: '12px', color: '#6b7280' }}>{weapon.type}</span>
+                      <span style={{ fontSize: '12px', color: 'var(--steel)' }}>{weapon.type}</span>
                     </div>
                   </div>
                   
                   <div style={{ display: 'flex', gap: '8px', marginTop: '8px', fontSize: '12px' }}>
-                    <span style={{ padding: '4px 8px', backgroundColor: '#f3e8ff', color: '#7c3aed', borderRadius: '4px' }}>
+                    <span style={{ padding: '4px 8px', backgroundColor: 'var(--tint-lavender)', color: 'var(--brand-purple-800)', borderRadius: '4px' }}>
                       {weapon.attribute.name}
                     </span>
-                    <span style={{ padding: '4px 8px', backgroundColor: '#dcfce7', color: '#16a34a', borderRadius: '4px' }}>
+                    <span style={{ padding: '4px 8px', backgroundColor: 'var(--tint-mint)', color: 'var(--brand-green)', borderRadius: '4px' }}>
                       {weapon.secondary.name}
                     </span>
-                    <span style={{ padding: '4px 8px', backgroundColor: '#dbeafe', color: '#2563eb', borderRadius: '4px' }}>
+                    <span style={{ padding: '4px 8px', backgroundColor: 'var(--tint-sky)', color: 'var(--link-blue)', borderRadius: '4px' }}>
                       {weapon.skills.name}
                     </span>
                   </div>
@@ -1031,10 +1040,10 @@ const WeaponSearch = ({ onNavigateToFilter }) => {
               backgroundColor: 'white',
               border: '1px solid #e5e7eb',
               borderRadius: '8px',
-              boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)',
+              boxShadow: 'rgba(15, 15, 15, 0.08) 0px 4px 12px 0px',
               padding: '16px',
               textAlign: 'center',
-              color: '#6b7280'
+              color: 'var(--steel)'
             }}>
               未找到匹配的武器
             </div>
@@ -1045,26 +1054,25 @@ const WeaponSearch = ({ onNavigateToFilter }) => {
       {/* 选中的武器信息 */}
       {selectedWeapon && (
         <div style={{
-          backgroundColor: 'white',
-          border: '1px solid #e5e7eb',
-          borderRadius: '8px',
-          padding: '24px',
-          boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1)'
+          backgroundColor: 'var(--canvas)',
+          border: '1px solid var(--hairline)',
+          borderRadius: 'var(--r-lg)',
+          padding: 'var(--sp-xxl)',
         }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-            <h3 style={{ fontSize: '18px', fontWeight: '600', color: '#1f2937' }}>
+            <h3 style={{ fontSize: '18px', fontWeight: '600', color: 'var(--ink)' }}>
               武器信息
             </h3>
             
             {(selectedExtraWeapon1 || selectedExtraWeapon2) && (
               <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-                <span style={{ color: '#6b7280', fontSize: '14px' }}>额外条件：</span>
+                <span style={{ color: 'var(--steel)', fontSize: '14px' }}>额外条件：</span>
                 {selectedExtraWeapon1 && (
                   <span style={{
                     padding: '4px 10px',
-                    backgroundColor: '#fef3c7',
-                    color: '#92400e',
-                    borderRadius: '4px',
+                    backgroundColor: 'var(--tint-yellow-bold)',
+                    color: 'var(--brand-orange-deep)',
+                    borderRadius: 'var(--r-xs)',
                     fontSize: '13px',
                     fontWeight: '500'
                   }}>
@@ -1074,9 +1082,9 @@ const WeaponSearch = ({ onNavigateToFilter }) => {
                 {selectedExtraWeapon2 && (
                   <span style={{
                     padding: '4px 10px',
-                    backgroundColor: '#fef3c7',
-                    color: '#92400e',
-                    borderRadius: '4px',
+                    backgroundColor: 'var(--tint-yellow-bold)',
+                    color: 'var(--brand-orange-deep)',
+                    borderRadius: 'var(--r-xs)',
                     fontSize: '13px',
                     fontWeight: '500'
                   }}>
@@ -1089,21 +1097,21 @@ const WeaponSearch = ({ onNavigateToFilter }) => {
           
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '16px' }}>
             <div>
-              <span style={{ color: '#6b7280' }}>武器名称：</span>
-              <span style={{ fontWeight: '600', color: '#1f2937', marginLeft: '8px' }}>
+              <span style={{ color: 'var(--steel)' }}>武器名称：</span>
+              <span style={{ fontWeight: '600', color: 'var(--ink)', marginLeft: '8px' }}>
                 {selectedWeapon.name}
               </span>
             </div>
             
             <div>
-              <span style={{ color: '#6b7280' }}>稀有度：</span>
+              <span style={{ color: 'var(--steel)' }}>稀有度：</span>
               <span style={{
                 marginLeft: '8px',
                 padding: '4px 12px',
-                borderRadius: '9999px',
-                color: 'white',
+                borderRadius: 'var(--r-xs)',
+                color: 'var(--ink-deep)',
                 fontSize: '14px',
-                fontWeight: '500',
+                fontWeight: '600',
                 backgroundColor: getRankColor(selectedWeapon.rank)
               }}>
                 {selectedWeapon.rank}星
@@ -1111,20 +1119,20 @@ const WeaponSearch = ({ onNavigateToFilter }) => {
             </div>
             
             <div>
-              <span style={{ color: '#6b7280' }}>武器种类：</span>
-              <span style={{ fontWeight: '500', color: '#1f2937', marginLeft: '8px' }}>
+              <span style={{ color: 'var(--steel)' }}>武器种类：</span>
+              <span style={{ fontWeight: '500', color: 'var(--ink)', marginLeft: '8px' }}>
                 {selectedWeapon.type}
               </span>
             </div>
             
             <div>
-              <span style={{ color: '#6b7280' }}>基础属性：</span>
+              <span style={{ color: 'var(--steel)' }}>基础属性：</span>
               <span style={{
                 marginLeft: '8px',
                 padding: '4px 8px',
-                backgroundColor: '#f3e8ff',
-                color: '#7c3aed',
-                borderRadius: '4px',
+                backgroundColor: 'var(--tint-lavender)',
+                color: 'var(--brand-purple-800)',
+                borderRadius: 'var(--r-xs)',
                 fontSize: '14px'
               }}>
                 {selectedWeapon.attribute.name}
@@ -1132,13 +1140,13 @@ const WeaponSearch = ({ onNavigateToFilter }) => {
             </div>
             
             <div>
-              <span style={{ color: '#6b7280' }}>附加属性：</span>
+              <span style={{ color: 'var(--steel)' }}>附加属性：</span>
               <span style={{
                 marginLeft: '8px',
                 padding: '4px 8px',
-                backgroundColor: '#dcfce7',
-                color: '#16a34a',
-                borderRadius: '4px',
+                backgroundColor: 'var(--tint-mint)',
+                color: 'var(--brand-green)',
+                borderRadius: 'var(--r-xs)',
                 fontSize: '14px'
               }}>
                 {selectedWeapon.secondary.name}
@@ -1146,13 +1154,13 @@ const WeaponSearch = ({ onNavigateToFilter }) => {
             </div>
             
             <div>
-              <span style={{ color: '#6b7280' }}>技能属性：</span>
+              <span style={{ color: 'var(--steel)' }}>技能属性：</span>
               <span style={{
                 marginLeft: '8px',
                 padding: '4px 8px',
-                backgroundColor: '#dbeafe',
-                color: '#2563eb',
-                borderRadius: '4px',
+                backgroundColor: 'var(--tint-sky)',
+                color: 'var(--link-blue)',
+                borderRadius: 'var(--r-xs)',
                 fontSize: '14px'
               }}>
                 {selectedWeapon.skills.name}
@@ -1166,7 +1174,7 @@ const WeaponSearch = ({ onNavigateToFilter }) => {
       {selectedWeapon && matchingLocations.length > 0 && (
         <div>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-            <h3 style={{ fontSize: '18px', fontWeight: '600', color: '#1f2937' }}>
+            <h3 style={{ fontSize: '18px', fontWeight: '600', color: 'var(--ink)' }}>
               可刷取的地点（共 {matchingLocations.length} 个）
             </h3>
             
@@ -1174,10 +1182,10 @@ const WeaponSearch = ({ onNavigateToFilter }) => {
               onClick={() => setShowOnlyBest(!showOnlyBest)}
               style={{
                 padding: '8px 20px',
-                backgroundColor: showOnlyBest ? '#7c3aed' : '#f3f4f6',
-                color: showOnlyBest ? 'white' : '#374151',
-                border: 'none',
-                borderRadius: '6px',
+                backgroundColor: showOnlyBest ? 'var(--primary)' : 'var(--surface)',
+                color: showOnlyBest ? 'var(--on-primary)' : 'var(--charcoal)',
+                border: showOnlyBest ? 'none' : '1px solid var(--hairline-strong)',
+                borderRadius: 'var(--r-md)',
                 fontSize: '14px',
                 fontWeight: '500',
                 cursor: 'pointer',
@@ -1193,12 +1201,12 @@ const WeaponSearch = ({ onNavigateToFilter }) => {
               gap: '12px', 
               marginBottom: '16px',
               padding: '16px',
-              backgroundColor: '#f9fafb',
-              borderRadius: '8px',
-              border: '1px solid #e5e7eb'
+              backgroundColor: 'var(--surface)',
+              borderRadius: 'var(--r-md)',
+              border: '1px solid var(--hairline)'
             }}>
             <span style={{ 
-              color: '#6b7280', 
+              color: 'var(--steel)', 
               fontSize: '14px', 
               fontWeight: '500',
               display: 'flex',
@@ -1211,10 +1219,10 @@ const WeaponSearch = ({ onNavigateToFilter }) => {
               onClick={() => handleSortStrategyChange('total')}
               style={{
                 padding: '6px 16px',
-                backgroundColor: sortStrategy === 'total' ? '#2563eb' : 'white',
-                color: sortStrategy === 'total' ? 'white' : '#374151',
-                border: sortStrategy === 'total' ? 'none' : '1px solid #d1d5db',
-                borderRadius: '6px',
+                backgroundColor: sortStrategy === 'total' ? 'var(--primary)' : 'var(--canvas)',
+                color: sortStrategy === 'total' ? 'var(--on-primary)' : 'var(--charcoal)',
+                border: sortStrategy === 'total' ? 'none' : '1px solid var(--hairline-strong)',
+                borderRadius: 'var(--r-md)',
                 fontSize: '13px',
                 fontWeight: '500',
                 cursor: 'pointer',
@@ -1222,16 +1230,16 @@ const WeaponSearch = ({ onNavigateToFilter }) => {
               }}
             >
               {sortStrategy === 'total' && '✓ '}能刷取最多武器
-              </button>
-            
+            </button>
+
             <button
               onClick={() => handleSortStrategyChange('six')}
               style={{
                 padding: '6px 16px',
-                backgroundColor: sortStrategy === 'six' ? '#2563eb' : 'white',
-                color: sortStrategy === 'six' ? 'white' : '#374151',
-                border: sortStrategy === 'six' ? 'none' : '1px solid #d1d5db',
-                borderRadius: '6px',
+                backgroundColor: sortStrategy === 'six' ? 'var(--primary)' : 'var(--canvas)',
+                color: sortStrategy === 'six' ? 'var(--on-primary)' : 'var(--charcoal)',
+                border: sortStrategy === 'six' ? 'none' : '1px solid var(--hairline-strong)',
+                borderRadius: 'var(--r-md)',
                 fontSize: '13px',
                 fontWeight: '500',
                 cursor: 'pointer',
@@ -1248,23 +1256,22 @@ const WeaponSearch = ({ onNavigateToFilter }) => {
               <div
                 key={location.id}
                 style={{
-                  border: '1px solid #86efac',
-                  backgroundColor: '#f0fdf4',
-                  borderRadius: '8px',
-                  padding: '24px'
+                  backgroundColor: 'var(--tint-mint)',
+                  borderRadius: 'var(--r-lg)',
+                  padding: 'var(--sp-xxl)'
                 }}
               >
                 <div style={{ display: 'flex', alignItems: 'start', justifyContent: 'space-between', marginBottom: '20px' }}>
-                  <h4 style={{ fontSize: '20px', fontWeight: '600', color: '#1f2937' }}>
+                  <h4 style={{ fontSize: '20px', fontWeight: '600', color: 'var(--ink)' }}>
                     {location.name}
                   </h4>
                   <span style={{
-                    padding: '4px 12px',
-                    backgroundColor: '#22c55e',
-                    color: 'white',
-                    fontSize: '14px',
-                    fontWeight: '500',
-                    borderRadius: '9999px'
+                    padding: '4px 10px',
+                    backgroundColor: 'var(--success)',
+                    color: 'var(--on-dark)',
+                    fontSize: '13px',
+                    fontWeight: '600',
+                    borderRadius: 'var(--r-full)'
                   }}>
                     可刷取
                   </span>
@@ -1277,17 +1284,17 @@ const WeaponSearch = ({ onNavigateToFilter }) => {
                     style={{
                       marginBottom: index < (showOnlyBest ? 0 : location.strategies.length - 1) ? '20px' : '0',
                       padding: '16px',
-                      backgroundColor: 'white',
-                      borderRadius: '6px',
-                      border: index === 0 ? '2px solid #22c55e' : '1px solid #d1fae5'
+                      backgroundColor: 'var(--canvas)',
+                      borderRadius: 'var(--r-md)',
+                      border: index === 0 ? '2px solid var(--success)' : '1px solid var(--hairline)'
                     }}
                   >
                     <div style={{ marginBottom: '12px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                       <span style={{
                         padding: '4px 12px',
-                        backgroundColor: index === 0 ? '#22c55e' : (strategy.type === 'skills' ? '#dbeafe' : '#dcfce7'),
-                        color: index === 0 ? 'white' : (strategy.type === 'skills' ? '#2563eb' : '#16a34a'),
-                        borderRadius: '4px',
+                        backgroundColor: index === 0 ? 'var(--success)' : (strategy.type === 'skills' ? 'var(--tint-sky)' : 'var(--tint-mint)'),
+                        color: index === 0 ? 'var(--on-dark)' : (strategy.type === 'skills' ? 'var(--link-blue)' : 'var(--brand-green)'),
+                        borderRadius: 'var(--r-xs)',
                         fontSize: '14px',
                         fontWeight: '600'
                       }}>
@@ -1295,7 +1302,7 @@ const WeaponSearch = ({ onNavigateToFilter }) => {
                       </span>
 
                       <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                        <span style={{ fontSize: '13px', color: '#6b7280' }}>
+                        <span style={{ fontSize: '13px', color: 'var(--steel)' }}>
                           可获得 {strategy.matchedWeapons.length} 个武器
                         </span>
                         {onNavigateToFilter && (
@@ -1307,19 +1314,19 @@ const WeaponSearch = ({ onNavigateToFilter }) => {
                             })}
                             style={{
                               padding: '4px 12px',
-                              backgroundColor: '#eff6ff',
-                              color: '#2563eb',
-                              border: '1px solid #bfdbfe',
-                              borderRadius: '4px',
+                              backgroundColor: 'var(--tint-lavender)',
+                              color: 'var(--primary)',
+                              border: '1px solid var(--tint-lavender)',
+                              borderRadius: 'var(--r-xs)',
                               fontSize: '13px',
                               fontWeight: '500',
                               cursor: 'pointer'
                             }}
                             onMouseEnter={(e) => {
-                              e.currentTarget.style.backgroundColor = '#dbeafe'
+                              e.currentTarget.style.backgroundColor = '#d6ccf0'
                             }}
                             onMouseLeave={(e) => {
-                              e.currentTarget.style.backgroundColor = '#eff6ff'
+                              e.currentTarget.style.backgroundColor = 'var(--tint-lavender)'
                             }}
                           >
                             📋 前往属性筛选
@@ -1330,16 +1337,16 @@ const WeaponSearch = ({ onNavigateToFilter }) => {
                     
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginBottom: '16px' }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                        <span style={{ color: '#6b7280', fontSize: '14px', minWidth: '120px' }}>固定主属性组：</span>
+                        <span style={{ color: 'var(--steel)', fontSize: '14px', minWidth: '120px' }}>固定主属性组：</span>
                         <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
                           {strategy.attributeCombo.map((attr, i) => (
                             <span
                               key={i}
                               style={{
                                 padding: '4px 10px',
-                                backgroundColor: '#f3e8ff',
-                                color: '#7c3aed',
-                                borderRadius: '4px',
+                                backgroundColor: 'var(--tint-lavender)',
+                                color: 'var(--brand-purple-800)',
+                                borderRadius: 'var(--r-xs)',
                                 fontSize: '14px',
                                 fontWeight: '500'
                               }}
@@ -1351,25 +1358,25 @@ const WeaponSearch = ({ onNavigateToFilter }) => {
                       </div>
                       
                       <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                        <span style={{ color: '#6b7280', fontSize: '14px', minWidth: '120px' }}>固定副词条：</span>
+                        <span style={{ color: 'var(--steel)', fontSize: '14px', minWidth: '120px' }}>固定副词条：</span>
                         <span style={{
                           padding: '4px 10px',
-                          backgroundColor: strategy.fixedType === 'skills' ? '#2563eb' : '#16a34a',
-                          color: 'white',
-                          borderRadius: '4px',
+                          backgroundColor: strategy.fixedType === 'skills' ? 'var(--tint-sky)' : 'var(--tint-mint)',
+                          color: strategy.fixedType === 'skills' ? 'var(--link-blue)' : 'var(--brand-green)',
+                          borderRadius: 'var(--r-xs)',
                           fontSize: '14px',
                           fontWeight: '500'
                         }}>
                           {strategy.fixedSecondaryAttr.name}
                         </span>
-                        <span style={{ color: '#6b7280', fontSize: '13px' }}>
+                        <span style={{ color: 'var(--steel)', fontSize: '13px' }}>
                           ({strategy.fixedType === 'skills' ? '技能属性' : '附加属性'})
                         </span>
                       </div>
                       
                       <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                        <span style={{ color: '#6b7280', fontSize: '14px', minWidth: '120px' }}>随机副词条：</span>
-                        <span style={{ color: '#374151', fontSize: '14px' }}>
+                        <span style={{ color: 'var(--steel)', fontSize: '14px', minWidth: '120px' }}>随机副词条：</span>
+                        <span style={{ color: 'var(--charcoal)', fontSize: '14px' }}>
                           该地点的所有{strategy.randomSecondaryAttr === 'secondary' ? '附加属性' : '技能属性'}（8个）
                         </span>
                       </div>
@@ -1380,13 +1387,13 @@ const WeaponSearch = ({ onNavigateToFilter }) => {
                       <div style={{
                         marginTop: '16px',
                         paddingTop: '16px',
-                        borderTop: '1px solid #e5e7eb'
+                        borderTop: '1px solid var(--hairline)'
                       }}>
                         <div style={{ marginBottom: '12px' }}>
-                          <span style={{ fontWeight: '600', color: '#1f2937', fontSize: '15px' }}>
+                          <span style={{ fontWeight: '600', color: 'var(--ink)', fontSize: '15px' }}>
                             💡 使用此配置还能刷取：
                           </span>
-                          <span style={{ marginLeft: '8px', color: '#6b7280', fontSize: '14px' }}>
+                          <span style={{ marginLeft: '8px', color: 'var(--steel)', fontSize: '14px' }}>
                             （共 {strategy.matchedWeapons.length} 个武器）
                           </span>
                         </div>
@@ -1397,9 +1404,9 @@ const WeaponSearch = ({ onNavigateToFilter }) => {
                               key={otherWeapon.id}
                               style={{
                                 padding: '12px 16px',
-                                backgroundColor: '#f9fafb',
-                                border: '1px solid #e5e7eb',
-                                borderRadius: '6px',
+                                backgroundColor: 'var(--surface)',
+                                border: '1px solid var(--hairline)',
+                                borderRadius: 'var(--r-sm)',
                                 display: 'flex',
                                 alignItems: 'center',
                                 gap: '10px',
@@ -1407,7 +1414,7 @@ const WeaponSearch = ({ onNavigateToFilter }) => {
                               }}
                             >
                               {/* 武器名称 */}
-                              <span style={{ fontWeight: '600', color: '#1f2937', fontSize: '15px', minWidth: '120px' }}>
+                              <span style={{ fontWeight: '600', color: 'var(--ink)', fontSize: '15px', minWidth: '120px' }}>
                                 {otherWeapon.name}
                               </span>
                               
@@ -1426,9 +1433,9 @@ const WeaponSearch = ({ onNavigateToFilter }) => {
                               {/* 武器种类 */}
                               <span style={{
                                 padding: '3px 8px',
-                                backgroundColor: '#e0e7ff',
-                                color: '#4338ca',
-                                borderRadius: '4px',
+                                backgroundColor: 'var(--tint-gray)',
+                                color: 'var(--charcoal)',
+                                borderRadius: 'var(--r-xs)',
                                 fontSize: '12px',
                                 fontWeight: '500'
                               }}>
@@ -1438,9 +1445,9 @@ const WeaponSearch = ({ onNavigateToFilter }) => {
                               {/* 基础属性 */}
                               <span style={{
                                 padding: '3px 8px',
-                                backgroundColor: '#f3e8ff',
-                                color: '#7c3aed',
-                                borderRadius: '4px',
+                                backgroundColor: 'var(--tint-lavender)',
+                                color: 'var(--brand-purple-800)',
+                                borderRadius: 'var(--r-xs)',
                                 fontSize: '12px',
                                 fontWeight: '500'
                               }}>
@@ -1450,9 +1457,9 @@ const WeaponSearch = ({ onNavigateToFilter }) => {
                               {/* 附加属性 */}
                               <span style={{
                                 padding: '3px 8px',
-                                backgroundColor: '#dcfce7',
-                                color: '#16a34a',
-                                borderRadius: '4px',
+                                backgroundColor: 'var(--tint-mint)',
+                                color: 'var(--brand-green)',
+                                borderRadius: 'var(--r-xs)',
                                 fontSize: '12px',
                                 fontWeight: '500'
                               }}>
@@ -1462,9 +1469,9 @@ const WeaponSearch = ({ onNavigateToFilter }) => {
                               {/* 技能属性 */}
                               <span style={{
                                 padding: '3px 8px',
-                                backgroundColor: '#dbeafe',
-                                color: '#2563eb',
-                                borderRadius: '4px',
+                                backgroundColor: 'var(--tint-sky)',
+                                color: 'var(--link-blue)',
+                                borderRadius: 'var(--r-xs)',
                                 fontSize: '12px',
                                 fontWeight: '500'
                               }}>
@@ -1486,16 +1493,15 @@ const WeaponSearch = ({ onNavigateToFilter }) => {
       {/* 无结果提示 */}
       {selectedWeapon && matchingLocations.length === 0 && (
         <div style={{
-          backgroundColor: '#fefce8',
-          border: '1px solid #fde047',
-          borderRadius: '8px',
-          padding: '24px',
+          backgroundColor: 'var(--tint-yellow-bold)',
+          borderRadius: 'var(--r-lg)',
+          padding: 'var(--sp-xxl)',
           textAlign: 'center'
         }}>
-          <p style={{ color: '#a16207', fontWeight: '500', fontSize: '18px' }}>
+          <p style={{ color: 'var(--brand-orange-deep)', fontWeight: '500', fontSize: '18px' }}>
             未找到可以刷取该武器的地点
           </p>
-          <p style={{ color: '#ca8a04', fontSize: '14px', marginTop: '8px' }}>
+          <p style={{ color: 'var(--brand-orange)', fontSize: '14px', marginTop: '8px' }}>
             {(selectedExtraWeapon1 || selectedExtraWeapon2) 
               ? '该武器组合无法在同一地点同时刷取'
               : '该武器的属性组合可能无法在现有地点中刷取'
@@ -1515,10 +1521,10 @@ const WeaponSearch = ({ onNavigateToFilter }) => {
               ? { left: `${floatPos.x}px`, top: `${floatPos.y}px` }
               : { top: '24px', right: '24px' }
             ),
-            backgroundColor: 'white',
-            border: '1px solid #e5e7eb',
-            borderRadius: '12px',
-            boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1)',
+            backgroundColor: 'var(--canvas)',
+            border: '1px solid var(--hairline)',
+            borderRadius: 'var(--r-lg)',
+            boxShadow: 'rgba(15, 15, 15, 0.20) 0px 24px 48px -8px',
             padding: '0',
             minWidth: '280px',
             maxWidth: '360px',
@@ -1531,9 +1537,9 @@ const WeaponSearch = ({ onNavigateToFilter }) => {
             style={{
               padding: '10px 20px',
               cursor: isDragging ? 'grabbing' : 'grab',
-              borderBottom: '1px solid #f3f4f6',
-              borderRadius: '12px 12px 0 0',
-              backgroundColor: '#f9fafb',
+              borderBottom: '1px solid var(--hairline-soft)',
+              borderRadius: 'var(--r-lg) var(--r-lg) 0 0',
+              backgroundColor: 'var(--surface)',
               display: 'flex',
               justifyContent: 'space-between',
               alignItems: 'center'
@@ -1541,7 +1547,7 @@ const WeaponSearch = ({ onNavigateToFilter }) => {
           >
             <span style={{
               fontSize: '12px',
-              color: '#9ca3af',
+              color: 'var(--stone)',
               fontWeight: '500',
               textTransform: 'uppercase',
               letterSpacing: '0.5px'
@@ -1557,7 +1563,7 @@ const WeaponSearch = ({ onNavigateToFilter }) => {
           <div style={{ padding: '14px 20px 16px' }}>
             {/* 武器名称行 */}
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
-              <span style={{ fontSize: '17px', fontWeight: '700', color: '#1f2937' }}>
+              <span style={{ fontSize: '17px', fontWeight: '700', color: 'var(--ink)' }}>
                 {selectedWeapon.name}
               </span>
               <span style={{
@@ -1570,7 +1576,7 @@ const WeaponSearch = ({ onNavigateToFilter }) => {
               }}>
                 {selectedWeapon.rank}★
               </span>
-              <span style={{ fontSize: '13px', color: '#6b7280' }}>
+              <span style={{ fontSize: '13px', color: 'var(--steel)' }}>
                 {selectedWeapon.type}
               </span>
             </div>
@@ -1578,12 +1584,12 @@ const WeaponSearch = ({ onNavigateToFilter }) => {
             {/* 属性列表 */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <span style={{ color: '#9ca3af', fontSize: '12px', minWidth: '60px' }}>基础属性</span>
+                <span style={{ color: 'var(--stone)', fontSize: '12px', minWidth: '60px' }}>基础属性</span>
                 <span style={{
                   padding: '2px 8px',
-                  backgroundColor: '#f3e8ff',
-                  color: '#7c3aed',
-                  borderRadius: '4px',
+                  backgroundColor: 'var(--tint-lavender)',
+                  color: 'var(--brand-purple-800)',
+                  borderRadius: 'var(--r-xs)',
                   fontSize: '12px',
                   fontWeight: '500'
                 }}>
@@ -1591,12 +1597,12 @@ const WeaponSearch = ({ onNavigateToFilter }) => {
                 </span>
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <span style={{ color: '#9ca3af', fontSize: '12px', minWidth: '60px' }}>附加属性</span>
+                <span style={{ color: 'var(--stone)', fontSize: '12px', minWidth: '60px' }}>附加属性</span>
                 <span style={{
                   padding: '2px 8px',
-                  backgroundColor: '#dcfce7',
-                  color: '#16a34a',
-                  borderRadius: '4px',
+                  backgroundColor: 'var(--tint-mint)',
+                  color: 'var(--brand-green)',
+                  borderRadius: 'var(--r-xs)',
                   fontSize: '12px',
                   fontWeight: '500'
                 }}>
@@ -1604,12 +1610,12 @@ const WeaponSearch = ({ onNavigateToFilter }) => {
                 </span>
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <span style={{ color: '#9ca3af', fontSize: '12px', minWidth: '60px' }}>技能属性</span>
+                <span style={{ color: 'var(--stone)', fontSize: '12px', minWidth: '60px' }}>技能属性</span>
                 <span style={{
                   padding: '2px 8px',
-                  backgroundColor: '#dbeafe',
-                  color: '#2563eb',
-                  borderRadius: '4px',
+                  backgroundColor: 'var(--tint-sky)',
+                  color: 'var(--link-blue)',
+                  borderRadius: 'var(--r-xs)',
                   fontSize: '12px',
                   fontWeight: '500'
                 }}>
@@ -1623,9 +1629,9 @@ const WeaponSearch = ({ onNavigateToFilter }) => {
               <div style={{
                 marginTop: '12px',
                 paddingTop: '10px',
-                borderTop: '1px solid #f3f4f6'
+                borderTop: '1px solid var(--hairline-soft)'
               }}>
-                <div style={{ fontSize: '12px', color: '#9ca3af', marginBottom: '6px' }}>额外刷取</div>
+                <div style={{ fontSize: '12px', color: 'var(--stone)', marginBottom: '6px' }}>额外刷取</div>
                 <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
                   {selectedExtraWeapon1 && (
                     <span style={{

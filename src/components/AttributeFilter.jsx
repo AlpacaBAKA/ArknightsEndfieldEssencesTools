@@ -220,28 +220,27 @@ const AttributeFilter = ({ filterPreset }) => {
     <button
       onClick={onClick}
       style={{
-        padding: '8px 16px',
-        border: isSelected ? '2px solid #3b82f6' : '1px solid #4b5563',
-        borderRadius: '6px',
-        transition: 'all 0.2s',
-        backgroundColor: isSelected ? '#2563eb' : '#374151',
-        color: isSelected ? '#ffffff' : '#d1d5db',
-        fontWeight: isSelected ? '600' : '400',
+        padding: '6px 16px',
+        border: isSelected ? '1px solid var(--ink-deep)' : '1px solid var(--hairline)',
+        borderRadius: 'var(--r-full)',
+        transition: 'background-color 0.15s, border-color 0.15s, color 0.15s',
+        backgroundColor: isSelected ? 'var(--ink-deep)' : 'transparent',
+        color: isSelected ? 'var(--on-dark)' : 'var(--steel)',
+        fontWeight: '500',
         cursor: 'pointer',
-        transform: isSelected ? 'scale(1.05)' : 'scale(1)',
-        boxShadow: isSelected ? '0 4px 6px -1px rgba(37, 99, 235, 0.4)' : 'none',
-        fontSize: '14px'
+        fontSize: '14px',
+        lineHeight: '1.50'
       }}
       onMouseEnter={(e) => {
         if (!isSelected) {
-          e.currentTarget.style.borderColor = '#60a5fa'
-          e.currentTarget.style.backgroundColor = '#3f4d63'
+          e.currentTarget.style.borderColor = 'var(--hairline-strong)'
+          e.currentTarget.style.color = 'var(--charcoal)'
         }
       }}
       onMouseLeave={(e) => {
         if (!isSelected) {
-          e.currentTarget.style.borderColor = '#4b5563'
-          e.currentTarget.style.backgroundColor = '#374151'
+          e.currentTarget.style.borderColor = 'var(--hairline)'
+          e.currentTarget.style.color = 'var(--steel)'
         }
       }}
     >
@@ -255,7 +254,16 @@ const AttributeFilter = ({ filterPreset }) => {
     return (
       <button
         onClick={onClick}
-        className="ml-2 px-3 py-1 text-sm bg-red-500 text-white rounded-md hover:bg-red-600 transition-colors"
+        style={{
+          marginLeft: '8px',
+          padding: '3px 10px',
+          fontSize: '13px',
+          backgroundColor: 'transparent',
+          color: 'var(--slate)',
+          border: '1px solid var(--hairline-strong)',
+          borderRadius: 'var(--r-sm)',
+          cursor: 'pointer'
+        }}
       >
         清除
       </button>
@@ -269,11 +277,11 @@ const AttributeFilter = ({ filterPreset }) => {
     }
 
     if (sortConfig.order === 'asc') {
-      return <span className="ml-1 text-blue-600">↑</span>
+      return <span className="ml-1" style={{ color: 'var(--primary)' }}>↑</span>
     }
 
     if (sortConfig.order === 'desc') {
-      return <span className="ml-1 text-blue-600">↓</span>
+      return <span className="ml-1" style={{ color: 'var(--primary)' }}>↓</span>
     }
 
     return null
@@ -281,8 +289,9 @@ const AttributeFilter = ({ filterPreset }) => {
 
   // 表头单元格组件 - 简化版
   const SortableHeader = ({ field, children, className = "" }) => (
-    <th 
-      className={`px-4 py-3 text-sm font-semibold text-gray-700 cursor-pointer hover:bg-gray-100 transition-colors select-none ${className}`}
+    <th
+      className={`px-4 py-3 text-sm font-semibold cursor-pointer select-none transition-colors ${className}`}
+      style={{ color: 'var(--charcoal)' }}
       onClick={() => handleSort(field)}
     >
       <span className="inline-flex items-center">
@@ -357,8 +366,6 @@ const AttributeFilter = ({ filterPreset }) => {
 
   return (
     <div className="space-y-6 w-full text-left mx-0 self-start">
-      <div className="bg-gradient-to-r from-purple-50 to-blue-50 border border-purple-200 rounded-lg p-6">
-      </div>
       {/* 筛选区域 */}
       <div className="space-y-4">
         {/* 查看全部 */}
@@ -512,15 +519,15 @@ const AttributeFilter = ({ filterPreset }) => {
       {/* 当前筛选条件显示 - 可点击取消 */}
       {hasAnyFilter && (
         <div style={{
-          backgroundColor: '#1e293b',
-          border: '1px solid #334155',
-          borderRadius: '8px',
-          padding: '16px 20px'
+          backgroundColor: 'var(--surface)',
+          border: '1px solid var(--hairline)',
+          borderRadius: 'var(--r-md)',
+          padding: '14px 20px'
         }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
             <span style={{
-              fontWeight: '600',
-              color: '#94a3b8',
+              fontWeight: '500',
+              color: 'var(--steel)',
               fontSize: '14px',
               whiteSpace: 'nowrap'
             }}>
@@ -532,16 +539,14 @@ const AttributeFilter = ({ filterPreset }) => {
                 key={`filter-rank-${rank}`}
                 onClick={() => setSelectedRanks(prev => prev.filter(r => r !== rank))}
                 style={{
-                  display: 'inline-flex', alignItems: 'center', gap: '6px',
-                  padding: '5px 12px', backgroundColor: '#f97316', color: 'white',
-                  border: 'none', borderRadius: '16px', fontSize: '13px',
-                  fontWeight: '500', cursor: 'pointer', transition: 'all 0.15s'
+                  display: 'inline-flex', alignItems: 'center', gap: '4px',
+                  padding: '2px 8px', backgroundColor: 'var(--tint-peach)', color: 'var(--brand-orange-deep)',
+                  border: '1px solid var(--tint-peach)', borderRadius: 'var(--r-sm)', fontSize: '13px',
+                  fontWeight: '600', cursor: 'pointer', transition: 'all 0.15s'
                 }}
-                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#ea580c'}
-                onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#f97316'}
               >
                 {rank}星
-                <span style={{ fontSize: '15px', lineHeight: 1 }}>×</span>
+                <span style={{ fontSize: '14px', lineHeight: 1 }}>×</span>
               </button>
             ))}
             
@@ -550,16 +555,14 @@ const AttributeFilter = ({ filterPreset }) => {
                 key={`filter-type-${type}`}
                 onClick={() => setSelectedTypes(prev => prev.filter(t => t !== type))}
                 style={{
-                  display: 'inline-flex', alignItems: 'center', gap: '6px',
-                  padding: '5px 12px', backgroundColor: '#6366f1', color: 'white',
-                  border: 'none', borderRadius: '16px', fontSize: '13px',
-                  fontWeight: '500', cursor: 'pointer', transition: 'all 0.15s'
+                  display: 'inline-flex', alignItems: 'center', gap: '4px',
+                  padding: '2px 8px', backgroundColor: 'var(--tint-lavender)', color: 'var(--brand-purple-800)',
+                  border: '1px solid var(--tint-lavender)', borderRadius: 'var(--r-sm)', fontSize: '13px',
+                  fontWeight: '600', cursor: 'pointer', transition: 'all 0.15s'
                 }}
-                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#4f46e5'}
-                onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#6366f1'}
               >
                 {type}
-                <span style={{ fontSize: '15px', lineHeight: 1 }}>×</span>
+                <span style={{ fontSize: '14px', lineHeight: 1 }}>×</span>
               </button>
             ))}
 
@@ -568,16 +571,14 @@ const AttributeFilter = ({ filterPreset }) => {
                 key={`filter-attr-${attr.id}`}
                 onClick={() => setSelectedAttributes(prev => prev.filter(id => id !== attr.id))}
                 style={{
-                  display: 'inline-flex', alignItems: 'center', gap: '6px',
-                  padding: '5px 12px', backgroundColor: '#8b5cf6', color: 'white',
-                  border: 'none', borderRadius: '16px', fontSize: '13px',
-                  fontWeight: '500', cursor: 'pointer', transition: 'all 0.15s'
+                  display: 'inline-flex', alignItems: 'center', gap: '4px',
+                  padding: '2px 8px', backgroundColor: 'var(--tint-lavender)', color: 'var(--brand-purple-800)',
+                  border: '1px solid var(--tint-lavender)', borderRadius: 'var(--r-sm)', fontSize: '13px',
+                  fontWeight: '600', cursor: 'pointer', transition: 'all 0.15s'
                 }}
-                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#7c3aed'}
-                onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#8b5cf6'}
               >
                 基础: {attr.name}
-                <span style={{ fontSize: '15px', lineHeight: 1 }}>×</span>
+                <span style={{ fontSize: '14px', lineHeight: 1 }}>×</span>
               </button>
             ))}
 
@@ -586,16 +587,14 @@ const AttributeFilter = ({ filterPreset }) => {
                 key={`filter-sec-${sec.id}`}
                 onClick={() => setSelectedSecondaries(prev => prev.filter(id => id !== sec.id))}
                 style={{
-                  display: 'inline-flex', alignItems: 'center', gap: '6px',
-                  padding: '5px 12px', backgroundColor: '#22c55e', color: 'white',
-                  border: 'none', borderRadius: '16px', fontSize: '13px',
-                  fontWeight: '500', cursor: 'pointer', transition: 'all 0.15s'
+                  display: 'inline-flex', alignItems: 'center', gap: '4px',
+                  padding: '2px 8px', backgroundColor: 'var(--tint-mint)', color: 'var(--brand-green)',
+                  border: '1px solid var(--tint-mint)', borderRadius: 'var(--r-sm)', fontSize: '13px',
+                  fontWeight: '600', cursor: 'pointer', transition: 'all 0.15s'
                 }}
-                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#16a34a'}
-                onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#22c55e'}
               >
                 附加: {sec.name}
-                <span style={{ fontSize: '15px', lineHeight: 1 }}>×</span>
+                <span style={{ fontSize: '14px', lineHeight: 1 }}>×</span>
               </button>
             ))}
 
@@ -604,16 +603,14 @@ const AttributeFilter = ({ filterPreset }) => {
                 key={`filter-skill-${skill.id}`}
                 onClick={() => setSelectedSkills(prev => prev.filter(id => id !== skill.id))}
                 style={{
-                  display: 'inline-flex', alignItems: 'center', gap: '6px',
-                  padding: '5px 12px', backgroundColor: '#3b82f6', color: 'white',
-                  border: 'none', borderRadius: '16px', fontSize: '13px',
-                  fontWeight: '500', cursor: 'pointer', transition: 'all 0.15s'
+                  display: 'inline-flex', alignItems: 'center', gap: '4px',
+                  padding: '2px 8px', backgroundColor: 'var(--tint-sky)', color: 'var(--link-blue)',
+                  border: '1px solid var(--tint-sky)', borderRadius: 'var(--r-sm)', fontSize: '13px',
+                  fontWeight: '600', cursor: 'pointer', transition: 'all 0.15s'
                 }}
-                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#2563eb'}
-                onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#3b82f6'}
               >
                 技能: {skill.name}
-                <span style={{ fontSize: '15px', lineHeight: 1 }}>×</span>
+                <span style={{ fontSize: '14px', lineHeight: 1 }}>×</span>
               </button>
             ))}
 
@@ -628,18 +625,18 @@ const AttributeFilter = ({ filterPreset }) => {
               }}
               style={{
                 display: 'inline-flex', alignItems: 'center', gap: '4px',
-                padding: '5px 12px', backgroundColor: 'transparent',
-                color: '#ef4444', border: '1px solid #ef4444',
-                borderRadius: '16px', fontSize: '13px', fontWeight: '500',
+                padding: '2px 8px', backgroundColor: 'transparent',
+                color: 'var(--steel)', border: '1px solid var(--hairline-strong)',
+                borderRadius: 'var(--r-sm)', fontSize: '13px', fontWeight: '500',
                 cursor: 'pointer', transition: 'all 0.15s', marginLeft: '4px'
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.backgroundColor = '#ef4444'
-                e.currentTarget.style.color = 'white'
+                e.currentTarget.style.backgroundColor = 'var(--surface)'
+                e.currentTarget.style.color = 'var(--ink)'
               }}
               onMouseLeave={(e) => {
                 e.currentTarget.style.backgroundColor = 'transparent'
-                e.currentTarget.style.color = '#ef4444'
+                e.currentTarget.style.color = 'var(--steel)'
               }}
             >
               清除全部
@@ -657,7 +654,15 @@ const AttributeFilter = ({ filterPreset }) => {
           {filteredWeapons.length > 0 && (
             <button
               onClick={toggleSelectAll}
-              className="px-4 py-2 text-sm bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 transition-colors"
+              style={{
+                padding: '6px 16px',
+                fontSize: '14px',
+                backgroundColor: 'var(--surface)',
+                color: 'var(--charcoal)',
+                border: '1px solid var(--hairline-strong)',
+                borderRadius: 'var(--r-md)',
+                cursor: 'pointer'
+              }}
             >
               {checkedWeapons.length === filteredWeapons.length ? '取消全选' : '全选'}
             </button>
@@ -690,9 +695,10 @@ const AttributeFilter = ({ filterPreset }) => {
                   {sortedWeapons.map(weapon => (
                     <tr
                       key={weapon.id}
-                      className={`hover:bg-gray-50 transition-colors ${
-                        checkedWeapons.includes(weapon.id) ? 'bg-blue-50' : ''
-                      }`}
+                      className="transition-colors"
+                      style={{
+                        backgroundColor: checkedWeapons.includes(weapon.id) ? 'var(--tint-lavender)' : 'transparent'
+                      }}
                     >
                       {/* 复选框 */}
                       <td className="px-4 py-3 text-center border-r border-gray-200">
@@ -712,10 +718,15 @@ const AttributeFilter = ({ filterPreset }) => {
                       {/* 稀有度 */}
                       <td className="px-4 py-3 text-center border-r border-gray-200">
                         <span
-                          className="inline-block px-3 py-1 rounded-full text-white text-sm font-medium whitespace-nowrap"
-                          style={{ backgroundColor: getRankColor(weapon.rank) }}
+                          className="inline-block text-sm font-semibold whitespace-nowrap"
+                          style={{
+                            backgroundColor: getRankColor(weapon.rank),
+                            color: 'var(--ink-deep)',
+                            padding: '2px 8px',
+                            borderRadius: 'var(--r-xs)'
+                          }}
                         >
-                          {weapon.rank}星
+                          {weapon.rank}★
                         </span>
                       </td>
 
@@ -726,21 +737,30 @@ const AttributeFilter = ({ filterPreset }) => {
 
                       {/* 基础属性 */}
                       <td className="px-4 py-3 border-r border-gray-200">
-                        <span className="inline-block px-2 py-1 bg-purple-100 text-purple-700 rounded text-sm whitespace-nowrap">
+                        <span
+                          className="inline-block text-sm whitespace-nowrap"
+                          style={{ padding: '2px 8px', backgroundColor: 'var(--tint-lavender)', color: 'var(--brand-purple-800)', borderRadius: 'var(--r-xs)', fontWeight: '500' }}
+                        >
                           {weapon.attribute.name}
                         </span>
                       </td>
 
                       {/* 附加属性 */}
                       <td className="px-4 py-3 border-r border-gray-200">
-                        <span className="inline-block px-2 py-1 bg-green-100 text-green-700 rounded text-sm whitespace-nowrap">
+                        <span
+                          className="inline-block text-sm whitespace-nowrap"
+                          style={{ padding: '2px 8px', backgroundColor: 'var(--tint-mint)', color: 'var(--brand-green)', borderRadius: 'var(--r-xs)', fontWeight: '500' }}
+                        >
                           {weapon.secondary.name}
                         </span>
                       </td>
 
                       {/* 技能属性 */}
                       <td className="px-4 py-3">
-                        <span className="inline-block px-2 py-1 bg-blue-100 text-blue-700 rounded text-sm whitespace-nowrap">
+                        <span
+                          className="inline-block text-sm whitespace-nowrap"
+                          style={{ padding: '2px 8px', backgroundColor: 'var(--tint-sky)', color: 'var(--link-blue)', borderRadius: 'var(--r-xs)', fontWeight: '500' }}
+                        >
                           {weapon.skills.name}
                         </span>
                       </td>
@@ -760,9 +780,9 @@ const AttributeFilter = ({ filterPreset }) => {
           </h3>
           
           {commonLocations.length === 0 ? (
-            <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-6 text-center">
-              <p className="text-yellow-700 font-medium">没有地点可以同时刷取所有选中的武器</p>
-              <p className="text-yellow-600 text-sm mt-2">请尝试减少选择的武器数量，或选择属性更接近的武器</p>
+            <div style={{ backgroundColor: 'var(--tint-yellow-bold)', borderRadius: 'var(--r-lg)', padding: '24px', textAlign: 'center' }}>
+              <p style={{ color: 'var(--brand-orange-deep)', fontWeight: '500' }}>没有地点可以同时刷取所有选中的武器</p>
+              <p style={{ color: 'var(--brand-orange)', fontSize: '14px', marginTop: '8px' }}>请尝试减少选择的武器数量，或选择属性更接近的武器</p>
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -794,11 +814,24 @@ const AttributeFilter = ({ filterPreset }) => {
                 return (
                   <div
                     key={location.id}
-                    className="border border-green-200 bg-green-50 rounded-lg p-4 hover:border-green-300 hover:shadow-md transition-all"
+                    style={{
+                      backgroundColor: 'var(--tint-mint)',
+                      border: '1px solid var(--hairline)',
+                      borderRadius: 'var(--r-lg)',
+                      padding: '20px',
+                      transition: 'box-shadow 0.15s'
+                    }}
                   >
                     <div className="flex items-start justify-between mb-3">
                       <h4 className="font-semibold text-gray-800 text-lg">{location.name}</h4>
-                      <span className="inline-block px-3 py-1 bg-green-500 text-white text-xs font-medium rounded-full">
+                      <span style={{
+                        padding: '4px 10px',
+                        backgroundColor: 'var(--success)',
+                        color: 'var(--on-dark)',
+                        fontSize: '12px',
+                        fontWeight: '600',
+                        borderRadius: 'var(--r-full)'
+                      }}>
                         可刷取
                       </span>
                     </div>
@@ -813,12 +846,12 @@ const AttributeFilter = ({ filterPreset }) => {
                               key={`select-attr-${attr.id}`}
                               style={{
                                 display: 'inline-block',
-                                padding: '0.25rem 0.5rem',
-                                backgroundColor: '#e9d5ff',
-                                color: '#6b21a8',
-                                borderRadius: '0.25rem',
-                                fontSize: '0.75rem',
-                                fontWeight: '500'
+                                padding: '2px 8px',
+                                backgroundColor: 'var(--tint-lavender)',
+                                color: 'var(--brand-purple-800)',
+                                borderRadius: 'var(--r-xs)',
+                                fontSize: '13px',
+                                fontWeight: '600'
                               }}
                             >
                               {attr.name}
@@ -829,12 +862,12 @@ const AttributeFilter = ({ filterPreset }) => {
                               key={`select-sec-${sec.id}`}
                               style={{
                                 display: 'inline-block',
-                                padding: '0.25rem 0.5rem',
-                                backgroundColor: '#fed7aa',
-                                color: '#c2410c',
-                                borderRadius: '0.25rem',
-                                fontSize: '0.75rem',
-                                fontWeight: '500'
+                                padding: '2px 8px',
+                                backgroundColor: 'var(--tint-mint)',
+                                color: 'var(--brand-green)',
+                                borderRadius: 'var(--r-xs)',
+                                fontSize: '13px',
+                                fontWeight: '600'
                               }}
                             >
                               {sec.name}
@@ -845,12 +878,12 @@ const AttributeFilter = ({ filterPreset }) => {
                               key={`select-skill-${skill.id}`}
                               style={{
                                 display: 'inline-block',
-                                padding: '0.25rem 0.5rem',
-                                backgroundColor: '#fed7aa',
-                                color: '#c2410c',
-                                borderRadius: '0.25rem',
-                                fontSize: '0.75rem',
-                                fontWeight: '500'
+                                padding: '2px 8px',
+                                backgroundColor: 'var(--tint-sky)',
+                                color: 'var(--link-blue)',
+                                borderRadius: 'var(--r-xs)',
+                                fontSize: '13px',
+                                fontWeight: '600'
                               }}
                             >
                               {skill.name}

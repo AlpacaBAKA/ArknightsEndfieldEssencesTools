@@ -1,10 +1,9 @@
 import { useState } from 'react'
-import './App.css'
 import AttributeFilter from './components/AttributeFilter.jsx'
 import WeaponSearch from './components/WeaponSearch.jsx'
 
 function App() {
-  const [activeTab, setActiveTab] = useState('search') // 'filter' 或 'search'
+  const [activeTab, setActiveTab] = useState('search')
   const [filterPreset, setFilterPreset] = useState(null)
 
   const navigateToFilter = (preset) => {
@@ -12,75 +11,117 @@ function App() {
     setActiveTab('filter')
   }
 
+  const tabs = [
+    { id: 'search', label: '刷取策略查询' },
+    { id: 'filter', label: '武器属性筛选' },
+  ]
+
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* 顶部导航栏 */}
-      <header className="bg-white shadow-sm">
-        <div className="text-center px-4 py-4">
-          <h1 className="text-2xl font-bold text-gray-800">
-            明日方舟：终末地基质刷取工具
-          </h1>
+    <div style={{ minHeight: '100vh', backgroundColor: 'var(--surface-soft)' }}>
+      {/* Sticky nav */}
+      <header style={{
+        position: 'sticky',
+        top: 0,
+        zIndex: 40,
+        backgroundColor: 'var(--canvas)',
+        borderBottom: '1px solid var(--hairline)',
+        height: '64px',
+        display: 'flex',
+        alignItems: 'center',
+        padding: '0 32px',
+      }}>
+        <div style={{
+          maxWidth: '1280px',
+          margin: '0 auto',
+          width: '100%',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+        }}>
+          {/* Logo */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <span style={{
+              fontSize: '18px',
+              fontWeight: '600',
+              color: 'var(--ink)',
+              letterSpacing: '-0.5px',
+            }}>
+              终末地·基质刷取
+            </span>
+            <span style={{
+              padding: '2px 8px',
+              backgroundColor: 'var(--tint-lavender)',
+              color: 'var(--brand-purple-800)',
+              borderRadius: 'var(--r-sm)',
+              fontSize: '11px',
+              fontWeight: '600',
+              letterSpacing: '1px',
+              textTransform: 'uppercase',
+            }}>
+              BETA
+            </span>
+          </div>
+
+          {/* Pill-tab navigation */}
+          <div style={{ display: 'flex', gap: '8px' }}>
+            {tabs.map(tab => (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                style={{
+                  padding: '6px 16px',
+                  borderRadius: 'var(--r-full)',
+                  border: activeTab === tab.id
+                    ? '1px solid var(--ink-deep)'
+                    : '1px solid var(--hairline)',
+                  backgroundColor: activeTab === tab.id ? 'var(--ink-deep)' : 'transparent',
+                  color: activeTab === tab.id ? 'var(--on-dark)' : 'var(--steel)',
+                  fontSize: '14px',
+                  fontWeight: '500',
+                  cursor: 'pointer',
+                  lineHeight: '1.50',
+                }}
+              >
+                {tab.label}
+              </button>
+            ))}
+          </div>
         </div>
       </header>
 
-      {/* 主要内容区域 */}
-      <main className="py-8 px-4">
-        <div className="max-w-[1600px] mx-auto">
-          <div className="bg-white rounded-lg shadow-md overflow-hidden">
-            {/* 标签页切换 */}
-            <div className="flex border-b border-gray-200">
-              <button
-                onClick={() => setActiveTab('search')}
-                className={`flex-1 px-6 py-4 font-semibold transition-colors ${
-                  activeTab === 'search'
-                    ? 'bg-blue-50 text-blue-600 border-b-2 border-blue-600'
-                    : 'text-gray-600 hover:bg-gray-50'
-                }`}
-              >
-                🔍 刷取策略查询
-              </button>
-              <button
-                onClick={() => setActiveTab('filter')}
-                className={`flex-1 px-6 py-4 font-semibold transition-colors ${
-                  activeTab === 'filter'
-                    ? 'bg-blue-50 text-blue-600 border-b-2 border-blue-600'
-                    : 'text-gray-600 hover:bg-gray-50'
-                }`}
-              >
-                📋 武器属性筛选
-              </button>
-            </div>
-
-            {/* 内容区域 */}
-            <div className="p-6 text-left">
-              {activeTab === 'filter' ? (
-                <>
-                  <h2 className="text-xl font-semibold text-gray-700 mb-6 text-center">
-                    武器属性筛选
-                  </h2>
-                  <div className="w-full text-left mx-0">
-                    <AttributeFilter filterPreset={filterPreset} />
-                  </div>
-                </>
-              ) : (
-                <>
-                  <h2 className="text-xl font-semibold text-gray-700 mb-6 text-center">
-                    刷取策略查询
-                  </h2>
-                  <div className="w-full text-left mx-0">
-                    <WeaponSearch onNavigateToFilter={navigateToFilter} />
-                  </div>
-                </>
-              )}
-            </div>
-          </div>
-        </div>
+      {/* Main content */}
+      <main style={{
+        maxWidth: '1280px',
+        margin: '0 auto',
+        padding: '40px 32px',
+      }}>
+        {activeTab === 'filter' ? (
+          <AttributeFilter filterPreset={filterPreset} />
+        ) : (
+          <WeaponSearch onNavigateToFilter={navigateToFilter} />
+        )}
       </main>
 
-      {/* 页脚 */}
-      <footer className="bg-white border-t border-gray-200 mt-12">
-        <div className="text-center px-4 py-4 text-gray-500 text-sm">
-          明日方舟：终末地 - 基质刷取工具
+      {/* Footer */}
+      <footer style={{
+        backgroundColor: 'var(--canvas)',
+        borderTop: '1px solid var(--hairline)',
+        padding: '24px 32px',
+        marginTop: '48px',
+      }}>
+        <div style={{
+          maxWidth: '1280px',
+          margin: '0 auto',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+        }}>
+          <span style={{ fontSize: '14px', color: 'var(--steel)' }}>
+            明日方舟：终末地 — 基质刷取工具
+          </span>
+          <span style={{ fontSize: '13px', color: 'var(--stone)' }}>
+            数据仅供参考，版本更新后请以游戏内为准
+          </span>
         </div>
       </footer>
     </div>
