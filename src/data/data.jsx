@@ -176,7 +176,7 @@ export const getProductsByCategory = (category) => {
 }
 
 
-export const recommendedWeaponIds = [4012,1019,5015,5016]//填写武器id
+export const recommendedWeaponIds = [4012,1019,5015,1012,5009]//填写武器id
 
 export const getRecommendedWeapons = () => {
   return weapons.filter(w => recommendedWeaponIds.includes(w.id))
