@@ -107,7 +107,7 @@ export const weapons=[
     {id:5001, name:'吉米尼12',type:'施术单元',rank:3,attribute:AttributeTag[5],secondary:SecondaryTag[0],skills:SkillsTag[1]},
     {id:5002, name:'全自动骇新星',type:'施术单元',rank:4,attribute:AttributeTag[4],secondary:SecondaryTag[4],skills:SkillsTag[5]},
     {id:5003, name:'荧光雷羽',type:'施术单元',rank:4,attribute:AttributeTag[3],secondary:SecondaryTag[1],skills:SkillsTag[2]},
-    {id:5004, name:'哀悼诗',type:'施术单元',rank:5,attribute:AttributeTag[4],secondary:SecondaryTag[1],skills:SkillsTag[6]},
+    {id:5004, name:'悼亡诗',type:'施术单元',rank:5,attribute:AttributeTag[4],secondary:SecondaryTag[1],skills:SkillsTag[6]},
     {id:5005, name:'莫奈何',type:'施术单元',rank:5,attribute:AttributeTag[3],secondary:SecondaryTag[11],skills:SkillsTag[5]},
     {id:5006, name:'迷失荒野',type:'施术单元',rank:5,attribute:AttributeTag[4],secondary:SecondaryTag[6],skills:SkillsTag[8]},
     {id:5007, name:'布道自由',type:'施术单元',rank:5,attribute:AttributeTag[3],secondary:SecondaryTag[12],skills:SkillsTag[10]},
