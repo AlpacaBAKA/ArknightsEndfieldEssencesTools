@@ -217,19 +217,11 @@ const WeaponSearch = ({ onNavigateToFilter }) => {
     }
   }
 
-  // 生成所有可能的 attribute 组合（2个或3个，排除"无基础属性"）
+  // 生成所有可能的 attribute 组合（严格3个，排除"无基础属性"）
   const generateAttributeCombinations = () => {
     const combinations = []
-    const validAttributes = AttributeTag.filter(attr => attr.id !== 0) // 排除id为0的"无基础属性"
-    
-    // 生成2个attribute的组合
-    for (let i = 0; i < validAttributes.length; i++) {
-      for (let j = i + 1; j < validAttributes.length; j++) {
-        combinations.push([validAttributes[i], validAttributes[j]])
-      }
-    }
-    
-    // 生成3个attribute的组合
+    const validAttributes = AttributeTag.filter(attr => attr.id !== 0)
+
     for (let i = 0; i < validAttributes.length; i++) {
       for (let j = i + 1; j < validAttributes.length; j++) {
         for (let k = j + 1; k < validAttributes.length; k++) {
@@ -237,7 +229,7 @@ const WeaponSearch = ({ onNavigateToFilter }) => {
         }
       }
     }
-    
+
     return combinations
   }
 
@@ -325,136 +317,144 @@ const WeaponSearch = ({ onNavigateToFilter }) => {
 
     // 查找可以刷取该武器的地点及配置策略
     const foundLocations = []
-    
+
     locations.forEach(location => {
-      // 检查该地点是否能刷取目标武器
+      // 地点的skills含weapon.skills（用于fix-secondary策略）或secondary含weapon.secondary（用于fix-skills策略），两者满足其一即可
       const hasSkills = location.skills.some(skill => skill.id === weapon.skills.id)
       const hasSecondary = location.secondary.some(sec => sec.id === weapon.secondary.id)
-      
-      if (!hasSkills || !hasSecondary) return
-      
-      // 检查额外条件武器是否也能在这个地点刷取
+
+      if (!hasSkills && !hasSecondary) return
+
+      // 额外武器也要有机会在此地点刷取（满足其一即可）
       const canGetExtraWeapons = extraWeapons.every(extraWeapon => {
         const hasExtraSkills = location.skills.some(skill => skill.id === extraWeapon.skills.id)
         const hasExtraSecondary = location.secondary.some(sec => sec.id === extraWeapon.secondary.id)
-        return hasExtraSkills && hasExtraSecondary
+        return hasExtraSkills || hasExtraSecondary
       })
-      
-      if (!canGetExtraWeapons) return
-      
-      const strategies = []
-      const allAttrCombos = generateAttributeCombinations()
-      
-      // 用于去重的 Map: key = 武器ID集合的字符串，value = 策略
-      const strategyMap = new Map()
-      
-      // 策略1：固定 skills（技能属性）
-      allAttrCombos.forEach(attrCombo => {
-        const attrIds = attrCombo.map(a => a.id)
-        
-        // 确保至少有2个attribute
-        if (attrCombo.length < 2) return
-        
-        // 目标武器的 attribute 必须在组合中（除非是"无基础属性"）
-        if (weapon.attribute.id !== 0 && !attrIds.includes(weapon.attribute.id)) return
-        
-        // 检查额外条件武器的 attribute 是否也在组合中
-        const extraAttrsValid = extraWeapons.every(extraWeapon => 
-          extraWeapon.attribute.id === 0 || attrIds.includes(extraWeapon.attribute.id)
-        )
-        if (!extraAttrsValid) return
-        
-        const matchedWeapons = findWeaponsWithConfig(location, attrCombo, weapon.skills, 'skills', extraWeapons)
-        
-        // 必须包含目标武器和所有额外条件武器
-        if (!matchedWeapons.find(w => w.id === weapon.id)) return
-        const hasAllExtra = extraWeapons.every(extraWeapon => 
-          matchedWeapons.find(w => w.id === extraWeapon.id)
-        )
-        if (!hasAllExtra) return
-        
-        // 从匹配武器中移除目标武器和额外条件武器
-        const filteredWeapons = matchedWeapons.filter(w => 
-          w.id !== weapon.id && !extraWeapons.some(extra => extra.id === w.id) && w.rank >= 5
-        )
-        
-        // 生成武器ID集合作为唯一标识
-        const weaponIdsKey = filteredWeapons.map(w => w.id).sort().join(',')
-        const strategyKey = `skills-${weapon.skills.id}-${weaponIdsKey}`
-        
-        // 如果已存在相同产物的策略，比较并保留更优的（属性组合更少的）
-        if (!strategyMap.has(strategyKey) || attrCombo.length < strategyMap.get(strategyKey).attributeCombo.length) {
-          strategyMap.set(strategyKey, {
-            type: 'skills',
-            fixedType: 'skills',
-            attributeCombo: attrCombo,
-            fixedSecondaryAttr: weapon.skills,
-            randomSecondaryAttr: 'secondary',
-            matchedWeapons: filteredWeapons,
-            score: calculateStrategyScore(filteredWeapons, sortStrategy)          
-          })
-        }
-      })
-      
-      // 策略2：固定 secondary（附加属性）
-      allAttrCombos.forEach(attrCombo => {
-        const attrIds = attrCombo.map(a => a.id)
-        
-        // 确保至少有2个attribute
-        if (attrCombo.length < 2) return
-        
-        // 目标武器的 attribute 必须在组合中（除非是"无基础属性"）
-        if (weapon.attribute.id !== 0 && !attrIds.includes(weapon.attribute.id)) return
-        
-        // 检查额外条件武器的 attribute 是否也在组合中
-        const extraAttrsValid = extraWeapons.every(extraWeapon => 
-          extraWeapon.attribute.id === 0 || attrIds.includes(extraWeapon.attribute.id)
-        )
-        if (!extraAttrsValid) return
-        
-        const matchedWeapons = findWeaponsWithConfig(location, attrCombo, weapon.secondary, 'secondary', extraWeapons)
-        
-        // 必须包含目标武器和所有额外条件武器
-        if (!matchedWeapons.find(w => w.id === weapon.id)) return
-        const hasAllExtra = extraWeapons.every(extraWeapon => 
-          matchedWeapons.find(w => w.id === extraWeapon.id)
-        )
-        if (!hasAllExtra) return
-        
-        // 从匹配武器中移除目标武器和额外条件武器
-        const filteredWeapons = matchedWeapons.filter(w => 
-          w.id !== weapon.id && !extraWeapons.some(extra => extra.id === w.id) && w.rank >= 5
-        )
-        
-        // 生成武器ID集合作为唯一标识
-        const weaponIdsKey = filteredWeapons.map(w => w.id).sort().join(',')
-        const strategyKey = `secondary-${weapon.secondary.id}-${weaponIdsKey}`
-        
-        // 如果已存在相同产物的策略，比较并保留更优的（属性组合更少的）
-        if (!strategyMap.has(strategyKey) || attrCombo.length < strategyMap.get(strategyKey).attributeCombo.length) {
-          strategyMap.set(strategyKey, {
-            type: 'secondary',
-            fixedType: 'secondary',
-            attributeCombo: attrCombo,
-            fixedSecondaryAttr: weapon.secondary,
-            randomSecondaryAttr: 'skills',
-            matchedWeapons: filteredWeapons,
-            score: calculateStrategyScore(filteredWeapons, sortStrategy)
-          })
-        }
-      })
-      
-      // 将 Map 转换为数组
-      const uniqueStrategies = Array.from(strategyMap.values()).filter(s => s.matchedWeapons.length > 0)
 
-      // 按得分排序策略
+      if (!canGetExtraWeapons) return
+
+      const allAttrCombos = generateAttributeCombinations()
+
+      // key = fixedType-fixedId-武器ID集合, value = { 策略信息 + 所有等效属性组合列表 }
+      const strategyGroups = new Map()
+
+      // 策略1：固定 skills（技能属性），要求weapon.skills.id不为0
+      if (weapon.skills.id !== 0) {
+        allAttrCombos.forEach(attrCombo => {
+          const attrIds = attrCombo.map(a => a.id)
+
+          if (weapon.attribute.id !== 0 && !attrIds.includes(weapon.attribute.id)) return
+
+          const extraAttrsValid = extraWeapons.every(extraWeapon =>
+            extraWeapon.attribute.id === 0 || attrIds.includes(extraWeapon.attribute.id)
+          )
+          if (!extraAttrsValid) return
+
+          const matchedWeapons = findWeaponsWithConfig(location, attrCombo, weapon.skills, 'skills', extraWeapons)
+
+          if (!matchedWeapons.find(w => w.id === weapon.id)) return
+          const hasAllExtra = extraWeapons.every(extraWeapon =>
+            matchedWeapons.find(w => w.id === extraWeapon.id)
+          )
+          if (!hasAllExtra) return
+
+          const filteredWeapons = matchedWeapons.filter(w =>
+            w.id !== weapon.id && !extraWeapons.some(extra => extra.id === w.id) && w.rank >= 5
+          )
+
+          const weaponIdsKey = filteredWeapons.map(w => w.id).sort().join(',')
+          const strategyKey = `skills-${weapon.skills.id}-${weaponIdsKey}`
+
+          if (!strategyGroups.has(strategyKey)) {
+            strategyGroups.set(strategyKey, {
+              type: 'skills',
+              fixedType: 'skills',
+              fixedSecondaryAttr: weapon.skills,
+              randomSecondaryAttr: 'secondary',
+              attributeCombos: [attrCombo],
+              matchedWeapons: filteredWeapons,
+            })
+          } else {
+            strategyGroups.get(strategyKey).attributeCombos.push(attrCombo)
+          }
+        })
+      }
+
+      // 策略2：固定 secondary（附加属性），要求weapon.secondary.id不为0
+      if (weapon.secondary.id !== 0) {
+        allAttrCombos.forEach(attrCombo => {
+          const attrIds = attrCombo.map(a => a.id)
+
+          if (weapon.attribute.id !== 0 && !attrIds.includes(weapon.attribute.id)) return
+
+          const extraAttrsValid = extraWeapons.every(extraWeapon =>
+            extraWeapon.attribute.id === 0 || attrIds.includes(extraWeapon.attribute.id)
+          )
+          if (!extraAttrsValid) return
+
+          const matchedWeapons = findWeaponsWithConfig(location, attrCombo, weapon.secondary, 'secondary', extraWeapons)
+
+          if (!matchedWeapons.find(w => w.id === weapon.id)) return
+          const hasAllExtra = extraWeapons.every(extraWeapon =>
+            matchedWeapons.find(w => w.id === extraWeapon.id)
+          )
+          if (!hasAllExtra) return
+
+          const filteredWeapons = matchedWeapons.filter(w =>
+            w.id !== weapon.id && !extraWeapons.some(extra => extra.id === w.id) && w.rank >= 5
+          )
+
+          const weaponIdsKey = filteredWeapons.map(w => w.id).sort().join(',')
+          const strategyKey = `secondary-${weapon.secondary.id}-${weaponIdsKey}`
+
+          if (!strategyGroups.has(strategyKey)) {
+            strategyGroups.set(strategyKey, {
+              type: 'secondary',
+              fixedType: 'secondary',
+              fixedSecondaryAttr: weapon.secondary,
+              randomSecondaryAttr: 'skills',
+              attributeCombos: [attrCombo],
+              matchedWeapons: filteredWeapons,
+            })
+          } else {
+            strategyGroups.get(strategyKey).attributeCombos.push(attrCombo)
+          }
+        })
+      }
+
+      // 将产物相同的等效策略合并：计算所有等效属性组合的交集，作为该策略的公共必选属性
+      const uniqueStrategies = Array.from(strategyGroups.values()).map(group => {
+        let commonAttrs
+        if (group.attributeCombos.length === 1) {
+          commonAttrs = group.attributeCombos[0]
+        } else {
+          const firstIds = new Set(group.attributeCombos[0].map(a => a.id))
+          const commonIds = group.attributeCombos.reduce((common, combo) => {
+            const comboIds = new Set(combo.map(a => a.id))
+            return new Set([...common].filter(id => comboIds.has(id)))
+          }, firstIds)
+          commonAttrs = group.attributeCombos[0].filter(a => commonIds.has(a.id))
+        }
+
+        return {
+          type: group.type,
+          fixedType: group.fixedType,
+          attributeCombo: commonAttrs,
+          fixedSecondaryAttr: group.fixedSecondaryAttr,
+          randomSecondaryAttr: group.randomSecondaryAttr,
+          matchedWeapons: group.matchedWeapons,
+          score: calculateStrategyScore(group.matchedWeapons, sortStrategy)
+        }
+      }).filter(s => s.matchedWeapons.length > 0)
+
       uniqueStrategies.sort((a, b) => b.score - a.score)
-      
+
       if (uniqueStrategies.length > 0) {
         foundLocations.push({
           ...location,
           strategies: uniqueStrategies,
-          bestScore: uniqueStrategies[0].score // 最高分
+          bestScore: uniqueStrategies[0].score
         })
       }
     })
