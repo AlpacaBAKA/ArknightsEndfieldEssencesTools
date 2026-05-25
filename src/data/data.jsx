@@ -77,6 +77,8 @@ export const weapons=[
     {id:2010, name:'典范',type:'双手剑',rank:6,attribute:AttributeTag[5],secondary:SecondaryTag[1],skills:SkillsTag[2]},
     {id:2011, name:'昔日精品',type:'双手剑',rank:6,attribute:AttributeTag[3],secondary:SecondaryTag[2],skills:SkillsTag[9]},
     {id:2012, name:'破碎君王',type:'双手剑',rank:6,attribute:AttributeTag[3],secondary:SecondaryTag[9],skills:SkillsTag[14]},
+    {id:2013, name:'赤缨',type:'双手剑',rank:6,attribute:AttributeTag[2],secondary:SecondaryTag[1],skills:SkillsTag[4]},
+    {id:2014, name:'幻想苦痛',type:'双手剑',rank:6,attribute:AttributeTag[2],secondary:SecondaryTag[10],skills:SkillsTag[2]},
 
     //长柄武器
     {id:3001, name:'奥佩罗77',type:'长柄武器',rank:3,attribute:AttributeTag[5],secondary:SecondaryTag[0],skills:SkillsTag[1]},
@@ -88,6 +90,8 @@ export const weapons=[
     {id:3007, name:'负山',type:'长柄武器',rank:6,attribute:AttributeTag[1],secondary:SecondaryTag[3],skills:SkillsTag[9]},
     {id:3008, name:'骁勇',type:'长柄武器',rank:6,attribute:AttributeTag[1],secondary:SecondaryTag[3],skills:SkillsTag[4]},
     {id:3009, name:'J.E.T',type:'长柄武器',rank:6,attribute:AttributeTag[5],secondary:SecondaryTag[1],skills:SkillsTag[2]},
+    {id:3010, name:'镀红祝福',type:'长柄武器',rank:6,attribute:AttributeTag[1],secondary:SecondaryTag[5],skills:SkillsTag[7]},
+    {id:3011, name:'灯火使命',type:'长柄武器',rank:6,attribute:AttributeTag[1],secondary:SecondaryTag[11],skills:SkillsTag[9]},
 
     //手铳
     {id:4001, name:'佩科5',type:'手铳',rank:3,attribute:AttributeTag[5],secondary:SecondaryTag[0],skills:SkillsTag[1]},
