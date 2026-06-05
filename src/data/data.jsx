@@ -179,6 +179,12 @@ export const locations=[
         skills:[SkillsTag[2],SkillsTag[14],SkillsTag[4],SkillsTag[11],
                     SkillsTag[8],SkillsTag[12],SkillsTag[6],SkillsTag[7],]
     },
+    {id:205, name:'藏剑谷',map:'武陵',
+        secondary:[SecondaryTag[1],SecondaryTag[2],SecondaryTag[3],SecondaryTag[5],
+                    SecondaryTag[7],SecondaryTag[8],SecondaryTag[10],SecondaryTag[12],],
+        skills:[SkillsTag[1],SkillsTag[3],SkillsTag[5],SkillsTag[4],
+                    SkillsTag[10],SkillsTag[12],SkillsTag[13],SkillsTag[9],]
+    },
 ]
 
 export const getProductsByCategory = (category) => {
