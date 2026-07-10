@@ -92,6 +92,8 @@ export const weapons=[
     {id:3009, name:'J.E.T',type:'长柄武器',rank:6,attribute:AttributeTag[5],secondary:SecondaryTag[1],skills:SkillsTag[2]},
     {id:3010, name:'镀红祝福',type:'长柄武器',rank:6,attribute:AttributeTag[1],secondary:SecondaryTag[5],skills:SkillsTag[7]},
     {id:3011, name:'灯火使命',type:'长柄武器',rank:6,attribute:AttributeTag[1],secondary:SecondaryTag[11],skills:SkillsTag[9]},
+    {id:3012, name:'曜夜的首演',type:'长柄武器',rank:6,attribute:AttributeTag[4],secondary:SecondaryTag[12],skills:SkillsTag[10]},
+    {id:3013, name:'黄金时代',type:'长柄武器',rank:6,attribute:AttributeTag[3],secondary:SecondaryTag[12],skills:SkillsTag[3]},
 
     //手铳
     {id:4001, name:'佩科5',type:'手铳',rank:3,attribute:AttributeTag[5],secondary:SecondaryTag[0],skills:SkillsTag[1]},
@@ -124,6 +126,8 @@ export const weapons=[
     {id:5014, name:'骑士精神',type:'施术单元',rank:6,attribute:AttributeTag[3],secondary:SecondaryTag[2],skills:SkillsTag[10]},
     {id:5015, name:'孤舟',type:'施术单元',rank:6,attribute:AttributeTag[3],secondary:SecondaryTag[1],skills:SkillsTag[2]},
     {id:5016, name:'雾中微光',type:'施术单元',rank:6,attribute:AttributeTag[3],secondary:SecondaryTag[6],skills:SkillsTag[9]},
+    {id:5017, name:'四二式·肃阵',type:'施术单元',rank:6,attribute:AttributeTag[4],secondary:SecondaryTag[11],skills:SkillsTag[13]},
+    {id:5018, name:'联结点',type:'施术单元',rank:6,attribute:AttributeTag[4],secondary:SecondaryTag[11],skills:SkillsTag[9]},
 ]
 
 export const locations=[
@@ -192,7 +196,7 @@ export const getProductsByCategory = (category) => {
 }
 
 
-export const recommendedWeaponIds = [1019,2013,2014,3010,3011,5015]//填写武器id
+export const recommendedWeaponIds = [2013,3010,3012,3013,5017,5018]//填写武器id
 
 export const getRecommendedWeapons = () => {
   return weapons.filter(w => recommendedWeaponIds.includes(w.id))
