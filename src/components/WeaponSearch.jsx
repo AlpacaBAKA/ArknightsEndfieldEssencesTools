@@ -339,8 +339,8 @@ const WeaponSearch = ({ onNavigateToFilter }) => {
       // key = fixedType-fixedId-武器ID集合, value = { 策略信息 + 所有等效属性组合列表 }
       const strategyGroups = new Map()
 
-      // 策略1：固定 skills（技能属性），要求weapon.skills.id不为0
-      if (weapon.skills.id !== 0) {
+      // 策略1：固定 skills（技能属性），要求weapon.skills.id不为0且地点有该技能属性
+      if (weapon.skills.id !== 0 && hasSkills) {
         allAttrCombos.forEach(attrCombo => {
           const attrIds = attrCombo.map(a => a.id)
 
@@ -381,8 +381,8 @@ const WeaponSearch = ({ onNavigateToFilter }) => {
         })
       }
 
-      // 策略2：固定 secondary（附加属性），要求weapon.secondary.id不为0
-      if (weapon.secondary.id !== 0) {
+      // 策略2：固定 secondary（附加属性），要求weapon.secondary.id不为0且地点有该附加属性
+      if (weapon.secondary.id !== 0 && hasSecondary) {
         allAttrCombos.forEach(attrCombo => {
           const attrIds = attrCombo.map(a => a.id)
 
