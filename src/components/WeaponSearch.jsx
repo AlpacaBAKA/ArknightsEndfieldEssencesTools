@@ -10,6 +10,7 @@ const WeaponSearch = ({ onNavigateToFilter }) => {
   const [showOnlyBest, setShowOnlyBest] = useState(false)
   
   const [sortStrategy, setSortStrategy] = useState('total') // 'total', 'high', 'six'
+  const [mapFilter, setMapFilter] = useState('all') // 'all' or specific map name
 
   // 额外条件武器
   const [extraWeapon1, setExtraWeapon1] = useState('')
@@ -31,6 +32,7 @@ const WeaponSearch = ({ onNavigateToFilter }) => {
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 })
 
   const recommendedWeapons = getRecommendedWeapons()
+  const uniqueMaps = [...new Set(locations.map(loc => loc.map))]
 
   const handleFloatMouseDown = (e) => {
     setIsDragging(true)
@@ -1171,11 +1173,15 @@ const WeaponSearch = ({ onNavigateToFilter }) => {
       )}
 
       {/* 可刷取的地点列表 */}
-      {selectedWeapon && matchingLocations.length > 0 && (
+      {selectedWeapon && matchingLocations.length > 0 && (() => {
+        const filteredLocations = mapFilter === 'all'
+          ? matchingLocations
+          : matchingLocations.filter(loc => loc.map === mapFilter)
+        return (
         <div>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
             <h3 style={{ fontSize: '18px', fontWeight: '600', color: 'var(--ink)' }}>
-              可刷取的地点（共 {matchingLocations.length} 个）
+              可刷取的地点（共 {filteredLocations.length} 个）
             </h3>
             
             <button
@@ -1196,9 +1202,10 @@ const WeaponSearch = ({ onNavigateToFilter }) => {
             </button>
 
           </div>
-            <div style={{ 
-              display: 'flex', 
-              gap: '12px', 
+            <div style={{
+              display: 'flex',
+              flexWrap: 'wrap',
+              gap: '12px',
               marginBottom: '16px',
               padding: '16px',
               backgroundColor: 'var(--surface)',
@@ -1248,11 +1255,65 @@ const WeaponSearch = ({ onNavigateToFilter }) => {
             >
               {sortStrategy === 'six' && '✓ '}能刷取最多六星武器
             </button>
-            
+
+            <div style={{
+              width: '100%',
+              height: '1px',
+              backgroundColor: 'var(--hairline)',
+              margin: '12px 0'
+            }} />
+
+            <span style={{
+              color: 'var(--steel)',
+              fontSize: '14px',
+              fontWeight: '500',
+              display: 'flex',
+              alignItems: 'center'
+            }}>
+              地点筛选：
+            </span>
+
+            <button
+              onClick={() => setMapFilter('all')}
+              style={{
+                padding: '6px 16px',
+                backgroundColor: mapFilter === 'all' ? 'var(--primary)' : 'var(--canvas)',
+                color: mapFilter === 'all' ? 'var(--on-primary)' : 'var(--charcoal)',
+                border: mapFilter === 'all' ? 'none' : '1px solid var(--hairline-strong)',
+                borderRadius: 'var(--r-md)',
+                fontSize: '13px',
+                fontWeight: '500',
+                cursor: 'pointer',
+                transition: 'all 0.2s'
+              }}
+            >
+              {mapFilter === 'all' && '✓ '}全部地图
+            </button>
+
+            {uniqueMaps.map((mapName) => (
+              <button
+                key={mapName}
+                onClick={() => setMapFilter(mapName)}
+                style={{
+                  padding: '6px 16px',
+                  backgroundColor: mapFilter === mapName ? 'var(--primary)' : 'var(--canvas)',
+                  color: mapFilter === mapName ? 'var(--on-primary)' : 'var(--charcoal)',
+                  border: mapFilter === mapName ? 'none' : '1px solid var(--hairline-strong)',
+                  borderRadius: 'var(--r-md)',
+                  fontSize: '13px',
+                  fontWeight: '500',
+                  cursor: 'pointer',
+                  transition: 'all 0.2s'
+                }}
+              >
+                {mapFilter === mapName && '✓ '}{mapName}
+              </button>
+            ))}
+
           </div>
           
           <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
-            {matchingLocations.map((location) => (
+            {filteredLocations.map((location) => (
               <div
                 key={location.id}
                 style={{
@@ -1488,7 +1549,8 @@ const WeaponSearch = ({ onNavigateToFilter }) => {
             ))}
           </div>
         </div>
-      )}
+        )
+      })()}
 
       {/* 无结果提示 */}
       {selectedWeapon && matchingLocations.length === 0 && (

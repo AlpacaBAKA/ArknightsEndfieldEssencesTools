@@ -189,6 +189,18 @@ export const locations=[
         skills:[SkillsTag[1],SkillsTag[3],SkillsTag[5],SkillsTag[4],
                     SkillsTag[10],SkillsTag[12],SkillsTag[13],SkillsTag[9],]
     },
+    {id:206, name:'应龙关',map:'武陵',
+        secondary:[SecondaryTag[1],SecondaryTag[3],SecondaryTag[6],SecondaryTag[7],
+                    SecondaryTag[8],SecondaryTag[9],SecondaryTag[10],SecondaryTag[4],],
+        skills:[SkillsTag[2],SkillsTag[3],SkillsTag[4],SkillsTag[11],
+                    SkillsTag[8],SkillsTag[13],SkillsTag[7],SkillsTag[9],]
+    },
+    {id:207, name:'北部禁区',map:'武陵',
+        secondary:[SecondaryTag[2],SecondaryTag[3],SecondaryTag[5],SecondaryTag[8],
+                    SecondaryTag[9],SecondaryTag[10],SecondaryTag[4],SecondaryTag[12],],
+        skills:[SkillsTag[1],SkillsTag[2],SkillsTag[3],SkillsTag[14],
+                    SkillsTag[5],SkillsTag[8],SkillsTag[10],SkillsTag[9],]
+    },
 ]
 
 export const getProductsByCategory = (category) => {
