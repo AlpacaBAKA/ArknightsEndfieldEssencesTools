@@ -92,7 +92,7 @@ export const weapons=[
     {id:3009, name:'J.E.T',type:'长柄武器',rank:6,attribute:AttributeTag[5],secondary:SecondaryTag[1],skills:SkillsTag[2]},
     {id:3010, name:'镀红祝福',type:'长柄武器',rank:6,attribute:AttributeTag[1],secondary:SecondaryTag[5],skills:SkillsTag[7]},
     {id:3011, name:'灯火使命',type:'长柄武器',rank:6,attribute:AttributeTag[1],secondary:SecondaryTag[11],skills:SkillsTag[9]},
-    {id:3012, name:'曜夜的首演',type:'长柄武器',rank:6,attribute:AttributeTag[4],secondary:SecondaryTag[12],skills:SkillsTag[10]},
+    {id:3012, name:'曜夜的首演',type:'长柄武器',rank:6,attribute:AttributeTag[3],secondary:SecondaryTag[12],skills:SkillsTag[10]},
     {id:3013, name:'黄金时代',type:'长柄武器',rank:6,attribute:AttributeTag[3],secondary:SecondaryTag[12],skills:SkillsTag[3]},
 
     //手铳
