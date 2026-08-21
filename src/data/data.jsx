@@ -128,6 +128,10 @@ export const weapons=[
     {id:5016, name:'雾中微光',type:'施术单元',rank:6,attribute:AttributeTag[3],secondary:SecondaryTag[6],skills:SkillsTag[9]},
     {id:5017, name:'四二式·肃阵',type:'施术单元',rank:6,attribute:AttributeTag[4],secondary:SecondaryTag[11],skills:SkillsTag[13]},
     {id:5018, name:'联结点',type:'施术单元',rank:6,attribute:AttributeTag[4],secondary:SecondaryTag[11],skills:SkillsTag[9]},
+    {id:5019, name:'寒夜幽影',type:'施术单元',rank:6,attribute:AttributeTag[1],secondary:SecondaryTag[1],skills:SkillsTag[13]},
+    {id:5020, name:'苦难的尽头',type:'施术单元',rank:6,attribute:AttributeTag[1],secondary:SecondaryTag[8],skills:SkillsTag[13]},
+
+
 ]
 
 export const locations=[
@@ -208,7 +212,7 @@ export const getProductsByCategory = (category) => {
 }
 
 
-export const recommendedWeaponIds = [2013,3010,3012,3013,5017,5018]//填写武器id
+export const recommendedWeaponIds = [3010,3012,5017,5019,5020]//填写武器id
 
 export const getRecommendedWeapons = () => {
   return weapons.filter(w => recommendedWeaponIds.includes(w.id))
