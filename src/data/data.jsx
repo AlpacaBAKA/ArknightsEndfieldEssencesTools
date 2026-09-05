@@ -68,7 +68,7 @@ export const weapons=[
     {id:2001, name:'达尔霍夫',type:'双手剑',rank:3,attribute:AttributeTag[5],secondary:SecondaryTag[0],skills:SkillsTag[1]},
     {id:2002, name:'工业零点一',type:'双手剑',rank:4,attribute:AttributeTag[2],secondary:SecondaryTag[1],skills:SkillsTag[2]},
     {id:2003, name:'淬火者',type:'双手剑',rank:4,attribute:AttributeTag[3],secondary:SecondaryTag[2],skills:SkillsTag[14]},
-    {id:2004, name:'探骊',type:'双手剑',rank:5,attribute:AttributeTag[3],secondary:SecondaryTag[2],skills:SkillsTag[13]},
+    {id:2004, name:'探骊',type:'双手剑',rank:5,attribute:AttributeTag[2],secondary:SecondaryTag[2],skills:SkillsTag[13]},
     {id:2005, name:'古渠',type:'双手剑',rank:5,attribute:AttributeTag[2],secondary:SecondaryTag[10],skills:SkillsTag[11]},
     {id:2006, name:'终点之声',type:'双手剑',rank:5,attribute:AttributeTag[2],secondary:SecondaryTag[2],skills:SkillsTag[10]},
     {id:2007, name:'O.B.J重荷',type:'双手剑',rank:5,attribute:AttributeTag[2],secondary:SecondaryTag[2],skills:SkillsTag[10]},
