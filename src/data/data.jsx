@@ -63,6 +63,8 @@ export const weapons=[
     {id:1017, name:'白夜新星',type:'单手剑',rank:6,attribute:AttributeTag[5],secondary:SecondaryTag[10],skills:SkillsTag[9]},
     {id:1018, name:'光荣记忆',type:'单手剑',rank:6,attribute:AttributeTag[1],secondary:SecondaryTag[9],skills:SkillsTag[6]},
     {id:1019, name:'狼之绯',type:'单手剑',rank:6,attribute:AttributeTag[1],secondary:SecondaryTag[9],skills:SkillsTag[12]},
+    {id:1020, name:'遥望',type:'单手剑',rank:6,attribute:AttributeTag[5],secondary:SecondaryTag[10],skills:SkillsTag[1]},
+    {id:1021, name:'点心时刻',type:'单手剑',rank:6,attribute:AttributeTag[2],secondary:SecondaryTag[12],skills:SkillsTag[10]},
 
     //双手剑
     {id:2001, name:'达尔霍夫',type:'双手剑',rank:3,attribute:AttributeTag[5],secondary:SecondaryTag[0],skills:SkillsTag[1]},
