@@ -64,7 +64,9 @@ export const weapons=[
     {id:1018, name:'光荣记忆',type:'单手剑',rank:6,attribute:AttributeTag[1],secondary:SecondaryTag[9],skills:SkillsTag[6]},
     {id:1019, name:'狼之绯',type:'单手剑',rank:6,attribute:AttributeTag[1],secondary:SecondaryTag[9],skills:SkillsTag[12]},
     {id:1020, name:'遥望',type:'单手剑',rank:6,attribute:AttributeTag[5],secondary:SecondaryTag[10],skills:SkillsTag[1]},
-    {id:1021, name:'点心时刻',type:'单手剑',rank:6,attribute:AttributeTag[2],secondary:SecondaryTag[12],skills:SkillsTag[10]},
+    {id:1021, name:'点心时刻',type:'单手剑',rank:5,attribute:AttributeTag[2],secondary:SecondaryTag[12],skills:SkillsTag[10]},
+    {id:1022, name:'唤月',type:'单手剑',rank:6,attribute:AttributeTag[3],secondary:SecondaryTag[1],skills:SkillsTag[8]},
+    {id:1023, name:'聚合工业',type:'单手剑',rank:6,attribute:AttributeTag[3],secondary:SecondaryTag[6],skills:SkillsTag[13]},
 
     //双手剑
     {id:2001, name:'达尔霍夫',type:'双手剑',rank:3,attribute:AttributeTag[5],secondary:SecondaryTag[0],skills:SkillsTag[1]},
@@ -81,6 +83,8 @@ export const weapons=[
     {id:2012, name:'破碎君王',type:'双手剑',rank:6,attribute:AttributeTag[3],secondary:SecondaryTag[9],skills:SkillsTag[14]},
     {id:2013, name:'赤缨',type:'双手剑',rank:6,attribute:AttributeTag[2],secondary:SecondaryTag[1],skills:SkillsTag[4]},
     {id:2014, name:'幻想苦痛',type:'双手剑',rank:6,attribute:AttributeTag[2],secondary:SecondaryTag[10],skills:SkillsTag[2]},
+    {id:2015, name:'玉中身',type:'双手剑',rank:6,attribute:AttributeTag[4],secondary:SecondaryTag[7],skills:SkillsTag[9]},
+    {id:2016, name:'悠久传承',type:'双手剑',rank:6,attribute:AttributeTag[4],secondary:SecondaryTag[7],skills:SkillsTag[9]},
 
     //长柄武器
     {id:3001, name:'奥佩罗77',type:'长柄武器',rank:3,attribute:AttributeTag[5],secondary:SecondaryTag[0],skills:SkillsTag[1]},
@@ -219,8 +223,10 @@ export const getProductsByCategory = (category) => {
   return products.filter(p => p.category === category)
 }
 
-
-export const recommendedWeaponIds = [3010,3012,5017,5019,5020]//填写武器id
+export const recommendedWeaponIds = [3012, 5019, 2015, 1022, 2016, 1023, 4012]//填写武器id
+export const StoreWeaponIds = [3012, 5019, 2015, 1022, 4012]
+export const operatorWeaponIds = [2015, 1022]
+export const passWeaponIds = [2016, 1023]
 
 export const getRecommendedWeapons = () => {
   return weapons.filter(w => recommendedWeaponIds.includes(w.id))

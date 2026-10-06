@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import { weapons, locations, AttributeTag, getRecommendedWeapons } from '../data/data.jsx'
+import { weapons, locations, AttributeTag, getRecommendedWeapons, StoreWeaponIds, operatorWeaponIds, passWeaponIds } from '../data/data.jsx'
 
 const WeaponSearch = ({ onNavigateToFilter }) => {
   const [searchQuery, setSearchQuery] = useState('')
@@ -25,6 +25,14 @@ const WeaponSearch = ({ onNavigateToFilter }) => {
   const [showRecommended, setShowRecommended] = useState(false)
   const [showExtraRecommended1, setShowExtraRecommended1] = useState(false)
   const [showExtraRecommended2, setShowExtraRecommended2] = useState(false)
+
+  const [showWeaponCategories, setShowWeaponCategories] = useState(false)
+
+  const weaponCategories = [
+    { title: '商店武器', weapons: weapons.filter(w => StoreWeaponIds.includes(w.id)) },
+    { title: '新六星武器', weapons: weapons.filter(w => operatorWeaponIds.includes(w.id)) },
+    { title: '通行证武器', weapons: weapons.filter(w => passWeaponIds.includes(w.id)) },
+  ]
 
   const floatRef = useRef(null)
   const [floatPos, setFloatPos] = useState({ x: null, y: null })
@@ -301,7 +309,7 @@ const WeaponSearch = ({ onNavigateToFilter }) => {
       return
     }
 
-    const weapon = weapons.find(w => 
+    const weapon = weapons.find(w =>
       w.name.toLowerCase() === searchQuery.toLowerCase()
     )
 
@@ -310,6 +318,14 @@ const WeaponSearch = ({ onNavigateToFilter }) => {
       return
     }
 
+    executeSearchForWeapon(weapon)
+  }
+
+  // 对指定武器直接执行查询
+  const executeSearchForWeapon = (weapon) => {
+    setSearchQuery(weapon.name)
+    setShowSuggestions(false)
+    setShowRecommended(false)
     setSelectedWeapon(weapon)
 
     // 收集额外条件武器
@@ -1051,6 +1067,103 @@ const WeaponSearch = ({ onNavigateToFilter }) => {
             </div>
           )}
         </div>
+      </div>
+
+      {/* 武器分类折叠栏 */}
+      <div style={{
+        backgroundColor: 'var(--canvas)',
+        border: '1px solid var(--hairline)',
+        borderRadius: 'var(--r-lg)',
+        overflow: 'hidden'
+      }}>
+        <button
+          onClick={() => setShowWeaponCategories(!showWeaponCategories)}
+          style={{
+            width: '100%',
+            padding: '16px var(--sp-xxl)',
+            backgroundColor: 'transparent',
+            border: 'none',
+            cursor: 'pointer',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            fontSize: '16px',
+            fontWeight: '600',
+            color: 'var(--ink)'
+          }}
+        >
+          <span>推荐武器</span>
+          <span style={{ fontSize: '13px', color: 'var(--steel)', fontWeight: '400' }}>
+            {showWeaponCategories ? '▲ 收起' : '▼ 展开'}
+          </span>
+        </button>
+
+        {showWeaponCategories && (
+          <div style={{
+            padding: '0 var(--sp-xxl) var(--sp-xxl)',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '20px',
+            borderTop: '1px solid var(--hairline-soft)',
+            paddingTop: '16px'
+          }}>
+            {weaponCategories.map((category) => (
+              <div key={category.title}>
+                <h4 style={{
+                  fontSize: '15px',
+                  fontWeight: '600',
+                  color: 'var(--ink)',
+                  marginBottom: '10px'
+                }}>
+                  {category.title}
+                  <span style={{ color: 'var(--steel)', fontWeight: '400', marginLeft: '6px', fontSize: '13px' }}>
+                    （{category.weapons.length}）
+                  </span>
+                </h4>
+                {category.weapons.length === 0 ? (
+                  <div style={{ color: 'var(--steel)', fontSize: '13px' }}>暂无武器</div>
+                ) : (
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+                    {category.weapons.map((weapon) => (
+                      <button
+                        key={weapon.id}
+                        onClick={() => executeSearchForWeapon(weapon)}
+                        style={{
+                          padding: '8px 12px',
+                          backgroundColor: 'var(--surface)',
+                          border: '1px solid var(--hairline)',
+                          borderRadius: 'var(--r-sm)',
+                          cursor: 'pointer',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '8px',
+                          fontSize: '13px'
+                        }}
+                        onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--tint-lavender)'}
+                        onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'var(--surface)'}
+                      >
+                        <span style={{ fontWeight: '500', color: 'var(--ink)' }}>{weapon.name}</span>
+                        <span style={{
+                          padding: '2px 6px',
+                          borderRadius: '4px',
+                          color: 'white',
+                          fontSize: '11px',
+                          fontWeight: '500',
+                          backgroundColor: getRankColor(weapon.rank)
+                        }}>
+                          {weapon.rank}★
+                        </span>
+                        <span style={{ fontSize: '11px', color: 'var(--steel)' }}>
+                          {weapon.type}
+                        </span>
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        )}
       </div>
 
       {/* 选中的武器信息 */}
