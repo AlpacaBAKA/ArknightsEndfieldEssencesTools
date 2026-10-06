@@ -29,7 +29,7 @@ const WeaponSearch = ({ onNavigateToFilter }) => {
   const [showWeaponCategories, setShowWeaponCategories] = useState(false)
 
   const weaponCategories = [
-    { title: '商店武器', weapons: weapons.filter(w => StoreWeaponIds.includes(w.id)) },
+    { title: '寻访武器', weapons: weapons.filter(w => StoreWeaponIds.includes(w.id)) },
     { title: '新六星武器', weapons: weapons.filter(w => operatorWeaponIds.includes(w.id)) },
     { title: '通行证武器', weapons: weapons.filter(w => passWeaponIds.includes(w.id)) },
   ]
