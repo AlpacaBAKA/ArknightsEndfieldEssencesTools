@@ -17,7 +17,14 @@ function App() {
   ]
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: 'var(--surface-soft)' }}>
+    <div style={{
+      minHeight: '100vh',
+      backgroundColor: 'var(--surface-soft)',
+      display: 'flex',
+      flexDirection: 'column',
+      paddingBottom: '44px',
+      boxSizing: 'border-box',
+    }}>
       {/* Sticky nav */}
       <header style={{
         position: 'sticky',
@@ -94,6 +101,9 @@ function App() {
         maxWidth: '1280px',
         margin: '0 auto',
         padding: '40px 32px',
+        width: '100%',
+        boxSizing: 'border-box',
+        flex: 1,
       }}>
         {activeTab === 'filter' ? (
           <AttributeFilter filterPreset={filterPreset} />
