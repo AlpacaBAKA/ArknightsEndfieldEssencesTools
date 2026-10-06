@@ -226,7 +226,7 @@ export const getProductsByCategory = (category) => {
 export const recommendedWeaponIds = [3012, 5019, 2015, 1022, 2016, 1023, 4012]//填写武器id
 export const StoreWeaponIds = [3012, 5019, 2015, 1022, 4012]
 export const operatorWeaponIds = [5019, 2015, 1022]
-export const passWeaponIds = [2016, 1023]
+export const passWeaponIds = [5020, 2016, 1023]
 
 export const getRecommendedWeapons = () => {
   return weapons.filter(w => recommendedWeaponIds.includes(w.id))
