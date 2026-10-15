@@ -217,6 +217,12 @@ export const locations=[
         skills:[SkillsTag[1],SkillsTag[14],SkillsTag[5],SkillsTag[11],
                     SkillsTag[10],SkillsTag[13],SkillsTag[6],SkillsTag[7],]
     },
+    {id:209, name:'祀的画',map:'武陵',
+        secondary:[SecondaryTag[1],SecondaryTag[3],SecondaryTag[5],SecondaryTag[7],
+                    SecondaryTag[8],SecondaryTag[9],SecondaryTag[10],SecondaryTag[11],],
+        skills:[SkillsTag[2],SkillsTag[3],SkillsTag[4],SkillsTag[8],
+                    SkillsTag[12],SkillsTag[13],SkillsTag[7],SkillsTag[9],]
+    },
 ]
 
 export const getProductsByCategory = (category) => {
@@ -226,7 +232,7 @@ export const getProductsByCategory = (category) => {
 export const recommendedWeaponIds = [5019, 2015, 1022, 2016, 1023, 4012]//填写武器id
 export const StoreWeaponIds = [5019, 2015, 1022, 4012]
 export const operatorWeaponIds = [5019, 2015, 1022]
-export const passWeaponIds = [5020, 2016, 1023]
+export const passWeaponIds = [2016, 1023]
 
 export const getRecommendedWeapons = () => {
   return weapons.filter(w => recommendedWeaponIds.includes(w.id))
