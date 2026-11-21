@@ -100,6 +100,7 @@ export const weapons=[
     {id:3011, name:'灯火使命',type:'长柄武器',rank:6,attribute:AttributeTag[1],secondary:SecondaryTag[11],skills:SkillsTag[9]},
     {id:3012, name:'曜夜的首演',type:'长柄武器',rank:6,attribute:AttributeTag[3],secondary:SecondaryTag[12],skills:SkillsTag[10]},
     {id:3013, name:'黄金时代',type:'长柄武器',rank:6,attribute:AttributeTag[3],secondary:SecondaryTag[12],skills:SkillsTag[3]},
+    {id:3014, name:'甜美交易',type:'长柄武器',rank:6,attribute:AttributeTag[2],secondary:SecondaryTag[8],skills:SkillsTag[7]},
 
     //手铳
     {id:4001, name:'佩科5',type:'手铳',rank:3,attribute:AttributeTag[5],secondary:SecondaryTag[0],skills:SkillsTag[1]},
@@ -114,6 +115,7 @@ export const weapons=[
     {id:4010, name:'同类相食',type:'手铳',rank:6,attribute:AttributeTag[5],secondary:SecondaryTag[4],skills:SkillsTag[8]},
     {id:4011, name:'望乡',type:'手铳',rank:6,attribute:AttributeTag[1],secondary:SecondaryTag[7],skills:SkillsTag[2]},
     {id:4012, name:'落草',type:'手铳',rank:6,attribute:AttributeTag[1],secondary:SecondaryTag[1],skills:SkillsTag[13]},
+    {id:4013, name:'明日之星',type:'手铳',rank:6,attribute:AttributeTag[2],secondary:SecondaryTag[11],skills:SkillsTag[1]},
 
     //施术单元
     {id:5001, name:'吉米尼12',type:'施术单元',rank:3,attribute:AttributeTag[5],secondary:SecondaryTag[0],skills:SkillsTag[1]},
@@ -229,8 +231,9 @@ export const getProductsByCategory = (category) => {
   return products.filter(p => p.category === category)
 }
 
-export const recommendedWeaponIds = [5019, 2015, 1022, 2016, 1023, 4012]//填写武器id
-export const StoreWeaponIds = [5019, 2015, 1022, 4012]
+export const predictWeaponIds = [4013, 3014]
+export const recommendedWeaponIds = [5019, 2015, 1022, 2016, 1023]//填写武器id
+export const StoreWeaponIds = [5019, 2015, 1022]
 export const operatorWeaponIds = [5019, 2015, 1022]
 export const passWeaponIds = [2016, 1023]
 
