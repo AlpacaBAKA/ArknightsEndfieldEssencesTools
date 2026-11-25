@@ -232,12 +232,12 @@ export const getProductsByCategory = (category) => {
   return products.filter(p => p.category === category)
 }
 
-export const recommendedWeaponIds = [5019, 2015, 1022, 2016, 1023]//武器搜索框
+export const recommendedWeaponIds = [3014, 3015, 4013, 2015, 1022, 5009]//武器搜索框
 
-export const predictWeaponIds = [4013, 3014, 3015]//前瞻武器
-export const StoreWeaponIds = [5019, 2015, 1022]//当前可获取
-export const operatorWeaponIds = [5019, 2015, 1022]//干员专武
-export const passWeaponIds = [2016, 1023]//通行证
+//export const predictWeaponIds = [4013, 3014, 3015]//前瞻武器
+export const StoreWeaponIds = [3014, 5009, 2015, 1022]//寻访武器
+export const operatorWeaponIds = [3014, 4013]//干员专武
+export const passWeaponIds = [3015]//通行证
 
 export const getRecommendedWeapons = () => {
   return weapons.filter(w => recommendedWeaponIds.includes(w.id))
